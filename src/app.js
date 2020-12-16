@@ -9,10 +9,11 @@ const hbs_sections = require('express-handlebars-sections');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
-const route = require('./routes');
-
 const app = express();
 
+
+
+app.set('views', path.join(__dirname, 'views'));
 app.engine('hbs', exphbs({
   defaultLayout: 'main.hbs',
   extname: '.hbs',
@@ -24,30 +25,30 @@ app.set('view engine', 'hbs');
 
 app.set('trust proxy', 1);
 
-const options = {
-  host: process.env.DATABASE_HOST ? process.env.DATABASE_HOST : 'localhost',
-  port: process.env.DATABASE_PORT ? process.env.DATABASE_PORT : 3306,
-  user: process.env.DATABASE_USER ? process.env.DATABASE_USER : 'root',
-  password: process.env.DATABASE_PASS ? process.env.DATABASE_PASS : 'root',
-  database: process.env.DATABASE_NAME ? process.env.DATABASE_NAME : 'course',
-  charset: 'utf8',
-  schema: {
-    tableName: 'sessions',
-    columnNames: {
-      session_id: 'session_id',
-      expires: 'expires',
-      data: 'data'
-    }
-  }
-};
+// const options = {
+//   host: process.env.DATABASE_HOST ? process.env.DATABASE_HOST : 'localhost',
+//   port: process.env.DATABASE_PORT ? process.env.DATABASE_PORT : 3306,
+//   user: process.env.DATABASE_USER ? process.env.DATABASE_USER : 'root',
+//   password: process.env.DATABASE_PASS ? process.env.DATABASE_PASS : 'root',
+//   database: process.env.DATABASE_NAME ? process.env.DATABASE_NAME : 'course',
+//   charset: 'utf8',
+//   schema: {
+//     tableName: 'sessions',
+//     columnNames: {
+//       session_id: 'session_id',
+//       expires: 'expires',
+//       data: 'data'
+//     }
+//   }
+// };
 
-const sessionStore = new MySQLStore(options);
+// const sessionStore = new MySQLStore(options);
 
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true,
-  store: sessionStore,
+  // store: sessionStore,
   cookie: {
     // secure: true
   }
@@ -70,15 +71,23 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // route
-route(app);
+require('./routes/index.js')(app);
 
-// render error
+app.use(function (req, res) {
+  res.render('404.hbs', {
+    layout: false
+  })
+});
+
+// render 500 error
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   res.status(err.status || 500);
-  res.render('error');
+  res.render('500.hbs', {
+    layout: false
+  });
 });
 
 module.exports = app;
