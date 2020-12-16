@@ -1,0 +1,33 @@
+{
+  "name": "online-course-website",
+  "version": "0.0.1",
+  "description": "online course website",
+  "keywords": [
+    "course",
+    "website",
+    "project-final"
+  ],
+  "repository": "https://github.com/phamvmnhut/online-course-website.git",
+  "homepage": "/",
+  "author": "",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-handlebars": "^5.2.0",
+    "express-handlebars-sections": "^1.0.1",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1"
+  },
+  "main": "server.js",
+  "engines": {
+    "node": ">= 12"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "pro": "NODE_ENV=production node server.js",
+    "debug": "DEBUG=app:* node server.js",
+    "test": ""
+  }
+}
