@@ -23,6 +23,26 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs');
 
 app.set('trust proxy', 1);
+
+const options = {
+  host: process.env.DATABASE_HOST ? process.env.DATABASE_HOST : 'localhost',
+  port: process.env.DATABASE_PORT ? process.env.DATABASE_PORT : 3306,
+  user: process.env.DATABASE_USER ? process.env.DATABASE_USER : 'root',
+  password: process.env.DATABASE_PASS ? process.env.DATABASE_PASS : 'root',
+  database: process.env.DATABASE_NAME ? process.env.DATABASE_NAME : 'course',
+  charset: 'utf8',
+  schema: {
+    tableName: 'sessions',
+    columnNames: {
+      session_id: 'session_id',
+      expires: 'expires',
+      data: 'data'
+    }
+  }
+};
+
+const sessionStore = new MySQLStore(options);
+
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
