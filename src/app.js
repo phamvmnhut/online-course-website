@@ -11,7 +11,7 @@ const MySQLStore = require('express-mysql-session')(session);
 
 const app = express();
 
-
+//try this 
 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('hbs', exphbs({
