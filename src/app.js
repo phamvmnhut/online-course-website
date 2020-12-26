@@ -9,6 +9,8 @@ const hbs_sections = require('express-handlebars-sections');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
+const debug = require('debug')('app:Error');
+
 const app = express();
 
 //try this 
@@ -17,8 +19,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('hbs', exphbs({
   defaultLayout: 'main.hbs',
   extname: '.hbs',
-  layoutsDir: 'views/layouts',
-  partialsDir: 'views/partials',
+  // layoutsDir: 'views/layouts',
+  // partialsDir: 'views/partials',
   helpers: {
     section: hbs_sections(),
   }
@@ -82,11 +84,12 @@ app.use(function (req, res) {
   })
 });
 
-
 // render 500 error
 app.use(function (err, req, res, next) {
+  debug(err);
+  
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : "Error";
 
   res.status(err.status || 500);
   res.render('500.hbs', {

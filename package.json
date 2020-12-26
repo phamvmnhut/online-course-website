@@ -29,7 +29,8 @@
   "scripts": {
     "start": "node server.js",
     "pro": "NODE_ENV=production node server.js",
-    "debug": "set DEBUG=app:* node server.js",
+    "debug": "DEBUG=app:* node server.js",
+    "debug-wins": "set DEBUG=app:* node server.js",
     "test": ""
   }
 }
