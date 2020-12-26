@@ -5,7 +5,18 @@ const router = express.Router();
 
 router.get('/', function (req, res) {
   debug("listing in home");
-  res.render('site/home.hbs')
+  res.render('guest/home.hbs', {
+    layout: 'guest_layout'
+  })
 })
+
+
+router.get('/home', function(req, res) {
+  res.render('guest/home',{
+      layout: 'guest_layout'
+  });
+});
+
+
 
 module.exports = router;
