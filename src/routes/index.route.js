@@ -17,6 +17,12 @@ router.get('/home', function(req, res) {
   });
 });
 
+router.get('/course-details', function (req, res) {
+  debug("listing in home");
+  res.render('guest/course-details.hbs', {
+    layout: 'guest_layout'
+  })
+})
 
 
 module.exports = router;
