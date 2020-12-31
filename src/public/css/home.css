@@ -66,10 +66,10 @@
 	display: block;
 }
 
-.rating__course i a{
+.category i a{
 	height: 25px;
 	width: 65px;
-	background:#7fad39;
+	background:#0E99DA;
 	border-radius: 10%;
 	font-size: 16px;
 	color: white ;
@@ -80,3 +80,29 @@
 	top: 15px;
 }
 
+
+.rating i {
+	color: #FFC801;
+	font-style: normal !important;
+}
+.rating {
+	color: black;
+	font-weight: lighter;
+	font-size: small;
+}
+
+
+.best__seller i{
+	height: 45px;
+	width: 45px;
+	background:#D60000;
+	border-radius: 50%;
+	font-size: 10px;
+	color: #ffffff ;
+	line-height: 20px;
+	text-align: center;
+	position: absolute;
+	left: 15px;
+	top: 15px;
+	text-transform: uppercase;
+}

@@ -18,15 +18,20 @@ router.get('/home', function(req, res) {
 });
 
 router.get('/course-details', function (req, res) {
-  debug("listing in home");
   res.render('guest/course-details.hbs', {
     layout: 'guest_layout'
   })
 })
 
-router.get('/search-results', function (req, res) {
-  debug("listing in home");
-  res.render('guest/search-results.hbs', {
+
+router.get('/course-list', function (req, res) {
+  res.render('guest/course-list.hbs', {
+    layout: 'guest_layout'
+  })
+})
+
+router.get('/sign-up', function (req, res) {
+  res.render('guest/sign-up.hbs', {
     layout: 'guest_layout'
   })
 })
