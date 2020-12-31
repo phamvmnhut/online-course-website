@@ -28,18 +28,18 @@
 }
 
 .sitebar__menu ul li .header__menu__dropdown li:hover>a {
-	color: #7fad39;
+	color: #014011;
 }
 
 .sitebar__menu ul li .header__menu__dropdown li a {
 	text-transform: none;
-	color: #ffffff;
+	color:#014011 !important;
 	font-weight: 400;
 	padding: 5px 15px;
 }
 
 .sitebar__menu ul li.active a {
-	color: #7fad39;
+	color: #014011;
 }
 
 .sitebar__menu ul li:hover .header__menu__dropdown {
@@ -49,7 +49,7 @@
 }
 
 .sitebar__menu ul li:hover>a {
-	color: #7fad39;
+	color: #014011;
 }
 
 .sitebar__menu ul li:last-child {
@@ -105,4 +105,35 @@
 	left: 15px;
 	top: 15px;
 	text-transform: uppercase;
+}
+
+.breadcrumb__text h2 {
+	font-size: 46px;
+	color:#131B26 !important;
+	font-weight: 700;
+}
+
+.breadcrumb__option a {
+	display: inline-block;
+	font-size: 16px;
+	color:#131B26 !important;
+	font-weight: 700;
+	margin-right: 20px;
+	position: relative;
+}
+
+.breadcrumb__option a:after {
+	position: absolute;
+	right: -12px;
+	top: 13px;
+	height: 1px;
+	width: 10px;
+	background:#131B26 !important;
+	content: "";
+}
+
+.breadcrumb__option span {
+	display: inline-block;
+	font-size: 16px;
+	color:#131B26 !important;
 }
