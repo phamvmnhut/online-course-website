@@ -42,4 +42,10 @@ router.get('/search_results', function (req, res) {
   })
 })
 
+router.get('/log_in', function (req, res) {
+  res.render('guest/log_in.hbs', {
+    layout: 'guest_layout'
+  })
+})
+
 module.exports = router;

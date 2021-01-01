@@ -28,18 +28,18 @@
 }
 
 .sitebar__menu ul li .header__menu__dropdown li:hover>a {
-	color: #014011;
+	color: #7fad39;
 }
 
 .sitebar__menu ul li .header__menu__dropdown li a {
 	text-transform: none;
-	color:#014011 !important;
+	color: white;
 	font-weight: 400;
 	padding: 5px 15px;
 }
 
 .sitebar__menu ul li.active a {
-	color: #014011;
+	color: #7fad39;
 }
 
 .sitebar__menu ul li:hover .header__menu__dropdown {
@@ -49,7 +49,7 @@
 }
 
 .sitebar__menu ul li:hover>a {
-	color: #014011;
+	color: #7fad39;
 }
 
 .sitebar__menu ul li:last-child {
@@ -58,7 +58,7 @@
 
 .sitebar__menu ul li a {
 	font-size: 14px;
-	color: #252525;
+	color: #10110f;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	transition: all, 0.3s;
