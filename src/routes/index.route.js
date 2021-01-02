@@ -48,4 +48,10 @@ router.get('/log_in', function (req, res) {
   })
 })
 
+router.get('/watch_list', function (req, res) {
+  res.render('user/watch_list.hbs', {
+    layout: 'user_layout'
+  })
+})
+
 module.exports = router;
