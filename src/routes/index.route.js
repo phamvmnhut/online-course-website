@@ -3,6 +3,8 @@ const debug = require('debug')('app:home');
 
 const router = express.Router();
 
+
+//guest
 router.get('/', function (req, res) {
   debug("listing in home");
   res.render('guest/home.hbs', {
@@ -48,10 +50,19 @@ router.get('/log_in', function (req, res) {
   })
 })
 
+
+//user
 router.get('/watch_list', function (req, res) {
   res.render('user/watch_list.hbs', {
     layout: 'user_layout'
   })
 })
 
+
+//teacher
+router.get('/profile', function (req, res) {
+  res.render('teacher/profile.hbs', {
+    layout: 'teacher_layout'
+  })
+})
 module.exports = router;
