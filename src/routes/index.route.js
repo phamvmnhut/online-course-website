@@ -58,11 +58,36 @@ router.get('/watch_list', function (req, res) {
   })
 })
 
+router.get('/user_profile', function (req, res) {
+  res.render('user/profile.hbs', {
+    layout: 'user_layout'
+  })
+})
+
+router.get('/registered_list', function (req, res) {
+  res.render('user/registered_list.hbs', {
+    layout: 'user_layout'
+  })
+})
+
+router.get('/feedback', function (req, res) {
+  res.render('user/feedback.hbs', {
+    layout: 'user_layout'
+  })
+})
+
 
 //teacher
-router.get('/profile', function (req, res) {
+router.get('/teacher_profile', function (req, res) {
   res.render('teacher/profile.hbs', {
     layout: 'teacher_layout'
   })
 })
+
+router.get('/update_course', function (req, res) {
+  res.render('teacher/update_course.hbs', {
+    layout: 'teacher_layout'
+  })
+})
+
 module.exports = router;
