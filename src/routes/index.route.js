@@ -72,7 +72,7 @@ router.get('/registered_list', function (req, res) {
 
 router.get('/feedback', function (req, res) {
   res.render('user/feedback.hbs', {
-    layout: 'user_layout'
+    layout: 'rating_layout'
   })
 })
 
