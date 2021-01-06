@@ -111,7 +111,6 @@ router.get('/courses', async function (req, res) {
   const cates = await CategoryModel.all();
 
   return res.render('guest/course_list.hbs', {
-    layout: 'guest_layout',
     cates,
     courses
   })
