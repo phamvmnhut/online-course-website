@@ -21,35 +21,37 @@
         <div class="container">
             <div class="checkout__form">
                 <h4>Sign Up</h4>
-                <form action="#">
+                {{!-- Start form  --}}
+                <form action="" method="POST">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Fist Name<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" name="fist_name">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Last Name<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" name="last_name">
                                     </div>
                                 </div>
                             </div>
                             <div class="checkout__input">
                                 <p>Email<span>*</span></p>
-                                <input type="text">
+                                <input type="email" name="email">
                             </div>
                             <div class="checkout__input">
                                 <p>Password<span>*</span></p>
-                                <input type="text">
+                                <input type="password" name="password">
                             </div>
                             <div class="checkout__input">
-                                <p>Suggested Username</p>
+                                <p>Give me a Display Name</p>
                                 <input type="text"
-                                    placeholder="<Firstname><Lastname>1234 ">
+                                    placeholder="<Firstname><Lastname>"
+                                        name="display_name">
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
@@ -62,6 +64,7 @@
                         </div>
                     </div>
                 </form>
+                {{!-- End form --}}
             </div>
         </div>
     </section>

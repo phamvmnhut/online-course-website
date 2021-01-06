@@ -7,6 +7,8 @@ const fs = require('fs');
 const exphbs = require('express-handlebars');
 const hbs_sections = require('express-handlebars-sections');
 const session = require('express-session');
+const flash = require('express-flash')
+const cookieParser = require('cookie-parser')
 const MySQLStore = require('express-mysql-session')(session);
 
 const debug = require('debug')('app:Error');
@@ -17,7 +19,7 @@ const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('hbs', exphbs({
-    defaultLayout: 'main.hbs',
+    defaultLayout: 'main_layout.hbs',
     extname: '.hbs',
     // layoutsDir: 'views/layouts',
     // partialsDir: 'views/partials',
@@ -74,9 +76,13 @@ app.use(session({
         // secure: true
     }
 }));
+app.use(cookieParser())
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// flash message
+app.use(flash());
 
 // static file
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -90,6 +96,16 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     app.use(morgan('dev'));
 }
+
+app.use(async function (req, res, next) {
+    if (typeof (req.session.isAuth) === 'undefined') {
+      req.session.isAuth = false;
+    }
+
+    res.locals.isAuth = req.session.isAuth;
+    res.locals.authUser = req.session.authUser;
+    next();
+  })
 
 // route
 require('./routes/index.js')(app);
