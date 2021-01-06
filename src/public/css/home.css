@@ -160,3 +160,8 @@
 .user__rating {
 	color: black;
 }
+
+.vid__container {
+	margin-left: 125px;
+	text-align: center;
+}

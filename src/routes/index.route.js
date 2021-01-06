@@ -76,6 +76,11 @@ router.get('/feedback', function (req, res) {
   })
 })
 
+router.get('/studying', function (req, res) {
+  res.render('user/studying.hbs', {
+    layout: 'user_layout'
+  })
+})
 
 //teacher
 router.get('/teacher_profile', function (req, res) {
@@ -89,5 +94,12 @@ router.get('/update_course', function (req, res) {
     layout: 'teacher_layout'
   })
 })
+
+router.get('/upload_course', function (req, res) {
+  res.render('teacher/upload_course.hbs', {
+    layout: 'teacher_layout'
+  })
+})
+
 
 module.exports = router;
