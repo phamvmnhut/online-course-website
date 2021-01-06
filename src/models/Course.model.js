@@ -44,6 +44,7 @@ module.exports = {
   async getRates(id){
     return db.load(`select * from ${TBL_RATE} as r where r.CourseID = ${id}`);
   },
+
   add(entity) {return db.add(entity, TBL_COU)},
   del(entity) {
     const condition = { ID: entity.ID };
