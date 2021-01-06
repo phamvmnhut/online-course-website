@@ -4,14 +4,17 @@ const bcrypt = require('bcryptjs');
 
 const { validateEmail } = require('../utils/validate');
 
-const { UserModel } = require('../models')
+const { UserModel, CategoryModel } = require('../models')
 
 const router = express.Router();
 
 // route for guest
-router.get('/', function (req, res) {
-  debug("listing in home");
-  res.render('guest/home.hbs', {title: "Home"})
+router.get('/', async function (req, res) {
+  const catewithfield = await CategoryModel.withField();
+  return res.render('guest/home.hbs', {
+    title: "Home",
+    catewithfield
+  })
 })
 
 router.route('/login')
@@ -68,7 +71,8 @@ router.route('/register')
       req.flash("success", "Register success, it's realdy to login");
       return res.redirect('/login');
     }
-    catch {
+    catch (err){
+      debug(err)
       req.flash("error", "Fail to register user")
       return res.redirect('/register');
     }

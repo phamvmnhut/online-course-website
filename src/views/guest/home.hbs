@@ -10,30 +10,17 @@
                         </div >  
                         <div class="sitebar__menu">
                             <ul >
-                                <li><a href="#">language</a>
+                                {{#if catewithfield}}
+                                {{#each catewithfield}}
+                                <li><a href="#">{{Name}}</a>
                                     <ul class="header__menu__dropdown">
-                                        <li><a href="#">English</a></li>
-                                        <li><a href="#">Vietnamese</a></li>
-                                        <li><a href="#">Chinese</a></li>
+                                        {{#each categorys}}
+                                            <li><a href="courses?cate={{ID}}">{{Name}}</a></li>
+                                        {{/each}}
                                     </ul>
                                 </li>
-                                <li><a href="#">it</a>
-                                    <ul class="header__menu__dropdown">
-                                        <li><a href="">Software</a></li>
-                                        <li><a href="">Java</a></li>
-                                        <li><a href="">Hardware</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Design</a></li>
-                                <li><a href="#">Marketing</a></li>
-                                <li><a href="#">Business</a></li>
-                                <li><a href="#">Music</a>
-                                    <ul class="header__menu__dropdown">
-                                        <li><a href="">Singing</a></li>
-                                        <li><a href="">Intruments</a></li>
-                                        <li><a href="">Music production</a></li>
-                                    </ul>
-                                </li>
+                                {{/each}}
+                                {{/if}}
                             </ul>
                         </div>    
                     </div>
