@@ -1,0 +1,120 @@
+{{#section 'head'}}
+<link rel="stylesheet" href="/public/css/admin-user.css">
+{{/section}}
+
+{{#section 'footer'}}
+<script src="/public/js/admin-user.js"></script>
+{{/section}}
+
+<table class="table table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Tên</th>
+      <th scope="col">Email</th>
+      <th scope="col">Ngày Tạo</th>
+      <th scope="col">Loại TK</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr onclick="showDetail({{ID}})">
+      <th scope="row">{{ID}}</th>
+      <td>{{Name}}</td>
+      <td>{{Email}}</td>
+      <td>{{formatDate DateCreated}}</td>
+      <td>{{changeDisplayRoleType Role}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<div class="w-100 d-flex justify-content-center">
+  <button type="button" class="btn btn-primary w-75" data-toggle="modal" data-target="#userFormModal">
+    Thêm Tài Khoản Mới
+  </button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="userFormModal" tabindex="-1" role="dialog" aria-labelledby="userFormLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center col-12" id="userFormLabel">
+          Modal title
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </h5>
+      </div>
+      <div class="modal-body px-lg-5 pt-4">
+        <form name="userForm" id="userForm" onsubmit="submitUserForm(); return false;">
+          <div class="col-sm-12">
+            <div class="avt-div d-flex justify-content-center">
+              <img id="avt-preview" src="/public/img/product/product-2.jpg" height="152px" width="152px">
+              </img>
+              <div class="position-absolute btn-bottom">
+                <label for="input-edit-avt">
+                  <i data-feather="edit-3"></i>
+                </label>
+                <input id="input-edit-avt" type="file">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12 form-group">
+                <label class="label">Tên</label>
+                <input name="name" type="text" placeholder="Nguyễn Văn A" class="form-control" required="">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 form-group">
+                <label class="label">Email cá nhân</label>
+                <input name="email" type="email" placeholder="nguyenvana@gmail.com" class="form-control"
+                  required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6 form-group">
+                <label class="label">Mật Khẩu</label>
+                <input name="password" placeholder="***" type="password" class="form-control" required="">
+              </div>
+              <div class="col-sm-6 form-group">
+                <label class="label">Ví Tiền</label>
+                <input name="wallet" type="tel" placeholder="1_000_000" class="form-control" minlength="0"
+                  maxlength="15" id="input-mobile-phone" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6 form-group">
+                <label class="label">Ngày tạo</label>
+                <input name="datecreated" type="date" class="form-control" max="2002-12-31" min="1959-01-01"
+                  data-date-format="dd/mm/yyyy" placeholder="23/01/1998" required="">
+              </div>
+              <div class="col-sm-6 form-group">
+                <label class="label">Trường</label>
+                <select name="role" class="form-control selectpicker filter" data-live-search="true"
+                  id="role" data-error="Vui lòng chọn Trường">
+                  <option value="0">Học viên</option>
+                  <option value="1">Giảng viên</option>
+                  <option value="2">Admin</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-lg" id="btn-register-fresher">Đăng Ký</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

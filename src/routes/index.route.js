@@ -12,10 +12,9 @@ router.get('/', function (req, res) {
   })
 })
 
-
 router.get('/home', function(req, res) {
   res.render('guest/home',{
-      layout: 'guest_layout'
+      layout: 'guest_layout',
   });
 });
 
