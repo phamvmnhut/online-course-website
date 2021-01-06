@@ -202,5 +202,10 @@ router.get('/upload_course', function (req, res) {
   })
 })
 
+router.get('/confirm', function (req, res) {
+  res.render('user/confirm.hbs', {
+    layout: 'main_layout'
+  })
+})
 
 module.exports = router;
