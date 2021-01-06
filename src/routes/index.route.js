@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 
 const { validateEmail } = require('../utils/validate');
 
+const { isAuth } = require('../middleware/auth');
+
 const { UserModel, CategoryModel, CourseModel} = require('../models')
 
 const router = express.Router();
@@ -110,21 +112,17 @@ router.get('/courses', async function (req, res) {
   // return respon
   const cates = await CategoryModel.all();
 
-  return res.render('guest/course_list.hbs', {
-    cates,
-    courses
-  })
+  return res.render('guest/course_list.hbs', { cates, courses })
 })
 
 router.get('/course_details/(:id)?', async function (req, res) {
   debug({ params: req.params.id });
-  const countRate = await CourseModel.getCountRate(req.params.id);
-  console.log()
 
   if (req.params.id == undefined) req.params.id = Math.floor(Math.random() * Math.floor(10));
   try {
     const course = await CourseModel.getSingleByID(req.params.id);
-    const rates = await CourseModel.getRates(req.params.id)
+    const rates = await CourseModel.getRates(req.params.id);
+    const countRate = await CourseModel.getCountRate(req.params.id);
     if (course)
       return res.render('guest/course_details.hbs', {
         title: course.Name,
@@ -137,7 +135,7 @@ router.get('/course_details/(:id)?', async function (req, res) {
       return res.redirect('/');
     }
   } catch (e){
-debug({e})
+    debug({e})
     req.flash("warn", "Have warnning to do this action");
     return res.redirect('/');
   }
@@ -152,20 +150,18 @@ router.get('/search_results', function (req, res) {
 
 
 
-//user
-router.get('/watch_list', function (req, res) {
-  res.render('user/watch_list.hbs', {
-    layout: 'user_layout'
-  })
+// user
+router.get('/watch_list', isAuth, function (req, res) {
+  return res.render('user/watch_list.hbs', {})
 })
 
-router.get('/user_profile', function (req, res) {
+router.get('/user_profile', isAuth , function (req, res) {
   res.render('user/profile.hbs', {
     layout: 'user_layout'
   })
 })
 
-router.get('/registered_list', function (req, res) {
+router.get('/registered_list', isAuth, function (req, res) {
   res.render('user/registered_list.hbs', {
     layout: 'user_layout'
   })

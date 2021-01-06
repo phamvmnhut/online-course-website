@@ -30,19 +30,16 @@ module.exports = {
     return db.load(`select * from ${TBL_COU} where CategoryID = ${CatID}`)
   },
   async getSingleByID(Id) {
-      const course = await db.load(`SELECT * FROM ${TBL_COU} as C left join Category as CT
-                                                                    on C.CategoryID = CT.ID 
-                                                                      left join User on
-                                                              User.ID = C.TeacherID 
-                                                                where C.ID = ${Id}`);
+      const course = await db.load(`SELECT * FROM ${TBL_COU} where ID = ${Id}`);
       if (course.length == 0) return null;
       return course[0]; 
   },
-  async getCountRate(id){
+  getCountRate(id){
     return db.load(`select count(*) as sl from ${TBL_RATE} as r where r.CourseID = ${id}`);
   },
-  async getRates(id){
-    return db.load(`select * from ${TBL_RATE} as r where r.CourseID = ${id}`);
+  getRates(id){
+    return db.load(`select r.ID as ID, r.StudentID as StudentID, r.Point as Point, r.Feedback as Feedback, U.DisplayName as DisplayName  
+      from CourseRating as r left join User as U on U.ID = r.StudentID where r.CourseID = ${id}`);
   },
   add(entity) {return db.add(entity, TBL_COU)},
   del(entity) {

@@ -82,7 +82,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>(2)</span></a>
+                                    aria-selected="false">Reviews <span>{{rates.length}}</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -116,20 +116,9 @@
                             </div>
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
                                 <div class="product__details__tab__desc">
-                                    <h7><b>Selena Gomez</b>
-                                        <div class="product__details__rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                        <span>(Dec 1st)</span>
-                                    </div>
-                                    </h7>
                                     {{#each rates }}
-                                        <p>{{Feedback}}</p>
+                                        <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
                                     {{/each}}
-                                    <p>Lots of difficult chapters but the teacher was very friendly.</p>
                                     {{!-- <h7><b>John Legend</b>
                                     <div class="product__details__rating">
                                         <i class="fa fa-star"></i>
