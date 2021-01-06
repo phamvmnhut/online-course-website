@@ -33,7 +33,7 @@
 
 .sitebar__menu ul li .header__menu__dropdown li a {
 	text-transform: none;
-	color: #ffffff;
+	color: white;
 	font-weight: 400;
 	padding: 5px 15px;
 }
@@ -58,10 +58,110 @@
 
 .sitebar__menu ul li a {
 	font-size: 14px;
-	color: #252525;
+	color: #10110f;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	transition: all, 0.3s;
 	padding: 5px 20px;
 	display: block;
+}
+
+.category i a{
+	height: 25px;
+	width: 65px;
+	background:#0E99DA;
+	border-radius: 10%;
+	font-size: 16px;
+	color: white ;
+	line-height: 20px;
+	text-align: center;
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+
+
+.rating i {
+	color: #FFC801;
+	font-style: normal !important;
+}
+.rating {
+	color: black;
+	font-weight: lighter;
+	font-size: small;
+}
+
+
+.best__seller i{
+	height: 45px;
+	width: 45px;
+	background:#D60000;
+	border-radius: 50%;
+	font-size: 10px;
+	color: #ffffff ;
+	line-height: 20px;
+	text-align: center;
+	position: absolute;
+	left: 15px;
+	top: 15px;
+	text-transform: uppercase;
+}
+
+.breadcrumb__text h2 {
+	font-size: 46px;
+	color:#131B26 !important;
+	font-weight: 700;
+}
+
+.breadcrumb__option a {
+	display: inline-block;
+	font-size: 16px;
+	color:#131B26 !important;
+	font-weight: 700;
+	margin-right: 20px;
+	position: relative;
+}
+
+.breadcrumb__option a:after {
+	position: absolute;
+	right: -12px;
+	top: 13px;
+	height: 1px;
+	width: 10px;
+	background:#131B26 !important;
+	content: "";
+}
+
+.breadcrumb__option span {
+	display: inline-block;
+	font-size: 16px;
+	color:#131B26 !important;
+}
+
+.checkout__input textarea {
+	width: 100%;
+	height: 150px;
+	font-size: 16px;
+	color: #6f6f6f;
+	padding-left: 20px;
+	margin-bottom: 24px;
+	border: 1px solid #ebebeb;
+	border-radius: 4px;
+	padding-top: 12px;
+	resize: none;
+}
+
+
+.user__rating a i {
+	font-size: 50px;
+	margin-bottom: 50px;
+	color: #FFC801;
+}
+.user__rating {
+	color: black;
+}
+
+.vid__container {
+	margin-left: 125px;
+	text-align: center;
 }
