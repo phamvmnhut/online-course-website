@@ -106,3 +106,5 @@ dist
 
 # log on server
 server.log
+
+.DS_Store

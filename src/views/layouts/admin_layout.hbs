@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping WebApp</title>
+    <link rel="stylesheet" href="/public/css/sidebar.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    {{{_sections.head}}}
+</head>
+
+<body>
+    {{> sidebar}}
+    <div id="main">
+        {{> nav}}
+        <div class="main-content container-fluid">
+            {{{body}}}
+        </div>
+    </div>
+    {{> footer}}
+    <script src="/public/js/sidebar.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+
+    {{{_sections.footer}}}
+</body>
+
+</html>

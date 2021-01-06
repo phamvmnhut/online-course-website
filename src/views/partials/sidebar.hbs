@@ -1,0 +1,39 @@
+<div id="sidebar" class='active'>
+    <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+            <img src="/public/img/logo.png" alt="" srcset="">
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu">
+                <li class='sidebar-title'>Admin</li>
+                <li class="sidebar-item {{#if userTab}} active {{/if}}">
+                    <a href="/admin/user" class='sidebar-link'>
+                        <i data-feather="users"></i>
+                        <span>User</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{#if courseTab}} active {{/if}}">
+                    <a href="/admin/course" class='sidebar-link'>
+                        <i data-feather="briefcase" width="20"></i>
+                        <span>Course</span>
+                    </a>
+                    {{!-- <ul class="submenu ">
+                        <li>
+                            <a href="/admin/course">Tổng Quan</a>
+                        </li>
+                        <li>
+                            <a href="/admin/course-list">Danh Sách</a>
+                        </li>
+                    </ul> --}}
+                </li>
+                <li class="sidebar-item {{#if categoryTab}} active {{/if}}">
+                    <a href="/admin/category" class="sidebar-link">
+                        <i data-feather="layers" width="20"></i>
+                        <span>Category</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>
+</div>
