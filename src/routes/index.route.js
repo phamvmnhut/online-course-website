@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const { validateEmail } = require('../utils/validate');
 
-const { UserModel, CategoryModel } = require('../models')
+const { UserModel, CategoryModel, CourseModel} = require('../models')
 
 const router = express.Router();
 
@@ -87,19 +87,57 @@ router.route('/logout')
     req.session.authUser = null;
     return res.redirect('/');
   })
+  
+router.get('/courses', async function (req, res) {
+  debug({"query": req.query})
+  // by cate 
+  let courses = [];
+  if (req.query.cate != undefined){
+    if (req.query.cate != 0){
+      courses = await CourseModel.getByCate(req.query.cate);
+    }
+    else {
+      courses = await CourseModel.all();
+    }
+  } else { // final case
+    courses = await CourseModel.all();
+  }
 
 
-router.get('/course_details', function (req, res) {
-  res.render('guest/course_details.hbs', {
-    
+  // by name
+
+
+  // return respon
+  const cates = await CategoryModel.all();
+
+  return res.render('guest/course_list.hbs', {
+    layout: 'guest_layout',
+    cates,
+    courses
   })
 })
 
-router.get('/course_list', function (req, res) {
-  res.render('guest/course_list.hbs', {
-    layout: 'guest_layout'
-  })
+router.get('/course_details/(:id)?', async function (req, res) {
+  debug({ params: req.params.id });
+  if (req.params.id == undefined) req.params.id = Math.floor(Math.random() * Math.floor(10));
+  try {
+    const course = await CourseModel.getSingleByID(req.params.id)
+    if (course)
+      return res.render('guest/course_details.hbs', {
+        title: course.Name,
+        course
+      })
+    else {
+      req.flash("noti", "Dont exit this course with this ID");
+      return res.redirect('/');
+    }
+  } catch (e){
+debug({e})
+    req.flash("warn", "Have warnning to do this action");
+    return res.redirect('/');
+  }
 })
+
 
 router.get('/search_results', function (req, res) {
   res.render('guest/search_results.hbs', {
