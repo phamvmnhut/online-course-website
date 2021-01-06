@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 
 const TBL_COU = 'Course';
+const TBL_RATE = 'CourseRating';
 
 module.exports = {
   all() {return db.load(`select * from ${TBL_COU}`)},
@@ -37,7 +38,12 @@ module.exports = {
       if (course.length == 0) return null;
       return course[0]; 
   },
-
+  async getCountRate(id){
+    return db.load(`select count(*) as sl from ${TBL_RATE} as r where r.CourseID = ${id}`);
+  },
+  async getRates(id){
+    return db.load(`select * from ${TBL_RATE} as r where r.CourseID = ${id}`);
+  },
   add(entity) {return db.add(entity, TBL_COU)},
   del(entity) {
     const condition = { ID: entity.ID };

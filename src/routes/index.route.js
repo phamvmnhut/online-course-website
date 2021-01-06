@@ -119,13 +119,19 @@ router.get('/courses', async function (req, res) {
 
 router.get('/course_details/(:id)?', async function (req, res) {
   debug({ params: req.params.id });
+  const countRate = await CourseModel.getCountRate(req.params.id);
+  console.log()
+
   if (req.params.id == undefined) req.params.id = Math.floor(Math.random() * Math.floor(10));
   try {
-    const course = await CourseModel.getSingleByID(req.params.id)
+    const course = await CourseModel.getSingleByID(req.params.id);
+    const rates = await CourseModel.getRates(req.params.id)
     if (course)
       return res.render('guest/course_details.hbs', {
         title: course.Name,
-        course
+        course,
+        countRate: countRate[0].sl,
+        rates
       })
     else {
       req.flash("noti", "Dont exit this course with this ID");
