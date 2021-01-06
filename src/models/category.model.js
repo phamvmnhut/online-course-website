@@ -4,7 +4,11 @@ const TBL_CAT = 'Category';
 const TBL_FILED = 'Field';
 
 module.exports = {
-  all() {return db.load(`select * from ${TBL_CAT}`)},
+  async all() {
+    const cates = await db.load(`select * from ${TBL_CAT}`);
+    cates.push({ID:0,Name: "All", Description: ""});
+    return cates;
+  },
   async withField() {
     try {
       fieldwithcate = []
