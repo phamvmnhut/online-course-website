@@ -20,7 +20,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action="#">
+                <form action=""  method="POST">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
                             {{!-- <div><img src="public/img/user/login.jpg" alt=""></div> --}}
@@ -30,11 +30,11 @@
                                     <h4>Login</h4>
                                     <div class="checkout__input">
                                         <p>Email<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" name="email">
                                     </div>
                                     <div class="checkout__input">
                                         <p>Password<span>*</span></p>
-                                        <input type="text">
+                                        <input type="password" name="password">
                                     </div>
                                     <button type="submit" class="site-btn">LOGIN</button>
                                 </div>

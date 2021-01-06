@@ -398,13 +398,20 @@ ol {
 }
 
 .header__top__right__auth a {
-	display: block;
+	margin-right: 6px;
+	display: inline-block;
 	font-size: 14px;
 	color: #1c1c1c;
 }
 
-.header__top__right__auth a i {
+.header__top__right__auth i {
 	margin-right: 6px;
+}
+
+.header__top__center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .header__logo {
