@@ -8,8 +8,10 @@ create table `User`(
     `Wallet` bigint not null,
     `Avatar` varchar(255),
     `Email` varchar(255) not null unique,
-    `Name` varchar(50) character set utf8mb4 not null,
-    `Password` varchar(50),
+    `FirstName` varchar(50) character set utf8mb4 not null,
+    `LastName` varchar(50) character set utf8mb4 not null,
+    `DisplayName` varchar(50),
+    `Password` varchar(100),
     `Role` tinyint not null,
     `DateCreated` datetime not null,
 
@@ -61,7 +63,7 @@ create table `Learning`(
     `Section` int not null,
     `State` tinyint not null,
 
-    primary key (`CourseID`, `StudentID`, `LessonID`)
+    primary key (`CourseID`, `StudentID`, `Section`)
 );
 
 drop table if exists `Purchased`;
@@ -114,3 +116,5 @@ alter table Favorite add foreign key (StudentID) references User(ID);
 
 alter table CourseRating add foreign key (CourseID) references Course(ID);
 alter table CourseRating add foreign key (StudentID) references User(ID);
+
+    -- $2a$10$6sB88sZQ6G4mQ6DnjYDMJuQc0gZSRApKYM8LcXk52k1WwM2AT8sh2

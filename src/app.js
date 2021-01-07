@@ -13,8 +13,10 @@ const methodOverride = require('method-override')
 const MySQLStore = require('express-mysql-session')(session);
 
 const debug = require('debug')('app:Error');
+const formater = require('./utils/formatter');
 
 const app = express();
+
 
 //try this 
 
@@ -32,16 +34,8 @@ app.engine('hbs', exphbs({
             }
             return options.inverse(this);
         },
-        formatDate: function(dd) {
-            const date = new Date(dd);
-            d = date.getDate();
-            m = date.getMonth() + 1;
-            y = date.getFullYear();
-            return `${d}-${m}-${y}`;
-        },
-        changeDisplayRoleType: function(r){
-            return r == 0 ? 'Học viên' : r == 1 ? 'Giảng viên' : r == 2 ? 'Admin' : '?';
-        }
+        formatDate: formater.formatDate,
+        changeDisplayRoleType: formater.changeDisplayRoleType,
     }
 }));
 
