@@ -17,11 +17,36 @@ module.exports = {
     return rows[0];
   },
 
-  patch(entity) {
-    const condition = { ID: entity.ID };
-    delete entity.ID;
-    return db.patch(entity, condition, TBL_USERS);
+  async patch(entity) {
+    try {
+      const condition = { ID: entity.ID };
+      const ID = entity.ID;
+      delete entity.ID;
+      await db.patch(entity, condition, TBL_USERS);
+      const rows = await db.load(`select * from ${TBL_USERS} where id = ${ID}`);
+      return rows[0];
+    }
+    catch {
+      return false;
+    }
   },
 
-  add(entity) {return db.add(entity, TBL_USERS)},
+  async add(entity) {
+    try {
+      await db.add(entity, TBL_USERS)
+      const newUser = await db.load(`select * from ${TBL_USERS} where Email = '${entity.Email}'`);
+      return newUser[0]
+    } catch {
+      return false;
+    }
+  },
+  async del(ID) {
+      try {
+        await db.del({ID}, TBL_USERS);
+        return true
+      }
+      catch {
+        return false;
+      }
+  }
 };
