@@ -43,20 +43,25 @@
                     <div class="product__details__text">
                         <h3>{{course.Name}}</h3>
                         <div class="product__details__rating">
+                            {{!-- <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                            <span>({{countRate}} reviews)</span>
+                            <i class="fa fa-star-half-o"></i> --}}
+                            <span>({{#if rateInfo.avg}}{{rateInfo.avg}}{{else}}~{{/if}}/5)</span>
+                            <span>({{rateInfo.count}} reviews)</span>
                         </div>
                         <div class="product__details__price">${{course.Price}}</div>
                         <p>{{course.ShortDescription}}</p>
-                        <a href="#" class="primary-btn">register</a>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        {{#if soleInfo.isSole}}
+                        <a href="/study/{{course.ID}}" class="primary-btn">Study Countinue</a>
+                        {{else}}
+                        <a href="/confirm/{{course.ID}}" class="primary-btn">register</a>
+                        <a href="/wish/{{course.ID}}" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        {{/if}}
                         <ul>
-                            <li><b>Sold</b> <span>37</span></li>
-                            <li><b>Promotion</b> <span>{{course.Discount}}% discount. <samp>5 days left</samp></span></li>
+                            <li><b>Sold</b> <span>{{soleInfo.count}}</span></li>
+                            <li><b>Promotion</b> <span>{{course.Discount}} % discount. <samp>5 days left</samp></span></li>
                             <li><b>Last update</b> <span>{{course.DateModified}}</span></li>
                             <li><b>Share on</b>
                                 <div class="share">
@@ -82,7 +87,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>{{rates.length}}</span></a>
+                                    aria-selected="false">Reviews <span>{{rateInfo.count}}</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">

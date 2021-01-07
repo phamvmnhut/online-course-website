@@ -25,22 +25,14 @@
     
     <link rel="stylesheet" href="/public/css/home.css" type="text/css">
 
+      {{{_sections.css}}}
+
 </head>
 
 
 <body>
     <!--Header-->
-    {{#if isAuth}}
-    {{#ifeq authUser.Role 0}}
-      {{> user_header this}}
-    {{/ifeq}}
-    {{#ifeq authUser.Role 1}}
-      {{> teacher_header this}}
-    {{/ifeq}}
-    
-    {{else}}
-      {{> header}}
-    {{/if}}
+    {{> header}}
     
     <!--End of header-->
 
@@ -62,6 +54,8 @@
     <script src="/public/js/owl.carousel.min.js"></script>
 
     <script src="/public/js/main.js"></script>
+
+      {{{_sections.js}}}
 
 </body>
 </html>
