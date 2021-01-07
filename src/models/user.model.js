@@ -17,5 +17,11 @@ module.exports = {
     return rows[0];
   },
 
+  patch(entity) {
+    const condition = { ID: entity.ID };
+    delete entity.ID;
+    return db.patch(entity, condition, TBL_USERS);
+  },
+
   add(entity) {return db.add(entity, TBL_USERS)},
 };

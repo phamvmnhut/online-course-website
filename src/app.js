@@ -9,6 +9,7 @@ const hbs_sections = require('express-handlebars-sections');
 const session = require('express-session');
 const flash = require('express-flash')
 const cookieParser = require('cookie-parser')
+const methodOverride = require('method-override')
 const MySQLStore = require('express-mysql-session')(session);
 
 const debug = require('debug')('app:Error');
@@ -47,6 +48,11 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs');
 
 app.set('trust proxy', 1);
+
+// override with different headers; last one takes precedence
+app.use(methodOverride('X-HTTP-Method')) //          Microsoft
+app.use(methodOverride('X-HTTP-Method-Override')) // Google/GData
+app.use(methodOverride('X-Method-Override')) //      IBM
 
 // const options = {
 //   host: process.env.DATABASE_HOST ? process.env.DATABASE_HOST : 'localhost',

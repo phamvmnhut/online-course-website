@@ -35,23 +35,29 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#if isEmpty}}
+                                <tr>
+                                    <th>You dont have any course</th>
+                                </tr>
+                                {{else}}
+                                {{#each my_courses}}
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <a href="/course_details" class="latest-product__item">
+                                        <a href="/detail/{{ID}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
                                                 <img src="public/img/user/watch_list/wl-1.jpg" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>Course's Name (Teacher's Name)</h6>
-                                                <div class="rating">
+                                                <h6>{{Name}}</h6>
+                                                {{!-- <div class="rating">
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    (18)
-                                                </div>    
-                                                <span>$30.00</span>
+                                                    <i class="fa fa-star"></i> --}}
+                                                    <p>{{avg}}/5 ({{count}} reviews)</p>
+                                                {{!-- </div>     --}}
+                                                <span>${{Price}}</span>
                                             </div>
                                         </a>
                                     </td>
@@ -59,54 +65,8 @@
                                         <span class="icon_close"></span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <a href="/course_details" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="public/img/user/watch_list/wl-2.jpg" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Course's Name (Teacher's Name)</h6>
-                                                <div class="rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    (18)
-                                                </div>    
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <a href="/course_details" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="public/img/user/watch_list/wl-3.jpg" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Course's Name (Teacher's Name)</h6>
-                                                <div class="rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    (18)
-                                                </div>    
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
+                                {{/each}}
+                                {{/if}}
                             </tbody>
                         </table>
                     </div>
