@@ -20,24 +20,46 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action=""  method="POST">
+                <form id="frm-confirm" action=""  method="POST">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
                         </div>
                         <div class="col-lg-4 col-md-6">
                                 <div class="checkout__order">
-                                <div class="checkout__order__products">You have <span>$800</span></div>
+                                <div class="checkout__order__products">You have <span>${{user.Wallet}}</span></div>
                                 <ul>
                                     <li>Course's name <span>${{course.Price}}</span></li>
                                 </ul>
-                                <div class="checkout__order__total">Account balance <span>$750</span></div>
-                                    <button type="submit" class="site-btn">CONFIRM</button>
-                                    <button type="submit" class="back-btn">BACK</button>
+                                <div class="checkout__order__total">Account balance <span>${{balanse}}</span></div>
+                                {{#if isOK}}
+                                <button type="submit" onclick="submitConfirm()" class="site-btn btn-confirm">CONFIRM</button>
+                                <button onclick="cancelBackHome()" class="site-btn btn-cancel">CANCEL</button>
+                                {{else}}
+                                <button onclick="cancelBackHome()" class="site-btn btn-cancel">CANCEL</button>
+                                {{/if}}
                                 </div>
                         </div>
                     </div>
                 </form>
+                
             </div>
         </div>
     </section>
     <!-- Checkout Section End -->
+
+{{#section 'js'}}
+<script>
+$('#frm-confirm').on('submit', function (e) {
+    e.preventDefault();
+});
+
+function submitConfirm(){
+    $('#frm-confirm').off('submit').submit();
+}
+
+function cancelBackHome() {
+    window.location.href = "/";
+}
+
+</script>
+{{/section}}

@@ -161,8 +161,53 @@ router.get('/user', isAuth , function (req, res) {
 })
 
 // student
-router.get('/confirm/:id', isAuth, function (req, res) {
-  return res.render('user/watch_list.hbs', {title: 'Watch List', page:'student'})
+router.route('/confirm/:id')
+.get(isAuth,  async function (req, res) {
+  debug({ params: req.params.id });
+  try {
+    const user = await UserModel.single(req.session.authUser.ID);
+    const course = await CourseModel.getSingleByID(req.params.id);
+    const balanse = user.Wallet - course.Price;
+    console.log({balanse})
+    if (course)
+      return res.render('user/confirm.hbs', {
+        title: course.Name,
+        course,
+        user,
+        balanse,
+        isOK: balanse >= 0
+      })
+    else {
+      req.flash("noti", "Dont exit this course with this ID");
+      return res.redirect('/');
+    }
+  } catch (e){
+    debug({e})
+    req.flash("warn", "Have warnning to do this action");
+    return res.redirect('/');
+  }
+})
+.post(isAuth, async function (req, res, next) {
+  try {
+    const user = await UserModel.single(req.session.authUser.ID);
+    const course = await CourseModel.getSingleByID(req.params.id);
+    const balanse = user.Wallet - course.Price;
+    if (balanse < 0) {
+      req.flash("error", "You dont have enough money")
+      return res.redirect('/');
+    }
+    // update user wallet
+    const userUpdate = {ID: user.ID, 'Wallet': balanse}
+    await UserModel.patch(userUpdate)
+    // update register course
+    await PurchaseModel.add({CourseID: course.ID, StudentID: user.ID})
+    req.flash('success', 'You just register succesll this course');
+    return res.redirect(`/study/${course.ID}`)
+  }catch(err){
+debug(err)
+    req.flash('error', 'Register for this course is Fail');
+    return res.redirect('/')
+  }
 })
 
 router.get('/wish', isAuth, function (req, res) {
@@ -226,39 +271,5 @@ router.get('/upload_course', function (req, res) {
     layout: 'teacher_layout'
   })
 })
-
-// router.get('/confirm', function (req, res) {
-//   res.render('user/confirm.hbs', {
-//     layout: 'main_layout'
-//   })
-// })
-
-
-router.get('/confirm/(:id)?', async function (req, res) {
-  debug({ params: req.params.id });
-  const countRate = await CourseModel.getCountRate(req.params.id);
-  console.log()
-
-  if (req.params.id == undefined) req.params.id = Math.floor(Math.random() * Math.floor(10));
-  try {
-    const course = await CourseModel.getSingleByID(req.params.id);
-    const rates = await CourseModel.getRates(req.params.id)
-    if (course)
-      return res.render('user/confirm.hbs', {
-        title: course.Name,
-        course
-      })
-    else {
-      req.flash("noti", "Dont exit this course with this ID");
-      return res.redirect('/');
-    }
-  } catch (e){
-debug({e})
-    req.flash("warn", "Have warnning to do this action");
-    return res.redirect('/');
-  }
-})
-
-
 
 module.exports = router;

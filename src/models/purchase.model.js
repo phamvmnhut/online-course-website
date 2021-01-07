@@ -29,7 +29,7 @@ module.exports = {
     return db.load(`SELECT * FROM ${TBL_PUR} where StudentID = ${ID}`)
   },
 
-  add(entity) {return db.add(entity, TBL_PUR)},
+  add(entity) {return db.add({...entity, DatePurchased: new Date()} , TBL_PUR)},
   del(entity) {
     const condition = { ID: entity.ID };
     return db.del(condition, TBL_PUR);
