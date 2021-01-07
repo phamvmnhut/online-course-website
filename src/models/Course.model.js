@@ -2,6 +2,7 @@ const db = require('../utils/db');
 
 const TBL_COU = 'Course';
 const TBL_RATE = 'CourseRating';
+const TBL_PUR = 'Purchased';
 
 module.exports = {
   all() {return db.load(`select * from ${TBL_COU}`)},
@@ -30,19 +31,25 @@ module.exports = {
     return db.load(`select * from ${TBL_COU} where CategoryID = ${CatID}`)
   },
   async getSingleByID(Id) {
-      const course = await db.load(`SELECT * FROM ${TBL_COU} as C left join Category as CT
-                                                                    on C.CategoryID = CT.ID 
-                                                                      left join User on
-                                                              User.ID = C.TeacherID 
-                                                                where C.ID = ${Id}`);
+      const course = await db.load(`SELECT * FROM ${TBL_COU} where ID = ${Id}`);
       if (course.length == 0) return null;
       return course[0]; 
   },
-  async getCountRate(id){
-    return db.load(`select count(*) as sl from ${TBL_RATE} as r where r.CourseID = ${id}`);
+  async getRateInfo(id){
+    const rare_info = await db.load(`select count(*) as count, avg(r.Point) as avg from ${TBL_RATE} as r where r.CourseID = ${id}`);
+    return rare_info[0];
   },
-  async getRates(id){
-    return db.load(`select * from ${TBL_RATE} as r where r.CourseID = ${id}`);
+  async getSoleInfo(CourseId, userId){
+    const rare_info = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseId}`);
+    const isSole = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseId} and StudentID = ${userId}`);
+    return {
+      ...rare_info[0],
+      'isSole': isSole[0].count == 1
+    }
+  },
+  getRates(id){
+    return db.load(`select r.ID as ID, r.StudentID as StudentID, r.Point as Point, r.Feedback as Feedback, U.DisplayName as DisplayName  
+      from CourseRating as r left join User as U on U.ID = r.StudentID where r.CourseID = ${id}`);
   },
 
   add(entity) {return db.add(entity, TBL_COU)},
