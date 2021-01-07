@@ -5,13 +5,14 @@ function showDetail(userID) {
     ldsRollerStart();
     $.ajax({
         method: 'get',
-        url: `/admin/user/${userID}`,
+        url: `/api/user/${userID}`,
     }).done(function(res) {
+        console.log(res);
         ldsRollerStop();
         editingUserID = userID;
         showNewForm();
         disableUserForm();
-        setFormData(res);
+        setFormData(res.user);
         showEditRemoveBtn();
         $('#register-btn').hide();
     }).fail(function(err) {
@@ -34,25 +35,35 @@ function changeAvatarPreview(input) {
 }
 
 function submitUserForm() {
+
     if (editingStyle < 1 || editingStyle > 3) {
         return;
     }
-    const url = editingStyle === 1 ? '/admin/user/add' :
-        editingStyle === 2 ? '/admin/user/update' : '/admin/user/remove';
-
     user = getFormData();
-    if (editingStyle !== 1) {
-        user.ID = editingUserID;
+    user.ID = editingUserID;
+    const method = editingStyle === 1 ? 'post' : editingStyle === 2 ? 'patch' : 'delete';
+    var url = '/api/user/';
+    if (method !== 'post') {
+        url += user.ID;
     }
     ldsRollerStart();
     $.ajax({
-        method: 'post',
+        method: method,
         url: url,
         data: user,
     }).done(function(res) {
+        console.log(res);
         ldsRollerStop();
         hideUserForm();
-        reloadData(res);
+        if (res.status && res.user) {
+            // window.location = window.location.pathname;
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thao tác thất bại',
+                text: res.err || 'Something went wrong!',
+            });
+        }
     }).fail(function(err) {
         ldsRollerStop()
         showMessageError(err.message);
@@ -63,7 +74,7 @@ function showNewForm() {
     //  data-toggle="modal" data-target="#userFormModal"
     editingStyle = 1;
     enableUserForm();
-    setFormData({ Name: '', Email: '', Password: '', Wallet: 0, DateCreated: new Date(), Role: 0 })
+    setFormData({ FirstName: '', LastName: '', Email: '', Password: '', Wallet: 0, DateCreated: new Date(), Role: 0 })
     hideEditRemoveBtn();
     $('#register-btn').show();
     $('#userFormModal').modal('show');
@@ -77,7 +88,7 @@ function hideUserForm() {
 
 function editUser() {
     editingStyle = 2;
-    setUserFormDisabled({ name: false, email: false, password: true, wallet: false, datecreated: true, role: true });
+    setUserFormDisabled({ firstName: false, lastName: false, email: false, password: true, wallet: false, dateCreated: true, role: true });
 
     $('#register-btn').html('Lưu');
     $('#register-btn').show();
@@ -104,50 +115,56 @@ function showEditRemoveBtn() {
 }
 
 function disableUserForm() {
-    userForm.name.disabled = true;
+    userForm.firstName.disabled = true;
+    userForm.lastName.disabled = true;
     userForm.email.disabled = true;
     userForm.password.disabled = true;
     userForm.wallet.disabled = true;
-    userForm.datecreated.disabled = true;
+    userForm.dateCreated.disabled = true;
     userForm.role.disabled = true;
 }
 
 function enableUserForm() {
-    userForm.name.disabled = false;
+    userForm.firstName.disabled = false;
+    userForm.lastName.disabled = false;
     userForm.email.disabled = false;
     userForm.password.disabled = false;
     userForm.wallet.disabled = false;
-    userForm.datecreated.disabled = true;
+    userForm.dateCreated.disabled = true;
     userForm.role.disabled = false;
 }
 
 function setUserFormDisabled(formDisabled) {
-    userForm.name.disabled = formDisabled.name;
+    userForm.firstName.disabled = formDisabled.firstName;
+    userForm.lastName.disabled = formDisabled.lastName;
     userForm.email.disabled = formDisabled.email;
     userForm.password.disabled = formDisabled.password;
     userForm.wallet.disabled = formDisabled.wallet;
-    userForm.datecreated.disabled = formDisabled.datecreated;
+    userForm.dateCreated.disabled = formDisabled.dateCreated;
     userForm.role.disabled = formDisabled.role;
 }
 
 function setFormData(user) {
-    userForm.name.value = user.Name;
+    console.log(user);
+    userForm.firstName.value = user.FirstName;
+    userForm.lastName.value = user.LastName;
     userForm.email.value = user.Email;
-    userForm.password.value = user.Password;
+    // userForm.password.value = user.Password;
     userForm.wallet.value = user.Wallet;
-    userForm.datecreated.valueAsDate = new Date(user.DateCreated);
+    userForm.dateCreated.valueAsDate = new Date(user.DateCreated);
     userForm.role.value = user.Role;
 }
 
 function getFormData() {
-    username = userForm.name.value;
+    firstName = userForm.firstName.value;
+    lastName = userForm.lastName.value;
     email = userForm.email.value;
     password = userForm.password.value;
     wallet = userForm.wallet.value;
-    datecreated = userForm.datecreated.value;
+    dateCreated = userForm.dateCreated.value;
     role = userForm.role.value;
 
-    user = { Name: username, Email: email, Password: password, Wallet: wallet, DateCreated: datecreated, Role: role };
+    user = { FirstName: firstName, LastName: lastName, Email: email, Password: password, Wallet: wallet, DateCreated: dateCreated, Role: role };
     user.Avatar = 'adbX.jpg';
     return user;
 }
@@ -156,10 +173,30 @@ function showMessageError(message) {
     alert(message)
 }
 
-function reloadData(res) {
-    $('#main-table tbody').empty();
-    $('#main-table tbody').append(res);
+// --------
+
+function formatDate(dd) {
+    const date = new Date(dd);
+    d = date.getDate();
+    m = date.getMonth() + 1;
+    y = date.getFullYear();
+    return `${d}-${m}-${y}`;
 }
+
+function changeDisplayRoleType(r) {
+    return r == 0 ? 'Học viên' : r == 1 ? 'Giảng viên' : r == 2 ? 'Admin' : '?';
+}
+
+function reloadData(res, style) {
+    if (style == 1) {
+        $('#main-table tbody tr:first-child').remove();
+        $('#main-table tbody').append(tr);
+    } else if (style == 2) {
+
+    }
+}
+
+// -----
 
 ldsRollerStop();
 $('#input-edit-avt').change(function() {

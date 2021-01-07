@@ -33,7 +33,7 @@ module.exports = {
 
   async add(entity) {
     try {
-      await db.add(entity, TBL_USERS)
+      await db.add(entity, TBL_USERS);
       const newUser = await db.load(`select * from ${TBL_USERS} where Email = '${entity.Email}'`);
       return newUser[0]
     } catch {

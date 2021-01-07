@@ -6,7 +6,8 @@ const { isAdmin } = require('../middleware/auth');
 
 const { validateEmail } = require('../utils/validate');
 
-const { UserModel } = require('../models')
+const { UserModel } = require('../models');
+const { patch } = require('../models/user.model');
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get('/is-available', async function (req, res) {
   return res.json(false);
 })
 
-// router.use(isAdmin)
+router.use(isAdmin)
 
 router.route('/user')
   .get(async function (req, res) {
@@ -40,7 +41,7 @@ router.route('/user')
     }
     try {
     const user = {
-      Wallet: 0,
+      Wallet: req.body.Wallet || 0,
       Avatar: "",
       Email: req.body.Email,
       LastName: req.body.LastName,

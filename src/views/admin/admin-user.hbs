@@ -2,14 +2,16 @@
 <link rel="stylesheet" href="/public/css/admin-user.css">
 <link rel="stylesheet" href="/public/css/lds-ripple.css">
 <link rel="stylesheet" href="/public/css/lds-roller.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.css">
 {{/section}}
 
 {{#section 'footer'}}
 <script src="/public/js/lds-roller.js"></script>
 <script src="/public/js/admin-user.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.js"></script>
 {{/section}}
 
-<form name="search" method="GET">
+<form name="search" onsubmit="return false;" method="GET">
   <div class="input-group mb-5 mt-2 ml-auto mr-auto col-8">
     <div class="input-group-prepend">
       <div class="filter-btn btn btn-outline-info " data-toggle="modal" data-target="#filterFormModal">
@@ -63,7 +65,7 @@
               <div class="col-sm-6 form-group">
                 <label class="label">Nhỏ hơn</label>
                 <input name="w-max" type="tel" placeholder="1_000_000" class="form-control" minlength="0"
-                  maxlength="15" id="input-mobile-phone">
+                  maxlength="15">
               </div>
             </div>
 
@@ -85,7 +87,7 @@
             <div class="row">
               <div class="col-sm-6 m-auto form-group">
                 <label class="label">Loại tài khoản</label>
-                <select name="role" class="form-control selectpicker filter" data-live-search="true" id="role">
+                <select name="role" class="form-control selectpicker filter" data-live-search="true" id="filter-role">
                   <option value="-1">Tất cả</option>
                   <option value="0">Học viên</option>
                   <option value="1">Giảng viên</option>
@@ -128,8 +130,8 @@
   <tbody>
     {{#each users}}
     <tr onclick="showDetail({{ID}})">
-      <th scope="row">{{ID}}</th>
-      <td>{{Name}}</td>
+      <th class="user-id" scope="row">{{ID}}</th>
+      <td>{{DisplayName}}</td>
       <td>{{Email}}</td>
       <td>{{formatDate DateCreated}}</td>
       <td>{{changeDisplayRoleType Role}}</td>
@@ -172,9 +174,13 @@
           </div>
           <div class="col-sm-12">
             <div class="row">
-              <div class="col-sm-12 form-group">
-                <label class="label">Tên</label>
-                <input name="name" type="text" placeholder="Nguyễn Văn A" class="form-control" required="">
+              <div class="col-sm-6 form-group">
+                <label class="label">First name</label>
+                <input name="firstName" type="text" placeholder="Nguyễn Văn" class="form-control" required="">
+              </div>
+              <div class="col-sm-6 form-group">
+                <label class="label">Last name</label>
+                <input name="lastName" type="text" placeholder="A" class="form-control" required="">
               </div>
             </div>
             <div class="row">
@@ -187,19 +193,19 @@
             <div class="row">
               <div class="col-sm-6 form-group">
                 <label class="label">Mật khẩu</label>
-                <input name="password" placeholder="***" type="password" class="form-control" required="">
+                <input name="password" placeholder="*" type="password" class="form-control" required="">
               </div>
               <div class="col-sm-6 form-group">
                 <label class="label">Ví tiền</label>
                 <input name="wallet" type="tel" placeholder="1_000_000" class="form-control" minlength="0"
-                  maxlength="15" id="input-mobile-phone" required="">
+                  maxlength="15" pattern="^[0-9]+$" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6 form-group">
                 <label class="label">Ngày tạo</label>
-                <input name="datecreated" type="date" class="form-control" max="2002-12-31" min="1959-01-01"
+                <input name="dateCreated" type="date" class="form-control" max="2002-12-31" min="1959-01-01"
                   data-date-format="dd/mm/yyyy" placeholder="23/01/1998" required="">
               </div>
               <div class="col-sm-6 form-group">
