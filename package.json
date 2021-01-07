@@ -23,6 +23,7 @@
     "express-handlebars-sections": "^1.0.1",
     "express-mysql-session": "^2.1.5",
     "express-session": "^1.17.1",
+    "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "video.js": "^7.10.2"
