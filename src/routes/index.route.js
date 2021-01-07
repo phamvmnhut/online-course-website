@@ -6,7 +6,7 @@ const { validateEmail } = require('../utils/validate');
 
 const { isAuth } = require('../middleware/auth');
 
-const { UserModel, CategoryModel, CourseModel} = require('../models')
+const { UserModel, CategoryModel, CourseModel, PurchaseModel} = require('../models')
 
 const router = express.Router();
 
@@ -15,6 +15,7 @@ router.get('/', async function (req, res) {
   const catewithfield = await CategoryModel.withField();
   return res.render('guest/home.hbs', {
     title: "Home",
+    page: 'home',
     catewithfield
   })
 })
@@ -24,7 +25,7 @@ router.route('/login')
     if (req.headers.referer) {
       req.session.retUrl = req.headers.referer;
     }
-    return res.render('guest/login.hbs', {title: 'Login'})
+    return res.render('guest/login.hbs', {title: 'Login', page: 'home',})
   })
   .post( async function (req, res) {
     const user = await UserModel.singleByEmail(req.body.email);
@@ -49,7 +50,7 @@ router.route('/login')
 
 router.route('/register')
   .get(function (req, res) {
-    return res.render('guest/register.hbs', {title: "Register"})
+    return res.render('guest/register.hbs', {title: "Register", page: 'home',})
   })
   .post(async function (req, res, next) {
     const hash = bcrypt.hashSync(req.body.password, 10);
@@ -82,7 +83,7 @@ router.route('/register')
 
 router.route('/logout')
   .get(function (req, res) {
-    return res.render('guest/logout.hbs', { title: "Logout" })
+    return res.render('guest/logout.hbs', { title: "Logout", page: 'home', })
   })
   .post(function (req, res) {
     req.session.isAuth = false;
@@ -94,41 +95,50 @@ router.get('/courses', async function (req, res) {
   debug({"query": req.query})
   // by cate 
   let courses = [];
+
+  let indexTosetActive = 0;
+  const cates = await CategoryModel.all();
+
   if (req.query.cate != undefined){
     if (req.query.cate != 0){
       courses = await CourseModel.getByCate(req.query.cate);
+      indexTosetActive = cates.findIndex(x => x.ID == req.query.cate);
     }
     else {
       courses = await CourseModel.all();
     }
   } else { // final case
     courses = await CourseModel.all();
+    // active course
   }
-
+  indexTosetActive = cates.length -1;
 
   // by name
 
+  
+  cates[indexTosetActive]["Active"] = true;
 
-  // return respon
-  const cates = await CategoryModel.all();
-
-  return res.render('guest/course_list.hbs', { cates, courses })
+  return res.render('guest/course_list.hbs', {tile:"Course", page: 'course', cates, courses })
 })
 
-router.get('/course_details/(:id)?', async function (req, res) {
-  debug({ params: req.params.id });
-
+router.get('/detail/(:id)?', async function (req, res) {
+  let userID = 0
+  if (req.session.isAuth) {userID = req.session.authUser.ID}
   if (req.params.id == undefined) req.params.id = Math.floor(Math.random() * Math.floor(10));
   try {
     const course = await CourseModel.getSingleByID(req.params.id);
     const rates = await CourseModel.getRates(req.params.id);
-    const countRate = await CourseModel.getCountRate(req.params.id);
+    const rateInfo = await CourseModel.getRateInfo(req.params.id);
+    const soleInfo = await CourseModel.getSoleInfo(req.params.id, userID);
     if (course)
       return res.render('guest/course_details.hbs', {
         title: course.Name,
+        page: 'course',
         course,
-        countRate: countRate[0].sl,
-        rates
+        rateInfo,
+        soleInfo,
+        rates,
+        activeID: req.params.id
       })
     else {
       req.flash("noti", "Dont exit this course with this ID");
@@ -142,30 +152,54 @@ router.get('/course_details/(:id)?', async function (req, res) {
 })
 
 
-router.get('/search_results', function (req, res) {
-  res.render('guest/search_results.hbs', {
-    layout: 'guest_layout'
-  })
-})
-
-
-
-// user
-router.get('/watch_list', isAuth, function (req, res) {
-  return res.render('user/watch_list.hbs', {})
-})
-
-router.get('/user_profile', isAuth , function (req, res) {
+// route for all user
+router.get('/user', isAuth , function (req, res) {
   res.render('user/profile.hbs', {
-    layout: 'user_layout'
+    title: 'User',
+    page: 'student',
   })
 })
 
-router.get('/registered_list', isAuth, function (req, res) {
-  res.render('user/registered_list.hbs', {
-    layout: 'user_layout'
-  })
+// student
+router.get('/confirm/:id', isAuth, function (req, res) {
+  return res.render('user/watch_list.hbs', {title: 'Watch List', page:'student'})
 })
+
+router.get('/wish', isAuth, function (req, res) {
+  return res.render('user/watch_list.hbs', {title: 'Watch List', page:'student'})
+})
+
+router.get('/my-course', isAuth , async function (req, res) {
+  try {
+    const StudentID = req.session.authUser.ID;
+    const my_id_courses = await PurchaseModel.getByStudentID(StudentID);
+    let my_courses = [];
+    for(let i=0; i<my_id_courses.length;i++){
+      try {
+        const course = await CourseModel.getSingleByID(my_id_courses[i].CourseID);
+        const rateInfo = await CourseModel.getRateInfo(my_id_courses[i].CourseID);
+        my_courses.push({...course, ...rateInfo})
+      } catch (err) {
+        debug(err)
+      }
+    }
+    // debug(my_courses)
+    return res.render('user/my_course.hbs', {
+      title: 'My Sourse',
+      page: 'student',
+      isEmpty: my_courses.length == 0,
+      my_courses
+    })
+  } catch (err) {
+    debug(err)
+    req.flash("error", "Fail to fetch course")
+    return res.render('user/my_course.hbs', {
+      title: 'My Sourse',
+      page: 'student',
+      isEmpty: true,
+    })
+  }
+});
 
 router.get('/feedback', function (req, res) {
   res.render('user/feedback.hbs', {
@@ -173,19 +207,14 @@ router.get('/feedback', function (req, res) {
   })
 })
 
-router.get('/studying', function (req, res) {
+router.get('/study/:id', isAuth, function (req, res) {
   res.render('user/studying.hbs', {
-    layout: 'user_layout'
+    title: 'Learning',
+    page: 'student'
   })
 })
 
-//teacher
-router.get('/teacher_profile', function (req, res) {
-  res.render('teacher/profile.hbs', {
-    layout: 'teacher_layout'
-  })
-})
-
+// teacher
 router.get('/update_course', function (req, res) {
   res.render('teacher/update_course.hbs', {
     layout: 'teacher_layout'

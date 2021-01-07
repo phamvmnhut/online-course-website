@@ -2,6 +2,7 @@ const db = require('../utils/db');
 
 const TBL_COU = 'Course';
 const TBL_RATE = 'CourseRating';
+const TBL_PUR = 'Purchased';
 
 module.exports = {
   all() {return db.load(`select * from ${TBL_COU}`)},
@@ -34,8 +35,17 @@ module.exports = {
       if (course.length == 0) return null;
       return course[0]; 
   },
-  getCountRate(id){
-    return db.load(`select count(*) as sl from ${TBL_RATE} as r where r.CourseID = ${id}`);
+  async getRateInfo(id){
+    const rare_info = await db.load(`select count(*) as count, avg(r.Point) as avg from ${TBL_RATE} as r where r.CourseID = ${id}`);
+    return rare_info[0];
+  },
+  async getSoleInfo(CourseId, userId){
+    const rare_info = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseId}`);
+    const isSole = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseId} and StudentID = ${userId}`);
+    return {
+      ...rare_info[0],
+      'isSole': isSole[0].count == 1
+    }
   },
   getRates(id){
     return db.load(`select r.ID as ID, r.StudentID as StudentID, r.Point as Point, r.Feedback as Feedback, U.DisplayName as DisplayName  

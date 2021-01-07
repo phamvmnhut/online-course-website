@@ -1,4 +1,13 @@
-  
+{{#section 'css'}} 
+<style>
+    .active_sidebar {
+        font-weight: bold;
+    }
+</style>
+{{/section}} 
+
+
+
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="/public/img/breadcrumb.jpg">
         <div class="container">
@@ -33,7 +42,7 @@
                             <h4>Categories</h4>
                             <ul>
                                 {{#each cates}}
-                                <li><a href="/courses?cate={{ID}}">{{Name}}</a></li>
+                                <li {{#if Active}}class="active_sidebar"{{/if}} ><a href="/courses?cate={{ID}}">{{Name}}</a></li>
                                 {{/each}}
                             </ul>
                         </div>
@@ -75,12 +84,12 @@
                                     <div class="best__seller"><i class="fa fa-star">best seller</i></div>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="/course_details/{{ID}}"><i class="fa fa-external-link-square"></i></a></li>
-                                        <li><a href="/shop/{{ID}}"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="/detail/{{ID}}"><i class="fa fa-external-link-square"></i></a></li>
+                                        <li><a href="/confirm/{{ID}}"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__discount__item__text">
-                                    <h5><a href="/course_details/{{ID}}">{{Name}}</a>{{TeacherID}}</h5>
+                                    <h5><a href="/detail/{{ID}}">{{Name}}</a>{{TeacherID}}</h5>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
