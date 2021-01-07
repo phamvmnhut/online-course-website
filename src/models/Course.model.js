@@ -51,6 +51,7 @@ module.exports = {
     return db.load(`select r.ID as ID, r.StudentID as StudentID, r.Point as Point, r.Feedback as Feedback, U.DisplayName as DisplayName  
       from CourseRating as r left join User as U on U.ID = r.StudentID where r.CourseID = ${id}`);
   },
+
   add(entity) {return db.add(entity, TBL_COU)},
   del(entity) {
     const condition = { ID: entity.ID };
