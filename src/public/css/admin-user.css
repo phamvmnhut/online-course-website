@@ -23,3 +23,17 @@
 .avt-div:hover .btn-bottom{
     opacity: 1;
 }
+
+.search-input{
+    border-color: #17a2b8;
+    line-height: 100%;
+    font-weight: 500;
+}
+
+.search-input:focus{
+    color: #17a2b8;
+}
+
+.search-input::placeholder {
+    font-weight: 500;
+}

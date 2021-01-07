@@ -1,19 +1,128 @@
 {{#section 'head'}}
 <link rel="stylesheet" href="/public/css/admin-user.css">
+<link rel="stylesheet" href="/public/css/lds-ripple.css">
+<link rel="stylesheet" href="/public/css/lds-roller.css">
 {{/section}}
 
 {{#section 'footer'}}
+<script src="/public/js/lds-roller.js"></script>
 <script src="/public/js/admin-user.js"></script>
 {{/section}}
 
-<table class="table table-hover">
+<form name="search" method="GET">
+  <div class="input-group mb-5 mt-2 ml-auto mr-auto col-8">
+    <div class="input-group-prepend">
+      <div class="filter-btn btn btn-outline-info " data-toggle="modal" data-target="#filterFormModal">
+        <i class="align-middle" data-feather="filter"></i>
+      </div>
+    </div>
+    <input name="key" type="text" class="search-input form-control" placeholder="Search" required="">
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-outline-info">
+        <i class="align-middle" data-feather="search"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="filterFormModal" tabindex="-1" role="dialog" aria-labelledby="filterFormLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center col-12" id="filterFormLabel">
+            Bộ lọc tìm kiếm
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </h5>
+        </div>
+        <div class="modal-body px-lg-5 pt-4">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12 form-group">
+                <h6 class="card-subtitle mb-2 text-muted">Tìm kiếm theo</h6>
+                <div class="custom-control custom-checkbox ml-3">
+                  <input name="name" value="true" type="checkbox" class="custom-control-input" id="name" checked>
+                  <label class="custom-control-label" for="name">Tên</label>
+                </div>
+                <div class="custom-control custom-checkbox ml-3">
+                  <input name="email" type="checkbox" class="custom-control-input" id="email" checked>
+                  <label class="custom-control-label" for="email">Email</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <h6 class="card-subtitle mb-2 text-muted">Ví tiền</h6>
+              </div>
+              <div class="col-sm-6 form-group">
+                <label class="label">Lớn hơn</label>
+                <input name="w-min" placeholder="0" type="text" class="form-control">
+              </div>
+              <div class="col-sm-6 form-group">
+                <label class="label">Nhỏ hơn</label>
+                <input name="w-max" type="tel" placeholder="1_000_000" class="form-control" minlength="0"
+                  maxlength="15" id="input-mobile-phone">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <h6 class="card-subtitle mb-2 text-muted">Ví tiền</h6>
+              </div>
+              <div class="col-sm-6 form-group">
+                <label class="label">Bắt đầu</label>
+                <input name="d-min" type="date" class="form-control" max="2002-12-31" min="1959-01-01"
+                  data-date-format="dd/mm/yyyy" placeholder="23/01/1998">
+              </div>
+              <div class="col-sm-6 form-group">
+                <label class="label">Kết thúc</label>
+                <input name="d-max" type="date" class="form-control" max="2002-12-31" min="1959-01-01"
+                  data-date-format="dd/mm/yyyy" placeholder="23/01/1998">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 m-auto form-group">
+                <label class="label">Loại tài khoản</label>
+                <select name="role" class="form-control selectpicker filter" data-live-search="true" id="role">
+                  <option value="-1">Tất cả</option>
+                  <option value="0">Học viên</option>
+                  <option value="1">Giảng viên</option>
+                  <option value="2">Admin</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<table id="main-table" class="table table-hover">
   <thead class="thead-light">
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Tên</th>
-      <th scope="col">Email</th>
-      <th scope="col">Ngày Tạo</th>
-      <th scope="col">Loại TK</th>
+      <th scope="col">
+        <span>ID </span>
+        <i class="align-middle" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+      </th>
+      <th scope="col">
+        <span>Tên </span>
+        <i class="align-middle" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+      </th>
+      <th scope="col">
+        <span>Email </span>
+        <i class="align-middle" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+      </th>
+      <th scope="col">
+        <span>Ngày tạo </span>
+        <i class="align-middle" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+      </th>
+      <th scope="col">
+        <span>Loại TK </span>
+        <i class="align-middle" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -30,7 +139,7 @@
 </table>
 
 <div class="w-100 d-flex justify-content-center">
-  <button type="button" class="btn btn-primary w-75" data-toggle="modal" data-target="#userFormModal">
+  <button type="button" class="btn btn-primary w-75" id="add-btn" onclick="showNewForm()">
     Thêm Tài Khoản Mới
   </button>
 </div>
@@ -41,7 +150,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-center col-12" id="userFormLabel">
-          Modal title
+          Thông tin người dùng
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -71,18 +180,17 @@
             <div class="row">
               <div class="col-sm-12 form-group">
                 <label class="label">Email cá nhân</label>
-                <input name="email" type="email" placeholder="nguyenvana@gmail.com" class="form-control"
-                  required="">
+                <input name="email" type="email" placeholder="nguyenvana@gmail.com" class="form-control" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6 form-group">
-                <label class="label">Mật Khẩu</label>
+                <label class="label">Mật khẩu</label>
                 <input name="password" placeholder="***" type="password" class="form-control" required="">
               </div>
               <div class="col-sm-6 form-group">
-                <label class="label">Ví Tiền</label>
+                <label class="label">Ví tiền</label>
                 <input name="wallet" type="tel" placeholder="1_000_000" class="form-control" minlength="0"
                   maxlength="15" id="input-mobile-phone" required="">
               </div>
@@ -95,9 +203,9 @@
                   data-date-format="dd/mm/yyyy" placeholder="23/01/1998" required="">
               </div>
               <div class="col-sm-6 form-group">
-                <label class="label">Trường</label>
-                <select name="role" class="form-control selectpicker filter" data-live-search="true"
-                  id="role" data-error="Vui lòng chọn Trường">
+                <label class="label">Loại tài khoản</label>
+                <select name="role" class="form-control selectpicker filter" data-live-search="true" id="role"
+                  data-error="Vui lòng chọn Trường">
                   <option value="0">Học viên</option>
                   <option value="1">Giảng viên</option>
                   <option value="2">Admin</option>
@@ -106,15 +214,30 @@
             </div>
 
             <div class="text-center">
-              <button type="submit" class="btn btn-lg" id="btn-register-fresher">Đăng Ký</button>
+              <button type="submit" class="btn btn-lg" id="register-btn">Đăng Ký</button>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button id="edit-btn" onclick="editUser()" type="button" class="btn btn-secondary">Sửa</button>
+        <button id="remove-btn" onclick="removeUser()" type="button" class="btn btn-primary">Xoá</button>
       </div>
     </div>
   </div>
+</div>
+
+{{!-- <div class="lds-ripple">
+  <div></div>
+  <div></div>
+</div> --}}
+<div class="lds-roller">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
 </div>
