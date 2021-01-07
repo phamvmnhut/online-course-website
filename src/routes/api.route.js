@@ -48,10 +48,10 @@ router.route('/user')
       Role: req.body.Role || 0,
       DateCreated: new Date(),
     }
-    const user = await UserModel.add(user);
+    const userNew = await UserModel.add(user);
     return res.json({
       status: true,
-      user
+      user: userNew
     })
   })
 
