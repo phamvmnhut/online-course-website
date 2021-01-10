@@ -1,0 +1,165 @@
+{{#section 'head'}}
+<link rel="stylesheet" href="/public/css/admin-course.css">
+<link rel="stylesheet" href="/public/css/lds-roller.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.css">
+{{/section}}
+
+{{#section 'footer'}}
+<script src="/public/js/lds-roller.js"></script>
+<script src="/public/js/admin-course.js"></script>
+<script src="/public/js/table-sort.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.js"></script>
+{{/section}}
+
+<form name="search" onsubmit="return false;" method="GET">
+    <div class="input-group mb-5 mt-2 ml-auto mr-auto col-8">
+        <div class="input-group-prepend">
+            <div class="filter-btn btn btn-outline-info " data-toggle="modal" data-target="#filterFormModal">
+                <i class="align-middle" data-feather="filter"></i>
+            </div>
+        </div>
+        <input name="key" type="text" class="search-input form-control" placeholder="Search" required="">
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-info">
+                <i class="align-middle" data-feather="search"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="filterFormModal" tabindex="-1" role="dialog" aria-labelledby="filterFormLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center col-12" id="filterFormLabel">
+                        Bộ lọc tìm kiếm
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </h5>
+                </div>
+                <div class="modal-body px-lg-5 pt-4">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <h6 class="card-subtitle mb-2 text-muted">Tìm kiếm theo</h6>
+                                <div class="custom-control custom-checkbox ml-3">
+                                    <input name="coursename" value="true" type="checkbox" class="custom-control-input"
+                                        id="coursename" checked>
+                                    <label class="custom-control-label" for="coursename">Tên khoá học</label>
+                                </div>
+                                <div class="custom-control custom-checkbox ml-3">
+                                    <input name="teachername" type="checkbox" class="custom-control-input"
+                                        id="teachername" checked>
+                                    <label class="custom-control-label" for="teachername">Tên giảng viên</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="card-subtitle mb-2 text-muted">Giá tiền</h6>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="label">Lớn hơn</label>
+                                <input name="w-min" placeholder="0" type="text" class="form-control">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="label">Nhỏ hơn</label>
+                                <input name="w-max" type="text" placeholder="1_000_000" class="form-control"
+                                    minlength="0" maxlength="15">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="card-subtitle mb-2 text-muted">Số lượng học viên</h6>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="label">Lớn hơn</label>
+                                <input name="no-min" placeholder="0" type="text" class="form-control">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="label">Nhỏ hơn</label>
+                                <input name="no-max" type="text" placeholder="1_000_000" class="form-control"
+                                    minlength="0" maxlength="15">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="card-subtitle mb-2 text-muted">Giá tiền</h6>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="label">Lớn hơn</label>
+                                <input name="w-min" placeholder="0" type="text" class="form-control">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="label">Nhỏ hơn</label>
+                                <input name="w-max" type="tel" placeholder="1_000_000" class="form-control"
+                                    minlength="0" maxlength="15">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table id="main-table" class="table ">
+    <thead class="thead-light">
+        <tr>
+            <th class="sort-col" scope="col">
+                <span>ID </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Tên </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Giảng viên </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Category </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Ngày cập nhật </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th scope="col" class="d-flex justify-content-center">
+                <span></span>
+                <i class="align-middle" data-feather="trash" style="padding-bottom: 5px;"></i>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each courses}}
+        <tr>
+            <th class="user-id" scope="row">{{id}}</th>
+            <td>{{name}}</td>
+            <td>{{teacher}}</td>
+            <td>{{category}}</td>
+            <td>{{formatDate datemodified}}</td>
+            <td class="d-flex justify-content-center">
+                <button class="btn btn-danger" onclick="removeCourse({{id}})">
+                    <i class="align-middle" data-feather="minus"></i>
+                </button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<div class="lds-roller">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>

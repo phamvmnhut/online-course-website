@@ -5,6 +5,8 @@ const TBL_RATE = 'CourseRating';
 const TBL_PUR = 'Purchased';
 
 module.exports = {
+  query(q){return db.load(q)},
+
   all() {return db.load(`select * from ${TBL_COU}`)},
   // async withField() {
   //   try {

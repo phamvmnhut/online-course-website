@@ -4,6 +4,7 @@ const debug = require('debug')('app:admin');
 
 const router = express.Router();
 const userModel = require('./../models/user.model');
+const courseModel = require('./../models/Course.model');
 const { isAdmin } = require('../middleware/auth');
 
 router.use(isAdmin)
@@ -27,11 +28,14 @@ router.get('/user', async function(req, res) {
 });
 
 router.get('/course', async function(req, res) {
-    users = await userModel.all();
-    res.render('admin/admin-user.hbs', {
+    const query = `select course.id, course.name, user.displayname as teacher, category.name as category, course.datemodified from 
+    (course left join user on course.teacherid = user.id)
+    left join category on course.categoryid = category.id;`;
+    courses = await courseModel.query(query);
+    res.render('admin/admin-course.hbs', {
         layout: 'admin_layout',
-        userTab: true,
-        users: users
+        courseTab: true,
+        courses: courses,
     });
 });
 

@@ -1,0 +1,39 @@
+.avt-div{
+    clip-path: circle(75px);
+}
+
+.btn-bottom {
+    bottom: 0px;
+    width: 150px;
+    height: 50px;
+    border: none;
+    color: #7285a7;
+    background-color: #F7FAFF;
+    text-align: center;
+    padding-top: 5px;
+    opacity: 0;
+}
+
+.btn-bottom input {
+    opacity: 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.avt-div:hover .btn-bottom{
+    opacity: 1;
+}
+
+.search-input{
+    border-color: #17a2b8;
+    line-height: 100%;
+    font-weight: 500;
+}
+
+.search-input:focus{
+    color: #17a2b8;
+}
+
+.search-input::placeholder {
+    font-weight: 500;
+}

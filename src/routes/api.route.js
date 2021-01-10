@@ -8,6 +8,7 @@ const { validateEmail } = require('../utils/validate');
 
 const { UserModel } = require('../models');
 const { patch } = require('../models/user.model');
+const courseModel = require('../models/Course.model');
 
 const router = express.Router();
 
@@ -85,6 +86,14 @@ router.route('/user/:id')
     return res.json({ status: false })
   })
 
+router.route('/course/:id')
+  .delete(async function(req, res){
+    const re = await courseModel.del({ID: req.params.id})
+    if (re) {
+      return res.json({ status: true })
+    }
+    return res.json({ status: false })
+  })
 
 
 
