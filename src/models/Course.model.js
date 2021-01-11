@@ -3,35 +3,26 @@ const db = require('../utils/db');
 const TBL_COU = 'Course';
 const TBL_RATE = 'CourseRating';
 const TBL_PUR = 'Purchased';
+const TBL_CAT = 'Category';
+
+const catchErrorDB = function(fn) {
+  try {
+    return fn();
+  } catch (error) {
+    debug(error.message)
+    return false;
+  }
+}
 
 module.exports = {
   query(q){return db.load(q)},
 
-  all() {return db.load(`select * from ${TBL_COU}`)},
-  // async withField() {
-  //   try {
-  //     fieldwithcate = []
-  //     fields = await db.load(`select * from ${TBL_FILED}`);
-  //     fields.push({ID: 0, Name: "General", Description: "General"})
-      
-  //     for (let i = 0; i< fields.length; i++) {
-  //       categorys = await db.load(`select * from ${TBL_CAT} where FieldID = ${fields[i].ID}`)
-  //       fieldwithcate.push({ ...fields[i], categorys})
-  //     }
-  //     let lastItem = fieldwithcate.pop();
-  //     lastItem.categorys.push({ID:0,Name: "All", Description: ""})
-  //     fieldwithcate.push(lastItem);
-  //     return fieldwithcate;
-  //   }
-  //   catch (err){
-  //     console.log(err)
-  //     return [{ID: 0, Name: "General", Description: "General", 
-  //       categorys: [{ID:0,Name: "All", Description: ""}]}];
-  //   }
-  // },
-  getByCate(CatID) {
-    return db.load(`select * from ${TBL_COU} where CategoryID = ${CatID}`)
-  },
+  all() { return db.load(`select * from ${TBL_COU}`) },
+
+  getByCate(CatID) {catchErrorDB( async ()=>{
+    return await db.load(`select * from ${TBL_COU} as C left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID WHERE C.CategoryID = ${CatID}`)
+  })},
+    
   async getSingleByID(Id) {
       const course = await db.load(`SELECT * FROM ${TBL_COU} where ID = ${Id}`);
       if (course.length == 0) return null;

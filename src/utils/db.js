@@ -13,7 +13,11 @@ const pool = mysql.createPool({
 const pool_query = util.promisify(pool.query).bind(pool);
 
 module.exports = {
+  pool_query,
   load: sql => pool_query(sql),
+  getNoCondition: (tableName) => pool_query(`SELECT * from ${tableName}`),
+  get: (condition, tableName) => pool_query(`SELECT * from ${tableName} WHERE ?`, condition),
+  getLast: (tableName) => pool_query(`SELECT * from ${tableName}`),
   add: (entity, tableName) => pool_query(`INSERT INTO ${tableName} SET ?`, entity),
   del: (condition, tableName) => pool_query(`DELETE FROM ${tableName} WHERE ?`, condition),
   patch: (entity, condition, tableName) => pool_query(`UPDATE ${tableName} SET ? WHERE ?`, [entity, condition])

@@ -12,10 +12,10 @@
                             <ul >
                                 {{#if catewithfield}}
                                 {{#each catewithfield}}
-                                <li><a href="#">{{Name}}</a>
+                                <li><a href="#">{{FieldName}}</a>
                                     <ul class="header__menu__dropdown">
                                         {{#each categorys}}
-                                            <li><a href="courses?cate={{ID}}">{{Name}}</a></li>
+                                            <li><a href="courses?cate={{CategoryID}}">{{CategoryName}}</a></li>
                                         {{/each}}
                                     </ul>
                                 </li>

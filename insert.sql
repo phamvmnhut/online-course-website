@@ -2,10 +2,10 @@
 insert into Field value (null, 'IT', 'Information and Technology');
 insert into Field value (null, 'Language', 'Method of comunication');
 
-insert into Category value (null, 'Web', 'Information and Technology');
-insert into Category value (null, 'Android', 'Information and Technology');
-insert into Category value (null, 'English', 'Method of comunication');
-insert into Category value (null, 'France', 'Method of comunication');
+insert into Category value (null, 'Web', 'Information and Technology', 1);
+insert into Category value (null, 'Android', 'Information and Technology', 1);
+insert into Category value (null, 'English', 'Method of comunication', 2);
+insert into Category value (null, 'France', 'Method of comunication', 2);
 
 -- insert user 
 insert into User value (null, 0, null, 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48');
@@ -15,7 +15,7 @@ insert into User value (null, 50000, null, 'email3@gmail.com', 'Laurie', 'Santos
 insert into User value (null, 40000, null, 'email4@gmail.com', 'Andrew', 'Joseph', 'Andrew Joseph', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48');
 
 insert into User value (null, 50000, null, 'email5@gmail.com', 'first name', 'last name', 'admin1', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48');
-insert into User value (null, 200000, null, 'email6@gmail.com', 'first name', 'last name', 'admin2', '$2a$10$6sB88sZQ6G4mQ6DnjYDMJuQc0gZSRApKYM8LcXk52k1WwM2AT8sh2', 2, '2021-01-07 00:30:48');
+insert into User value (null, 200000, null, 'email6@gmail.com', 'first name', 'last name', 'admin2', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48');
 
 -- insert Course
 insert into Course value (null, 1, 'Ordered Data Structures', 'In this course, you will learn new data structures for efficiently storing and retrieving data that is structured in an ordered sequence',
