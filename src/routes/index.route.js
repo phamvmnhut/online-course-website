@@ -74,16 +74,13 @@ router.route('/register')
       Role: 0,
       DateCreated: new Date(),
     }
-    try {
-      await UserModel.add(user)
-      req.flash("success", "Register success, it's realdy to login");
-      return res.redirect('/login');
-    }
-    catch (err){
-      debug(err)
+    const userNew = await UserModel.add(user);
+    if ( ! userNew){
       req.flash("error", "Fail to register user")
       return res.redirect('/register');
     }
+    req.flash("success", "Register success, it's realdy to login");
+    return res.redirect('/login');
   })
 
 router.route('/logout')

@@ -1,51 +1,76 @@
 const db = require('../utils/db');
-
+const debug = require('debug')('app:user>model');
 const TBL_USERS = 'User';
 
-module.exports = {
-  all() {return db.load(`select * from ${TBL_USERS}`)},
+const catchErrorDB = function(fn) {
+  try {
+    return fn();
+  } catch (error) {
+    debug(error.message)
+    return false;
+  }
+}
 
-  async single(id) {
-    const rows = await db.load(`select * from ${TBL_USERS} where id = ${id}`);
-    if (rows.length === 0) return null;
-    return rows[0];
+module.exports = {
+  async all() {
+    try {
+      return db.load(`select * from ${TBL_USERS}`);
+    } catch (error){
+      debug(error.message)
+      return null;
+    }
+  },
+
+  async single(UserID) {
+    try {
+      const rows = await db.load(`select * from ${TBL_USERS} where UserID = ${UserID}`);
+      if (rows.length === 0) return null;
+      return rows[0];
+    } catch (error){
+      debug(error.message)
+      return false
+    }
   },
 
   async singleByEmail(email) {
-    const rows = await db.load(`select * from ${TBL_USERS} where email = '${email}'`);
-    if (rows.length === 0) return null;
-    return rows[0];
+    try {
+      const rows = await db.load(`select * from ${TBL_USERS} where Email = '${email}'`);
+      if (rows.length === 0) return null;
+      return rows[0];
+    } catch (error){
+      debug(error.message)
+      return false;
+    }
   },
+    
 
   async patch(entity) {
     try {
-      const condition = { ID: entity.ID };
-      const ID = entity.ID;
-      delete entity.ID;
+      const condition = { UserID: entity.UserID };
+      const UserID = entity.UserID;
+      delete entity.UserID;
       await db.patch(entity, condition, TBL_USERS);
-      const rows = await db.load(`select * from ${TBL_USERS} where id = ${ID}`);
-      return rows[0];
-    }
-    catch {
+      const user = await db.get(condition, TBL_USERS)
+      return user[0];
+    } catch (error){
+      debug(error.message)
       return false;
     }
   },
 
-  async add(entity) {
-    try {
-      await db.add(entity, TBL_USERS);
-      const newUser = await db.load(`select * from ${TBL_USERS} where Email = '${entity.Email}'`);
-      return newUser[0]
-    } catch {
-      return false;
-    }
-  },
-  async del(ID) {
+  async add(entity) { catchErrorDB(async ()=> {
+    await db.add(entity, TBL_USERS);
+    const condition = {Email: entity.Email};
+    const newUser = await db.get(condition, TBL_USERS)
+    return newUser[0]
+  })},
+  
+  async del(userId) {
       try {
-        await db.del({ID}, TBL_USERS);
+        await db.del({UserID}, TBL_USERS);
         return true
-      }
-      catch {
+      } catch (error){
+        debug(error.message)
         return false;
       }
   }
