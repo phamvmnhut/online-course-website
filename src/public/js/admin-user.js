@@ -187,45 +187,9 @@ function changeDisplayRoleType(r) {
     return r == 0 ? 'Học viên' : r == 1 ? 'Giảng viên' : r == 2 ? 'Admin' : '?';
 }
 
-function reloadData(res, style) {
-    if (style == 1) {
-        $('#main-table tbody tr:first-child').remove();
-        $('#main-table tbody').append(tr);
-    } else if (style == 2) {
-
-    }
-}
-
 // -----
 
 ldsRollerStop();
 $('#input-edit-avt').change(function() {
     changeAvatarPreview(this);
 });
-
-$('thead th svg').hide();
-$('thead th').click(function() {
-    $('thead th svg').hide();
-    svg = $(this).find('svg');
-    svg.show();
-    var table = $(this).parents('table').eq(0)
-    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-    this.asc = !this.asc
-    rotateDeg = 0;
-    if (!this.asc) {
-        rows = rows.reverse();
-        rotateDeg = 180;
-    }
-    svg.css('transform', `rotate(${rotateDeg}deg)`);
-    for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
-})
-
-function comparer(index) {
-    return function(a, b) {
-        var valA = getCellValue(a, index),
-            valB = getCellValue(b, index)
-        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
-    }
-}
-
-function getCellValue(row, index) { return $(row).children('td').eq(index).text() }

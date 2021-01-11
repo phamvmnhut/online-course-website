@@ -15,12 +15,14 @@ const catchErrorDB = function(fn) {
 }
 
 module.exports = {
+  query(q){return db.load(q)},
+
   all() { return db.load(`select * from ${TBL_COU}`) },
 
   getByCate(CatID) {catchErrorDB( async ()=>{
     return await db.load(`select * from ${TBL_COU} as C left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID WHERE C.CategoryID = ${CatID}`)
   })},
-  
+    
   async getSingleByID(Id) {
       const course = await db.load(`SELECT * FROM ${TBL_COU} where ID = ${Id}`);
       if (course.length == 0) return null;
