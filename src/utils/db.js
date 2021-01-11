@@ -10,10 +10,23 @@ const pool = mysql.createPool({
   connectionLimit: 50,
 });
 
+function catchErrorDB(f, debug = require('debug')('app:dataBase')) {
+  return async function () {
+    try {
+      return await f.apply(this, arguments);
+    } catch (error) {
+      debug(error.message)
+      console.log((error.message))
+      return false;
+    }
+  }
+}
+
 const pool_query = util.promisify(pool.query).bind(pool);
 
 module.exports = {
   pool_query,
+  catchErrorDB,
   load: sql => pool_query(sql),
   getNoCondition: (tableName) => pool_query(`SELECT * from ${tableName}`),
   get: (condition, tableName) => pool_query(`SELECT * from ${tableName} WHERE ?`, condition),

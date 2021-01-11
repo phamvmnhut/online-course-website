@@ -41,23 +41,23 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
-                        <h3>{{course.Name}}</h3>
+                        <h3>{{course.CourseName}} - {{course.DisplayName}}</h3>
                         <div class="product__details__rating">
                             {{!-- <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star-half-o"></i> --}}
-                            <span>({{#if rateInfo.avg}}{{rateInfo.avg}}{{else}}~{{/if}}/5)</span>
-                            <span>({{rateInfo.count}} reviews)</span>
+                            <span>({{#if course.Point}}{{course.Point}}{{else}}~{{/if}}/5)</span>
+                            <span>({{course.Count}} reviews)</span>
                         </div>
                         <div class="product__details__price">${{course.Price}}</div>
                         <p>{{course.ShortDescription}}</p>
                         {{#if soleInfo.isSole}}
-                        <a href="/study/{{course.ID}}" class="primary-btn">Study Countinue</a>
+                        <a href="/study/{{course.CourseID}}" class="primary-btn">Study Countinue</a>
                         {{else}}
-                        <a href="/confirm/{{course.ID}}" class="primary-btn">register</a>
-                        <a href="/wish/{{course.ID}}" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <a href="/confirm/{{course.CourseID}}" class="primary-btn">register</a>
+                        <a href="/wish/{{course.CourseID}}" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         {{/if}}
                         <ul>
                             <li><b>Sold</b> <span>{{soleInfo.count}}</span></li>
@@ -87,7 +87,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>{{rateInfo.count}}</span></a>
+                                    aria-selected="false">Reviews <span>{{course.Count}}</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -154,115 +154,38 @@
                         <h2>Related Courses</h2>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-1.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (10)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-2.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
+                <div class="row">
+                    {{#each relatedCourse }}
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="public/img/product/product-{{CategoryID}}.jpg">
+                                <div class="category"><i class="fa "><a href="/courses?cate={{CategoryID}}">{{CategoryName}}</a></i>
+                                </div>
+                                <div class="best__seller"><i class="fa fa-star">best seller</i></div>
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                    <li><a href="/detail/{{CourseID}}"><i class="fa fa-external-link-square"></i></a></li>
+                                    <li><a href="/confirm/{{CourseID}}"><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
                             </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (10)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                     </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-3.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
+                            <div class="product__discount__item__text">
+                                <h5><a href="/detail/{{CourseID}}">{{CourseName}}</a> - {{DisplayName}}</h5>
+                                <div class="rating">
+                                    {{!-- <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        (18) --}}
+                                    <span>({{Point}}/5)</span>
+                                    <span>({{Count}} reviews)</span>
+                                </div>
+                                <div class="product__item__price">${{Price}}</div>
                             </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
                         </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (10)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                     </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-4.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (10)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                     </div>
+                    </div>
+                    {{/each}}
                 </div>
             </div>
         </div>

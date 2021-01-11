@@ -1,58 +1,99 @@
 const db = require('../utils/db');
+const debug = require('debug')('app:course>model');
 
 const TBL_COU = 'Course';
+const TBL_USER = 'User';
 const TBL_RATE = 'CourseRating';
 const TBL_PUR = 'Purchased';
 const TBL_CAT = 'Category';
 
-const catchErrorDB = function(fn) {
-  try {
-    return fn();
-  } catch (error) {
-    debug(error.message)
-    return false;
-  }
-}
+/** Couse State: 
+ * 0: is Editing
+ * 1: is Completed
+ */
+const getSingleByID = db.catchErrorDB( async function (CourseID) {
+  const course = await db.load(`SELECT C.CourseID, C.CourseName, CAT.CategoryID, CAT.CategoryName, 
+                                    T.DisplayName, T.UserID, C.Avatar, C.DateModified, 
+                                      C.Price, C.Discount, C.ShortDescription, C.FullDescription,
+                                      avg(CR.Point) as Point, count(CR.CourseID) as Count 
+                                      FROM Course as C 
+                                        left join ${TBL_USER} as T on C.TeacherID = T.UserID
+                                        left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID
+                                        join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
+                                          where C.CourseID = ${CourseID} AND C.State = 1
+                                            group by C.CourseID`);
+  if (course.length == 0) return null;
+  return course[0];
+}, debug);
+
+const getLastElement = db.catchErrorDB(async function () {
+  const row = await db.load(`SELECT * FROM ${TBL_CAT} WHERE CourseID = (SELECT MAX(CourseID) FROM ${TBL_COU})`);
+  if (row.length === 0) return null;
+  return row[0];
+}, debug);
+
 
 module.exports = {
-  query(q){return db.load(q)},
+  getLastElement,
 
-  all() { return db.load(`select * from ${TBL_COU}`) },
+  all: db.catchErrorDB(async function () {
+    return await db.getNoCondition(TBL_COU);
+  }, debug),
+  allEditing: db.catchErrorDB(async function () {
+    const rows = await db.get( {State : 0},TBL_COU);
+    courses = []
+    for (const e of rows) {
+      const course = await getSingleByID(e.CourseID);
+      if (course) {courses.push(course);}
+    }
+    return courses;
+  }, debug),
+  allCompleted: db.catchErrorDB(async function () {
+    const rows = await db.get( {State : 1},TBL_COU);
+    courses = []
+    for (const e of rows) {
+      const course = await getSingleByID(e.CourseID);
+      if (course) {courses.push(course);}
+    }
+    return courses;
+  }, debug),
 
-  getByCate(CatID) {catchErrorDB( async ()=>{
-    return await db.load(`select * from ${TBL_COU} as C left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID WHERE C.CategoryID = ${CatID}`)
-  })},
+  getByCate: db.catchErrorDB(async function (CategoryID) {
+    const rows = await db.load(`select * from ${TBL_COU} WHERE CategoryID = ${CategoryID}`);
+    courses = []
+    for (const e of rows) {
+      const course = await getSingleByID(e.CourseID);
+      if (course) {courses.push(course);}
+    }
+    return courses;
+  }, debug),
     
-  async getSingleByID(Id) {
-      const course = await db.load(`SELECT * FROM ${TBL_COU} where ID = ${Id}`);
-      if (course.length == 0) return null;
-      return course[0]; 
-  },
-  async getRateInfo(id){
-    const rare_info = await db.load(`select count(*) as count, avg(r.Point) as avg from ${TBL_RATE} as r where r.CourseID = ${id}`);
-    return rare_info[0];
-  },
-  async getSoleInfo(CourseId, userId){
-    const rare_info = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseId}`);
-    const isSole = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseId} and StudentID = ${userId}`);
+  getSingleByID,
+
+  getSoleInfo: db.catchErrorDB(async function (CourseID, UserID) {
+    const rare_info = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseID}`);
+    const isSole = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseID} and StudentID = ${UserID}`);
     return {
       ...rare_info[0],
       'isSole': isSole[0].count == 1
     }
-  },
-  getRates(id){
-    return db.load(`select r.ID as ID, r.StudentID as StudentID, r.Point as Point, r.Feedback as Feedback, U.DisplayName as DisplayName  
-      from CourseRating as r left join User as U on U.ID = r.StudentID where r.CourseID = ${id}`);
-  },
+  }, debug),
+  getRates: db.catchErrorDB(async function (CourseID) {
+    return db.load(`select r.CourseRatingID, r.StudentID, r.Point, r.Feedback, U.DisplayName  
+      from CourseRating as r left join User as U on U.UserID = r.StudentID where r.CourseID = ${CourseID}`);
+  }, debug),
 
-  add(entity) {return db.add(entity, TBL_COU)},
-  del(entity) {
-    const condition = { ID: entity.ID };
-    return db.del(condition, TBL_COU);
-  },
-  patch(entity) {
-    const condition = { ID: entity.ID };
-    delete entity.ID;
-    return db.patch(entity, condition, TBL_COU);
-  },
+  add: db.catchErrorDB(async function (entity) {
+    await db.add(entity, TBL_COU);
+    return await getLastElement();
+  }, debug),
+  path: db.catchErrorDB(async function (entity) {
+    const condition = { CourseID: entity.CourseID };
+    delete entity.CourseID;
+    await db.patch(entity, condition, TBL_COU);
+    return await db.get(condition, TBL_COU);
+  }, debug),
+  del: db.catchErrorDB(async function (entity) {
+    return await db.del({ CourseID }, TBL_COU);
+  }, debug),
 };
