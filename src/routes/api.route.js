@@ -7,7 +7,6 @@ const { isAdmin } = require('../middleware/auth');
 const { validateEmail } = require('../utils/validate');
 
 const { UserModel } = require('../models');
-const { patch } = require('../models/user.model');
 
 const router = express.Router();
 

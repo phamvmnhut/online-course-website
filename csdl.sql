@@ -1,56 +1,71 @@
+-- Server: sql10.freemysqlhosting.net
+-- Name: sql10385446
+-- Username: sql10385446
+-- Password: BtexVtiUKh
+-- Port number: 3306
+
 drop database if exists onlcourse;
 create database if not exists onlcourse;
 use onlcourse;
 
 drop table if exists `User`;
 create table `User`(
-    `ID` int not null auto_increment,
+    `UserID` int not null auto_increment,
     `Wallet` bigint not null,
     `Avatar` varchar(255),
     `Email` varchar(255) not null unique,
-    `FirstName` varchar(50) character set utf8mb4 not null,
-    `LastName` varchar(50) character set utf8mb4 not null,
+    `FirstName` varchar(50) character set utf8mb4,
+    `LastName` varchar(50) character set utf8mb4,
     `DisplayName` varchar(50),
     `Password` varchar(100),
     `Role` tinyint not null,
     `DateCreated` datetime not null,
 
-    primary key (`ID`)
+    primary key (`UserID`)
+);
+
+drop table if exists `Field`;
+create table `Field`(
+    `FieldID` int not null auto_increment,
+    `FieldName` varchar(50) character set utf8mb4 not null,
+    `FieldDescription` text character set utf8mb4,
+
+    primary key (`FieldID`)
 );
 
 drop table if exists `Category`;
 create table `Category`(
-    `ID` int not null,
-    `Name` varchar(50) character set utf8mb4 not null,
-    `Description` text character set utf8mb4,
-
-    primary key (`ID`)
+    `CategoryID` int not null auto_increment,
+    `CategoryName` varchar(50) character set utf8mb4 not null,
+    `CategoryDescription` text character set utf8mb4,
+    `FieldID` int,
+    
+    primary key (`CategoryID`)
 );
 
 drop table if exists `Course`;
 create table `Course` (
-    `ID` int not null auto_increment,
+    `CourseID` int not null auto_increment,
     `TeacherID` int not null,
-    `Name` varchar(255) character set utf8mb4 not null,
-    `ShortDescription` varchar(255) character set utf8mb4 not null,
+    `CourseName` varchar(255) character set utf8mb4 not null,
+    `ShortDescription` text character set utf8mb4 not null,
     `FullDescription` text character set utf8mb4 not null,
     `Price` bigint not null,
     `State` tinyint not null,
     `CategoryID` int not null,
-    `Discount` int not null,
-    `Avatar` varchar(255) not null,
+    `Discount` int,
+    `Avatar` varchar(255),
     `DateModified` datetime not null,
 
-    primary key (`ID`)
+    primary key (`CourseID`)
 );
-alter table `Course` add fulltext(`Name`, `ShortDescription`, `FullDescription`);
 
 drop table if exists `Lesson`;
 create table `Lesson`(
     `CourseID` int not null,
-    `Title` varchar(255) character set utf8mb4 not null,
-    `Description` text character set utf8mb4 not null,
-    `Section` int not null,
+    `Section` int not null auto_increment,
+    `LessonTitle` varchar(255) character set utf8mb4 not null,
+    `LessonDescription` text character set utf8mb4 not null,
     `Video` varchar(255) not null,
 
     primary key (`Section`, `CourseID`)
@@ -85,13 +100,13 @@ create table `Favorite`(
 
 drop table if exists `CourseRating`;
 create table `CourseRating`(
-    `ID` int not null auto_increment,
+    `CourseRatingID` int not null auto_increment,
     `StudentID` int not null,
     `CourseID` int not null,
     `Point` int not null,
     `Feedback` text character set utf8mb4 not null,
 
-    primary key (`ID`)
+    primary key (`CourseRatingID`)
 );
 
 drop table if exists `Wallet`;
@@ -102,19 +117,19 @@ create table `Wallet`(
     primary key (`StudentID`, `CourseID`)
 );
 
-alter table Course add foreign key (TeacherID) references User(ID);
-alter table Course add foreign key (CategoryID) references Category(ID);
+alter table Category add foreign key (FieldID) references Field(FieldID);
 
-alter table Lesson add foreign key (CourseID) references Course(ID);
+alter table Course add foreign key (TeacherID) references User(UserID);
+alter table Course add foreign key (CategoryID) references Category(CategoryID);
 
-alter table Learning add foreign key (CourseID) references Course(ID);
-alter table Learning add foreign key (StudentID) references User(ID);
+alter table Lesson add foreign key (CourseID) references Course(CourseID);
+
+alter table Learning add foreign key (CourseID) references Course(CourseID);
+alter table Learning add foreign key (StudentID) references User(UserID);
 alter table Learning add foreign key (Section) references Lesson(Section);
 
-alter table Favorite add foreign key (CourseID) references Course(ID);
-alter table Favorite add foreign key (StudentID) references User(ID);
+alter table Favorite add foreign key (CourseID) references Course(CourseID);
+alter table Favorite add foreign key (StudentID) references User(UserID);
 
-alter table CourseRating add foreign key (CourseID) references Course(ID);
-alter table CourseRating add foreign key (StudentID) references User(ID);
-
-    -- $2a$10$6sB88sZQ6G4mQ6DnjYDMJuQc0gZSRApKYM8LcXk52k1WwM2AT8sh2
+alter table CourseRating add foreign key (CourseID) references Course(CourseID);
+alter table CourseRating add foreign key (StudentID) references User(UserID);
