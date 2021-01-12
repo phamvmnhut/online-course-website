@@ -31,11 +31,13 @@ var loadFile = function(event) {
         <div class="container">
             {{!-- <form action="" submit="false"> --}}
                 <div class="row">
+                    <form  enctype="multipart/form-data" method="POST">
+                    <div class="row">
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__pic">
                             <div class="product__details__pic__item">
                                 <img id= "output" class="product__details__pic__item--large"
-                                    src="/public/img/product/details/product-details-1.jpg" alt="">
+                                    src="/public/img/{{course.Avatar}}" alt="">
                             </div>
                             <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
                             <b><label for="file" style="cursor: pointer;" class="primary-btn">Change Image</label></b>
@@ -43,7 +45,7 @@ var loadFile = function(event) {
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="checkout__form">
-                            <form action="" method="POST">
+                            {{!-- <form action="" method="POST"> --}}
                                 <div class="row">
                                     <div class="col-lg-8 col-md-6">
                                         <div class="checkout__input">
@@ -90,13 +92,12 @@ var loadFile = function(event) {
                                             </div>
                                         </div>
                                     </div>
-                                    {{!-- <div class="col-lg-12 text-center">
-                                        <button type="submit" class="site-btn">UPDATE INFO</button>
-                                    </div> --}}
                                 </div>
-                            </form>
+                            {{!-- </form> --}}
                         </div>
                     </div>
+                    </div>
+                    </form>
                     <div class="col-lg-12">
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
@@ -110,7 +111,7 @@ var loadFile = function(event) {
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                        aria-selected="false">Feedback</a>
+                                        aria-selected="false">Feedback ({{rates.length}})</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -137,19 +138,25 @@ var loadFile = function(event) {
                                                         <table>
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Section</th>
                                                                     <th>Title</th>
                                                                     <th>Description</th>
                                                                     <th>Video</th>
+                                                                    <th>Edit</th>
+                                                                    <th>Del</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {{#each lessons}}
                                                                 <tr>
-                                                                    <td>{{Section}}</td>
                                                                     <td>{{LessonTitle}}</td>
                                                                     <td>{{LessonDescription}}</td>
-                                                                    <td>{{Video}}</td>
+                                                                    <td><input type="checkbox" {{#if Video}}checked{{/if}}> </td>
+                                                                    <td class="edit__del__btn">
+                                                                    <a href="/own-course/{{../course.CourseID}}/lesson/{{Section}}/edit"><i class="fa fa-pencil"></i></a> 
+                                                                    </td>
+                                                                    <td class="edit__del__btn">
+                                                                        <a href="/own-course/{{../course.CourseID}}/lesson/{{Section}}/del"><i class="fa fa-trash"></i></a> 
+                                                                    </td>
                                                                 </tr>
                                                                 {{/each}}
                                                             </tbody>
@@ -170,17 +177,9 @@ var loadFile = function(event) {
                                 <div class="tab-pane" id="tabs-3" role="tabpanel">
                                     <div class="contact-form spad">
                                         <div class="container">
-                                            {{!-- <form action="" >
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <textarea placeholder="All chapters"></textarea>
-                                                        <textarea placeholder="Review chapters"></textarea>
-                                                    </div>
-                                                </div>
-                                            </form> --}}
-                                            <p>
-                                                Danh sach cac Feedback
-                                            </p>
+                                            {{#each rates }}
+                                            <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
+                                            {{/each}}
                                         </div>
                                     </div>
                                 </div>
