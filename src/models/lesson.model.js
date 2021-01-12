@@ -51,13 +51,13 @@ module.exports = {
     await db.add(entity, TBL_LES);
     return await getLastElement();
   }, debug),
-  path: db.catchErrorDB(async function (entity) {
+  patch: db.catchErrorDB(async function (entity) {
     const condition = { Section: entity.Section };
     delete entity.Section;
     await db.patch(entity, condition, TBL_LES);
     return await db.get(condition, TBL_LES);
   }, debug),
-  del: db.catchErrorDB(async function (entity) {
-    return await db.del({ CourseID }, TBL_COU);
+  del: db.catchErrorDB(async function (Section) {
+    return await db.del({ Section }, TBL_LES);
   }, debug),
 };

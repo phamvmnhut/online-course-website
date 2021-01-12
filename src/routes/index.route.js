@@ -390,7 +390,8 @@ router.route('/own-course/add')
   .post(isTeacher, uploadImg ,async function (req, res) {
     const TeacherID = req.session.authUser.UserID;
     delete req.body.image;
-    const newCourse = await CourseModel.add({...req.body,Avatar: req.file.filename, TeacherID})
+    const Avatar = req.file !== undefined ? req.file.filename : "product-5.jpg"
+    const newCourse = await CourseModel.add({...req.body,Avatar, TeacherID})
     if (!newCourse) {
       req.flash('error', 'Fail to add new course')
       return res.redirect('/own-course')
@@ -412,8 +413,12 @@ router.route('/own-course/:CourseID/edit')
       rates
     })
   })
-  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
-    const updateCourse = { ...req.body, CourseID: req.course.CourseID, TeacherID: req.session.authUser.UserID};
+  .post(isTeacher, isTeacherOwnCourse, uploadImg, async function (req, res) {
+    delete req.body.image;
+    let updateCourse = { ...req.body, CourseID: req.course.CourseID, TeacherID: req.session.authUser.UserID };
+    if (req.file !== undefined) {
+      updateCourse = { ...updateCourse, Avatar: req.file.filename }
+    }
     const updatedCourse = await CourseModel.path(updateCourse)
     if (!updatedCourse) {
       req.flash('error', "update fail Course")
@@ -471,15 +476,21 @@ router.route('/own-course/:CourseID/lesson/:Section/edit')
     req.flash('success', 'Success to add new Lesson')
     return res.redirect(`/own-course/${req.course.CourseID}/edit`)
   })
-router.route('/own-course/:CourseID/lesson/del')
-  .get(isTeacher, async function (req, res) {
+router.route('/own-course/:CourseID/lesson/:Section/del')
+  .get(isTeacher, isTeacherOwnCourse, async function (req, res) {
     return res.render('teacher/course-del.hbs', {
       title: 'Own Sourse',
       page: 'teacher',
     })
   })
-  .post(isTeacher, async function (req, res) {
-    return res.redirect('/own-course')
+  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    const delLesson = await LessonModel.del(req.params.Section)
+    if (!delLesson){
+      req.flash('error', 'Delete Fail')
+    }else {
+      req.flash('success', 'Success to delete this content')
+    }
+    return res.redirect(`/own-course/${req.course.CourseID}/edit`)
   })
 
 module.exports = router;

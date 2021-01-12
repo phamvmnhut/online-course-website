@@ -23,9 +23,9 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
     <!-- Course Details Section Begin -->
     <section class="product-details spad">
         <div class="container">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6">
+                    {{!-- <div class="col-lg-6 col-md-6">
                         <div class="product__details__pic">
                             <div class="product__details__pic__item">
                                 <img class="product__details__pic__item--large"
@@ -35,7 +35,7 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
                               <input type="text" name="Video">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-6 col-md-6">
                         <div class="checkout__form">
                             <div class="row">
@@ -47,7 +47,13 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
+                    <div class="col-lg-6 col-md-6">
+                        <div class="checkout__form">
+                            <p>Video</p>
+                            <input type="file" name="video" accept="image/*"/>
+                        </div>
+                    </div> 
                     <div class="col-lg-12 text-center">
                         <p>Description</p>
                         <div class="checkout__input">
