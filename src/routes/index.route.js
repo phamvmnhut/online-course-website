@@ -94,7 +94,7 @@ router.route('/logout')
   })
   
 router.get('/courses', async function (req, res) {
-  debug({"query": req.query})
+  debug("query:", req.query)
   // by cate 
   let courses = [];
 
@@ -103,12 +103,12 @@ router.get('/courses', async function (req, res) {
 
   if (req.query.cate == undefined || req.query.cate == 0){ 
     req.query.cate = 0
-    courses = await CourseModel.all();
+    courses = await CourseModel.allCompleted();
     indexTosetActive = cates.length -1;
   }
   if (req.query.cate != 0){
     courses = await CourseModel.getByCate(req.query.cate);
-    indexTosetActive = cates.findIndex(x => x.ID == req.query.cate);
+    indexTosetActive = cates.findIndex(x => x.CategoryID == req.query.cate);
   }
   cates[indexTosetActive]["Active"] = true;
 
@@ -119,10 +119,11 @@ router.get('/courses', async function (req, res) {
         courses.sort((a, b) => a.Price > b.Price )
       }
       if (req.query.sort == 'rate') {
-        courses.sort((a, b) => a.Price > b.Price )
+        courses.sort((a, b) => a.Point > b.Point )
       }
     }
   }
+
   // by name
   if (courses.length > 0) {
     if (req.query.search != undefined) {
@@ -134,37 +135,37 @@ router.get('/courses', async function (req, res) {
     }
   }
 
-  return res.render('guest/course_list.hbs', {tile:"Course", page: 'course', cates, courses })
+  return res.render('guest/course_list.hbs', {
+    title:"Course", 
+    page: 'course', cates, 
+    courses_length: courses.length, 
+    courses 
+  })
 })
 
 router.get('/detail/(:id)?', async function (req, res) {
   let userID = 0
   if (req.session.isAuth) {userID = req.session.authUser.ID}
   if (req.params.id == undefined) req.params.id = Math.floor(Math.random() * Math.floor(10));
-  try {
-    const course = await CourseModel.getSingleByID(req.params.id);
-    const rates = await CourseModel.getRates(req.params.id);
-    const rateInfo = await CourseModel.getRateInfo(req.params.id);
-    const soleInfo = await CourseModel.getSoleInfo(req.params.id, userID);
-    if (course)
-      return res.render('guest/course_details.hbs', {
-        title: course.Name,
-        page: 'course',
-        course,
-        rateInfo,
-        soleInfo,
-        rates,
-        activeID: req.params.id
-      })
-    else {
-      req.flash("noti", "Dont exit this course with this ID");
-      return res.redirect('/');
-    }
-  } catch (e){
-    debug({e})
-    req.flash("warn", "Have warnning to do this action");
+
+  const course = await CourseModel.getSingleByID(req.params.id);
+  if (!course) {
+    req.flash("noti", "Dont exit this course with this ID");
     return res.redirect('/');
   }
+  const rates = await CourseModel.getRates(req.params.id);
+  const soleInfo = await CourseModel.getSoleInfo(req.params.id, userID);
+  const relatedCourse = await CourseModel.getByCate(course.CategoryID);
+
+  return res.render('guest/course_details.hbs', {
+    title: course.Name,
+    page: 'course',
+    course,
+    rates,
+    soleInfo,
+    relatedCourse,
+    activeID: req.params.id
+  })
 })
 
 

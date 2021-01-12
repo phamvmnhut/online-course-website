@@ -4,7 +4,7 @@ const debug = require('debug')('app:admin');
 
 const router = express.Router();
 const userModel = require('./../models/user.model');
-const courseModel = require('./../models/Course.model');
+const courseModel = require('./../models/course.model');
 const { isAdmin } = require('../middleware/auth');
 
 router.use(isAdmin)
