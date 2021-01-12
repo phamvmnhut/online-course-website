@@ -96,11 +96,11 @@ module.exports = {
   getEditerChoose: db.catchErrorDB(async function () {
     const rows = [
       {CourseID: 1},
+      {CourseID: 2},
       {CourseID: 3},
-      {CourseID: 6},
-      {CourseID: 7},
-      {CourseID: 8},
-      {CourseID: 9},
+      {CourseID: 4},
+      {CourseID: 5},
+      {CourseID: 6}
     ]
     courses = []
     for (const e of rows) {

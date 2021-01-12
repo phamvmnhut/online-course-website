@@ -39,12 +39,6 @@
                         </div>
                     </div>
                     <div class="hero__item set-bg" data-setbg="public/img/hero/banner.jpg">
-                        <div class="hero__text">
-                            <span>QUANG CAO</span>
-                            <!-- <h2>Vegetable <br />100% Organic</h2> -->
-                            <p>Thong tin gioi thieu</p>
-                            <a href="/" class="primary-btn">SHOP NOW</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -63,11 +57,11 @@
                         </div>
                         <div class="row">
                             <div class="product__discount__slider owl-carousel">
-                                {{#each courseEditerChoose}}
+                            {{#each courseEditerChoose}}
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                            data-setbg="public/img/product/highlights/ph-1.jpg">
+                                            data-setbg="public/img/product/highlights/ph-{{CourseID}}.jpg">
                                             <div class="product__discount__percent">-{{Discount}}%</div>
                                             <div class="category"><i class="fa "><a href="/course?cate={{CategoryID}}">{{CategoryName}}</a></i>
                                             </div>
@@ -80,21 +74,15 @@
                                         </div>
                                         <div class="product__discount__item__text">
                                             <h5><a href="/detail/{{CourseID}}">{{CourseName}}</a> - {{DisplayName}}</h5>
-                                            {{!-- <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            (18) --}}
-                                            {{Point}}/5 ({{Count}} Reviews)
+                                            <div class="rating">
+                                                <i class="fa fa-star">{{Point}}/5 </i>
+                                                ({{Count}} Reviews)
                                             </div>    
-
                                             <div class="product__item__price">${{Price}}</div>
                                         </div>
                                     </div>
                                 </div>
-                                {{/each}}
+                            {{/each}}
                             </div>
                         </div>
                     </div>
@@ -383,11 +371,14 @@
                                 {{#each courseLastedByTime}}
                                 <a href="detail/{{CourseID}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="public/img/latest-product/lp-1.jpg" alt="">
+                                        <img src="public/img/latest-product/lp-{{CourseID}}.jpg" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{CourseName}} ({{DisplayName}})</h6>
-                                        {{Point}}/5 ({{Count}} Reivews)
+                                        <div class="rating">
+                                            <i class="fa fa-star">{{Point}}/5 </i>
+                                            ({{Count}} Reviews)
+                                        </div>    
                                         <span>${{Price}}</span>
                                     </div>
                                 </a>
@@ -408,7 +399,10 @@
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{CourseName}} ({{DisplayName}})</h6>
-                                        {{Point}}/5 ({{Count}} Reivews)
+                                        <div class="rating">
+                                            <i class="fa fa-star">{{Point}}/5 </i>
+                                            ({{Count}} Reviews)
+                                        </div>    
                                         <span>${{Price}}</span>
                                     </div>
                                 </a>
