@@ -102,13 +102,14 @@
                     </div>
                     <div class="featured__controls">
                         <ul>
-                                {{#if catewithfield}}
-                                {{#each catewithfield}}
-                                        {{#each categorys}}
+                            <li class="active" data-filter="*">All</li>
+                            {{#if catewithfield}}
+                            {{#each catewithfield}}
+                            {{#each categorys}}
                             <li data-filter=".{{CategoryName}}">{{CategoryName}}</li>
-                                        {{/each}}
-                                {{/each}}
-                                {{/if}}
+                            {{/each}}
+                            {{/each}}
+                            {{/if}}
                         </ul>
                     </div>
                 </div>
