@@ -1,77 +1,52 @@
 const db = require('../utils/db');
 const debug = require('debug')('app:user>model');
+
 const TBL_USERS = 'User';
 
-const catchErrorDB = function(fn) {
-  try {
-    return fn();
-  } catch (error) {
-    debug(error.message)
-    return false;
-  }
-}
+/**User role
+* 0: student
+* 1: teacher
+* 2: admin
+ */
 
 module.exports = {
-  async all() {
-    try {
-      return db.load(`select * from ${TBL_USERS}`);
-    } catch (error){
-      debug(error.message)
-      return null;
-    }
-  },
+  getLastElement: db.catchErrorDB(async function () {
+    return await db.load(`SELECT * FROM ${TBL_USERS} WHERE UserID = (SELECT MAX(UserID) FROM ${TBL_USERS})`);
+  }, debug),
 
-  async single(UserID) {
-    try {
-      const rows = await db.load(`select * from ${TBL_USERS} where UserID = ${UserID}`);
-      if (rows.length === 0) return null;
-      return rows[0];
-    } catch (error){
-      debug(error.message)
-      return false
-    }
-  },
+  all : db.catchErrorDB(async function () {
+    return await db.getNoCondition(TBL_USERS);
+  }, debug),
 
-  async singleByEmail(email) {
-    try {
-      const rows = await db.load(`select * from ${TBL_USERS} where Email = '${email}'`);
-      if (rows.length === 0) return null;
-      return rows[0];
-    } catch (error){
-      debug(error.message)
-      return false;
-    }
-  },
+  single: db.catchErrorDB(async function (UserID) {
+    const rows = await db.get({ UserID }, TBL_USERS)
+    if (rows.length === 0) return null;
+    return rows[0];
+  }, debug),
+
+  singleByEmail: db.catchErrorDB(async function (Email) {
+    const rows = await db.get({ Email }, TBL_USERS)
+    if (rows.length === 0) return null;
+    return rows[0];
+  }, debug),
     
-
-  async patch(entity) {
-    try {
-      const condition = { UserID: entity.UserID };
-      const UserID = entity.UserID;
-      delete entity.UserID;
-      await db.patch(entity, condition, TBL_USERS);
-      const user = await db.get(condition, TBL_USERS)
-      return user[0];
-    } catch (error){
-      debug(error.message)
-      return false;
-    }
-  },
-
-  async add(entity) { catchErrorDB(async ()=> {
+  add : db.catchErrorDB(async function (entity) {
     await db.add(entity, TBL_USERS);
-    const condition = {Email: entity.Email};
+    const condition = { Email: entity.Email };
     const newUser = await db.get(condition, TBL_USERS)
     return newUser[0]
-  })},
-  
-  async del(userId) {
-      try {
-        await db.del({UserID}, TBL_USERS);
-        return true
-      } catch (error){
-        debug(error.message)
-        return false;
-      }
-  }
-};
+  }, debug),
+
+  patch: db.catchErrorDB(async function (entity) {
+    const condition = { UserID: entity.UserID };
+    delete entity.UserID;
+    await db.patch(entity, condition, TBL_USERS);
+    const user = await db.get(condition, TBL_USERS)
+    return user[0];
+  }, debug),
+
+  del: db.catchErrorDB(async function (UserID) {
+    await db.del({ UserID }, TBL_USERS);
+    return true
+  }, debug),
+}

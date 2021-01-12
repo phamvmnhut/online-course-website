@@ -12,6 +12,7 @@ const catModel = require('./../models/category.model');
 
 const db = require('../utils/db');
 
+
 const router = express.Router();
 
 router.get('/', function(req, res) {
