@@ -13,13 +13,28 @@
                             <p >{{messages.noti}}</p>
                             {{/if}}
                             {{#if messages.error}}
-                            <p style="color: red;">{{messages.error}}</p>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error!</strong> {{messages.error}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             {{/if}}
                             {{#if messages.success}}
-                            <p style="color:blue;">{{messages.success}}</p>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Congrag!</strong> {{messages.success}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             {{/if}}
                             {{#if messages.warn}}
-                            <p style="color:orange;">{{messages.warn}}</p>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Warning!</strong> {{messages.warn}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             {{/if}}
                         </div>
                     </div>
