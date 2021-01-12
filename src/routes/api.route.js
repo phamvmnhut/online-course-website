@@ -41,7 +41,7 @@ router.route('/user')
     .post(async function(req, res) {
         const hash = bcrypt.hashSync(req.body.Password, 10);
         if (!validateEmail(req.body.Email)) {
-            return res.json({ status: false, err: 'Invalid Email'})
+            return res.json({ status: false, err: 'Invalid Email' })
         }
         try {
             const user = {
@@ -61,7 +61,7 @@ router.route('/user')
                 user: userNew
             })
         } catch {
-            return res.json({ status: false})
+            return res.json({ status: false })
         }
     })
 
@@ -106,12 +106,13 @@ router.route('/cat-field')
     })
     .delete(async function(req, res) {
         fieldID = req.body.FieldID;
+
         const countCat = await db.load(`select count(*) as nocat from category where category.fieldid = ${fieldID}`);
         if (countCat[0].nocat > 0) {
             return res.json({ status: false });
         }
         const re = await catModel.delField(req.body);
-        return res.json({ status: (re ? true : false)});
+        return res.json({ status: (re ? true : false) });
     })
     .patch(async function(req, res) {
         const re = await catModel.patchField(req.body);
@@ -119,18 +120,56 @@ router.route('/cat-field')
     });
 
 router.route('/cat-field/:id')
-.get(async function(req, res){
-  fieldID = req.params.id;
-  const query = `select field.FieldID, field.FieldName, field.FieldDescription, ifnull(fno.NOCat, 0) as NOCat from 
+    .get(async function(req, res) {
+        fieldID = req.params.id;
+        const query = `select field.FieldID, field.FieldName, field.FieldDescription, ifnull(fno.NOCat, 0) as NOCat from 
   field left join (
       select fieldid, count(fieldid) as nocat from category where category.fieldid = ${fieldID}
   ) fno on field.fieldid = fno.fieldid
   where field.fieldid = ${fieldID};`
-  const re = await db.load(query);
-  if (re) {
-    return res.json({status: false, field: re[0]});
-  }
-  return res.json({status: false});
-})
+        const re = await db.load(query);
+        if (re) {
+            return res.json({ status: false, field: re[0] });
+        }
+        return res.json({ status: false });
+    })
+
+router.route('/cat-category/:id')
+    .get(async function(req, res) {
+        catID = req.params.id;
+        const query = ` select category.CategoryName, category.CategoryID, category.CategoryDescription, field.FieldName, ifnull(cno.sl, 0) as NOCourse
+                        from category join field on category.fieldid = field.fieldid
+                        left join (select course.categoryid, count(courseid) as sl from course group by course.categoryid) cno 
+                            on category.categoryid = cno.categoryid
+                        where category.categoryid = ${catID};`
+        const re = await db.load(query);
+        if (re) {
+            return res.json({ status: false, cat: re[0] });
+        }
+        return res.json({ status: false });
+    })
+
+router.route('/cat-category')
+    .post(async function(req, res) {
+        var cat = { CategoryName: req.body.CategoryName, CategoryDescription: req.body.CategoryDescription, FieldID: req.body.FieldID};
+        const re = await catModel.add(cat);
+        return res.json({ status: (re ? true : false) });
+    })
+    .delete(async function(req, res) {
+        catID = req.body.CategoryID;
+
+        const countCourse = await db.load(`select count(*) as nocourse from course where course.categoryid = ${catID};`);
+
+        if (countCourse[0].nocourse > 0) {
+            return res.json({ status: false });
+        }
+        const re = await catModel.del(req.body);
+        return res.json({ status: (re ? true : false) });
+    })
+    .patch(async function(req, res) {
+        const re = await catModel.path(req.body);
+        return res.json({ status: (re ? true : false) });
+    });
+
 
 module.exports = router;

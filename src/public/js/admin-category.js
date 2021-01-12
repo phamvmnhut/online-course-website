@@ -5,13 +5,13 @@ function showDetail(id) {
     ldsRollerStart();
     $.ajax({
         method: 'get',
-        url: `/api/cat-field/${id}`
+        url: `/api/cat-category/${id}`
     }).done(function(res){
         ldsRollerStop();
         disableForm();
         showEditRemoveBtn();
         hideRegisterBtn();
-        setFormData(res.field)
+        setFormData(res.cat)
         showForm();
 
     }).fail(function(res){
@@ -34,23 +34,25 @@ function removeBtnClicked(){
 
 function disableForm(){
     mainForm.id.disabled = true;
-    mainForm.cat.disabled = true;
+    mainForm.courses.disabled = true;
     mainForm.name.disabled = true;
     mainForm.des.disabled = true;
+    mainForm.field.disabled = true;
 }
 
 function enableForm(){
     mainForm.id.disabled = true;
-    mainForm.cat.disabled = true;
+    mainForm.courses.disabled = true;
     mainForm.name.disabled = false;
     mainForm.des.disabled = false;
+    mainForm.field.disabled = false;
 }
 
 
 
 function showNewForm(){
     method = 'post';
-    setFormData({FieldID:'', FieldName:'', FieldDescription:''})
+    setFormData({FieldID:'', CategoryName:'', CategoryDescription:'', NOCourse: ''})
     enableForm();
     hideEditRemoveBtn();
     showRegisterBtn();
@@ -88,7 +90,7 @@ function submitForm(){
     ldsRollerStart();
     $.ajax({
         method: method,
-        url: '/api/cat-field/',
+        url: '/api/cat-category/',
         data: field,
     }).done(function(res) {
         ldsRollerStop();
@@ -104,18 +106,19 @@ function submitForm(){
     })
 }
 
-function setFormData(field){
-    mainForm.id.value = field.FieldID || '';
-    mainForm.cat.value = field.NOCat || '';
-    mainForm.name.value = field.FieldName;
-    mainForm.des.value = field.FieldDescription;
+function setFormData(cat){
+    mainForm.id.value = cat.CategoryID || '';
+    mainForm.courses.value = cat.NOCourse || '';
+    mainForm.name.value = cat.CategoryName;
+    mainForm.des.value = cat.CategoryDescription;
 }
 
 function getFormData(){
     var name = mainForm.name.value;
     var des = mainForm.des.value;
     var id = mainForm.id.value;
-    return {FieldID: id, FieldName: name, FieldDescription: des}
+    var field = mainForm.field.value;
+    return {CategoryID: id, CategoryName: name, CategoryDescription: des, FieldID: field}
 }
 
 function showError(err){

@@ -1,0 +1,136 @@
+{{#section 'head'}}
+<link rel="stylesheet" href="/public/css/admin-category.css">
+<link rel="stylesheet" href="/public/css/lds-roller.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.css">
+{{/section}}
+
+{{#section 'footer'}}
+<script src="/public/js/lds-roller.js"></script>
+<script src="/public/js/admin-category.js"></script>
+<script src="/public/js/table-sort.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.js"></script>
+{{/section}}
+
+
+<table id="main-table" class="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th class="sort-col" scope="col">
+                <span>ID </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Tên </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Mô tả </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Field </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+            <th class="sort-col" scope="col">
+                <span>Số lượng KH </span>
+                <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each categories}}
+        <tr onclick="showDetail({{CategoryID}})">
+            <th class="user-id" scope="row">{{CategoryID}}</th>
+            <td>{{CategoryName}}</td>
+            <td>{{CategoryDescription}}</td>
+            <td>{{FieldName}}</td>
+            <td>{{NOCourse}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<div class="w-100 d-flex justify-content-center">
+    <button type="button" class="btn btn-primary w-75" id="add-btn" onclick="showNewForm()">
+        new field
+    </button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="mainFormModal" tabindex="-1" role="dialog" aria-labelledby="mainFormLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center col-12" id=",mainFormLabel">
+                    Thông tin field
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h5>
+            </div>
+            <div class="modal-body px-lg-5 pt-4">
+                <form name="mainForm" id="mainForm" onsubmit="submitForm(); return false;">
+                    <div class="col-sm-12">
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label class="label">ID</label>
+                                <input name="id" type="text" class="form-control" required="">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="label">Số lượng khoá học</label>
+                                <input name="courses" type="text" placeholder="0" class="form-control" required="">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <label class="label">Tên</label>
+                                <input name="name" type="text" placeholder="name" class="form-control" required="">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <label class="label">Mô tả</label>
+                                <textarea name="des" placeholder="description" class="form-control" rows="6"
+                                    required=""></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <label class="label">Field</label>
+                                <select name="field" class="form-control selectpicker filter" data-live-search="true"
+                                    id="field">
+                                    {{#each fields}}
+                                    <option value="{{FieldID}}">{{FieldName}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-lg" id="register-btn">Đăng Ký</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="edit-btn" onclick="editBtnClicked()" type="button" class="btn btn-secondary">Sửa</button>
+                <button id="remove-btn" onclick="removeBtnClicked()" type="button" class="btn btn-primary">Xoá</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lds-roller">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
