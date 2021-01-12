@@ -26,6 +26,13 @@
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
                         <table>
+                            {{#if isEmpty}}
+                            <thead>
+                                <tr>
+                                    <th>You don't have any course</th>
+                                </tr> 
+                            </thead>
+                            {{else}}
                             <thead>
                                 <tr>
                                     <th class="shoping__product">Courses</th>
@@ -35,11 +42,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#if isEmpty}}
-                                <tr>
-                                    <th>You dont have any course</th>
-                                </tr>
-                                {{else}}
                                 {{#each my_courses}}
                                 <tr>
                                     <td class="shoping__cart__item">
@@ -65,8 +67,8 @@
                                     <td class="shoping__cart__price">
                                         {{#if State}}Completed{{else}}Studing{{/if}}
                                     </td>
-                                    <td>
-                                        <strong><a href="study/{{CourseID}}">LEARN</a></strong>
+                                    <td class="edit__del__btn">
+                                        <a href="study/{{CourseID}}"><i class="fa fa-leanpub"></i></a> 
                                     </td>
                                     <td >
                                         <div class="blog__item__text">

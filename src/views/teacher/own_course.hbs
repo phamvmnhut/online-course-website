@@ -26,6 +26,13 @@
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
                         <table>
+                            {{#if isEmpty}}
+                            <thead>
+                                <tr>
+                                    <th>You don't have any course</th>
+                                </tr> 
+                            </thead>
+                            {{else}}
                             <thead>
                                 <tr>
                                     <th class="shoping__product">Courses</th>
@@ -36,11 +43,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#if isEmpty}}
-                                <tr>
-                                    <th>You dont have any course</th>
-                                </tr>
-                                {{else}}
                                 {{#each own_courses}}
                                 <tr>
                                     <td class="shoping__cart__item">
@@ -83,6 +85,7 @@
                                 {{/each}}
                                 {{/if}}
                             </tbody>
+
                         </table>
                     </div>
                 </div>
