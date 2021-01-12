@@ -26,11 +26,19 @@
                         </li>
                     </ul> --}}
                 </li>
-                <li class="sidebar-item {{#if categoryTab}} active {{/if}}">
-                    <a href="/admin/category" class="sidebar-link">
+                <li class="sidebar-item has-sub {{#if categoryTab}} active {{/if}}">
+                    <a href="#" class="sidebar-link">
                         <i data-feather="layers" width="20"></i>
                         <span>Category</span>
                     </a>
+                    <ul class="submenu ">
+                        <li>
+                            <a href="/admin/cat/field">Field</a>
+                        </li>
+                        <li>
+                            <a href="/admin/cat/category">Category</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
