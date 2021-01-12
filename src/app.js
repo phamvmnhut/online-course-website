@@ -14,6 +14,7 @@ const MySQLStore = require('express-mysql-session')(session);
 
 const debug = require('debug')('app:Error');
 const formater = require('./utils/formatter');
+const hbs_helper = require('./utils/hbs-helper');
 
 const app = express();
 
@@ -28,12 +29,13 @@ app.engine('hbs', exphbs({
     // partialsDir: 'views/partials',
     helpers: {
         section: hbs_sections(),
-        ifeq: function(a, b, options) {
-            if (a === b) {
-                return options.fn(this);
-            }
-            return options.inverse(this);
-        },
+        ifeq: hbs_helper.ifeq,
+        ifneq: hbs_helper.ifneq,
+        iflt: hbs_helper.iflt,
+        ifgt: hbs_helper.ifgt,
+        ifemp: hbs_helper.ifemp,
+        loop: hbs_helper.loop,
+        add: hbs_helper.add,
         formatDate: formater.formatDate,
         changeDisplayRoleType: formater.changeDisplayRoleType,
     }
