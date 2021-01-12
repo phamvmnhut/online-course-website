@@ -57,8 +57,6 @@ module.exports = {
     return true;
   }, debug),
 
-
-
   allField: db.catchErrorDB(async function () {
     return await db.getNoCondition(TBL_FIELD);
   }, debug),
