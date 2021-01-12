@@ -4,9 +4,23 @@ const bcrypt = require('bcryptjs');
 
 const { validateEmail } = require('../utils/validate');
 
-const { isAuth, isTeacher } = require('../middleware/auth');
+const { UserModel, CategoryModel, CourseModel, PurchaseModel, LessonModel} = require('../models');
 
-const { UserModel, CategoryModel, CourseModel, PurchaseModel} = require('../models');
+const { isAuth, isTeacher } = require('../middleware/auth');
+const isTeacherOwnCourse = async function (req, res, next) {
+  const TeacherID = req.session.authUser.UserID;
+  const course = await CourseModel.getSingleByID(req.params.CourseID);
+  if (!course) {
+    req.flash('Dont have this course')
+    return res.redirect('/own-course');
+  }
+  if (course.TeacherID != TeacherID) {
+    req.flash('You dont have permission to this action')
+    return res.redirect('/own-course');
+  }
+  req.course = course;
+  return next();
+}
 
 const router = express.Router();
 
@@ -352,21 +366,101 @@ router.get('/own-course', isTeacher, async function (req, res) {
 });
 router.route('/own-course/add')
   .get(isTeacher, async function (req, res) {
+    const cates = await CategoryModel.all();
     return res.render('teacher/course-add.hbs', {
       title: 'Own Sourse',
-      page: 'teacher'
+      page: 'teacher',
+      cates
+    })
+  })
+  .post(isTeacher, async function (req, res) {
+    const TeacherID = req.session.authUser.UserID;
+    const newCourse = await CourseModel.add({...req.body, TeacherID})
+    if (!newCourse) {
+      req.flash('error', 'Fail to add new course')
+      return res.redirect('/own-course')
+    }
+    req.flash('success', 'Success to add new Course')
+    return res.redirect('/own-course')
+  })
+router.route('/own-course/:CourseID/edit')
+  .get(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    const lessons = await LessonModel.getByCourseID(req.course.CourseID);
+    const rates = await CourseModel.getRates(req.course.CourseID);
+    const cates = await CategoryModel.all();
+    return res.render('teacher/course-edit.hbs', {
+      title: 'Own Sourse',
+      page: 'teacher',
+      course : req.course,
+      cates,
+      lessons,
+      rates
+    })
+  })
+  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    const updateCourse = { ...req.body, CourseID: req.course.CourseID, TeacherID: req.session.authUser.UserID};
+    const updatedCourse = await CourseModel.path(updateCourse)
+    if (!updatedCourse) {
+      req.flash('error', "update fail Course")
+      return res.redirect(req.get('referer'))
+    }
+    req.flash('success', "update success Course")
+    return res.redirect('/own-course')
+  })
+router.route('/own-course/:CourseID/del')
+  .get(isTeacher, async function (req, res) {
+    return res.render('teacher/course-del.hbs', {
+      title: 'Own Sourse',
+      page: 'teacher',
     })
   })
   .post(isTeacher, async function (req, res) {
     return res.redirect('/own-course')
   })
-router.route('/own-course/:CourseID/edit')
-  .get(isTeacher, async function (req, res) {
-    const course = await CourseModel.getSingleByID(req.params.CourseID);
-    return res.render('teacher/course-edit.hbs', {
+
+router.route('/own-course/:CourseID/lesson/add')
+  .get(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    return res.render('teacher/lesson-add.hbs', {
       title: 'Own Sourse',
       page: 'teacher',
-      course
+      course: req.course
+    })
+  })
+  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    const CourseID = req.course.CourseID;
+    const newLesson = await LessonModel.add({ ...req.body, CourseID })
+    if (!newLesson) {
+      req.flash('error', 'Fail to add new lesson')
+      return res.redirect(req.get('referer'))
+    }
+    req.flash('success', 'Success to add new Lesson')
+    return res.redirect(`/own-course/${CourseID}/edit`)
+  })
+router.route('/own-course/:CourseID/lesson/:Section/edit')
+  .get(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    const lesson = await LessonModel.getBySection(req.params.Section)
+    return res.render('teacher/lesson-edit.hbs', {
+      title: 'Own Sourse',
+      page: 'teacher',
+      course: req.course,
+      lesson,
+    })
+  })
+  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    const Section = req.params.Section
+    const newLesson = await LessonModel.patch({ ...req.body, Section })
+    if (!newLesson) {
+      req.flash('error', 'Fail to add new lesson')
+      return res.redirect(req.get('referer'))
+    }
+    req.flash('success', 'Success to add new Lesson')
+    return res.redirect(`/own-course/${req.course.CourseID}/edit`)
+  })
+router.route('/own-course/:CourseID/lesson/del')
+  .get(isTeacher, async function (req, res) {
+    return res.render('teacher/course-del.hbs', {
+      title: 'Own Sourse',
+      page: 'teacher',
     })
   })
   .post(isTeacher, async function (req, res) {

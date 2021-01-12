@@ -16,7 +16,7 @@ function catchErrorDB(f, debug = require('debug')('app:dataBase')) {
       return await f.apply(this, arguments);
     } catch (error) {
       debug(error.message)
-      console.log((error.message))
+      debug(error.stack)
       return false;
     }
   }
