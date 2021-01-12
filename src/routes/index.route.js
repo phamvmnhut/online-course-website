@@ -7,7 +7,6 @@ const { validateEmail } = require('../utils/validate');
 const { isAuth } = require('../middleware/auth');
 
 const { UserModel, CategoryModel, CourseModel, PurchaseModel} = require('../models');
-const auth = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -145,7 +144,7 @@ router.get('/courses', async function (req, res) {
 
 router.get('/detail/(:id)?', async function (req, res) {
   let userID = 0
-  if (req.session.isAuth) {userID = req.session.authUser.ID}
+  if (req.session.isAuth) {userID = req.session.authUser.UserID}
   if (req.params.id == undefined) req.params.id = Math.floor(Math.random() * Math.floor(10));
 
   const course = await CourseModel.getSingleByID(req.params.id);
@@ -170,139 +169,162 @@ router.get('/detail/(:id)?', async function (req, res) {
 
 
 // route for all user
-router.get('/user', isAuth , function (req, res) {
-  res.render('user/profile.hbs', {
+router.get('/user', isAuth, async function (req, res) {
+  const UserID = req.session.authUser.UserID
+  const user = await UserModel.single(UserID);
+  if (!user) {
+    req.flash("error", "Have error in get user Info");
+    return res.redirect('/');
+  }
+  return res.render('user/profile-view.hbs', {
     title: 'User',
-    page: 'student',
+    page: 'home',
+    user,
+    isTeacher: user.role === 1
   })
-})
+});
 
-// student
-router.route('/confirm/:id')
+router.route('/user/edit')
   .get(isAuth, async function (req, res) {
-    debug({ params: req.params.id });
-    try {
-      const user = await UserModel.single(req.session.authUser.ID);
-      const course = await CourseModel.getSingleByID(req.params.id);
-      const balanse = user.Wallet - course.Price;
-      console.log({ balanse })
-      if (course)
-        return res.render('user/confirm.hbs', {
-          title: course.Name,
-          course,
-          user,
-          balanse,
-          isOK: balanse >= 0
-        })
-      else {
-        req.flash("noti", "Dont exit this course with this ID");
-        return res.redirect('/');
-      }
-    } catch (e) {
-      debug({ e })
-      req.flash("warn", "Have warnning to do this action");
+    const UserID = req.session.authUser.UserID
+    const user = await UserModel.single(UserID);
+    if (!user) {
+      req.flash("error", "Have error in get user Info");
       return res.redirect('/');
     }
+    return res.render('user/profile-edit.hbs', {
+      title: 'User',
+      page: 'home',
+      user
+    })
   })
-  .post(isAuth, async function (req, res, next) {
-    try {
-      const user = await UserModel.single(req.session.authUser.ID);
-      const course = await CourseModel.getSingleByID(req.params.id);
-      const balanse = user.Wallet - course.Price;
-      if (balanse < 0) {
-        req.flash("error", "You dont have enough money")
-        return res.redirect('/');
-      }
-      // update user wallet
-      const userUpdate = { ID: user.ID, 'Wallet': balanse }
-      await UserModel.patch(userUpdate)
-      // update register course
-      await PurchaseModel.add({ CourseID: course.ID, StudentID: user.ID })
-      req.flash('success', 'You just register succesll this course');
-      return res.redirect(`/study/${course.ID}`)
-    } catch (err) {
-      debug(err)
-      req.flash('error', 'Register for this course is Fail');
-      return res.redirect('/')
+  .post(isAuth, async function (req, res) {
+    const UserID = req.session.authUser.UserID
+    const user = await UserModel.single(UserID)
+    if (user === null) {
+      req.flash("error", "Error in find this user account");
+      return res.redirect('/user')
     }
+    const ret = bcrypt.compareSync(req.body.OldPassword, user.Password);
+    if (ret === false) {
+      req.flash("error", "Please enter correct your password");
+      return res.redirect('/user')
+    }
+
+    let userUpdate = {
+      UserID,
+    }
+    if (req.body.OldPassword == undefined) {
+      req.flash("error", "Please enter your old password")
+      return res.redirect('/user');
+    }
+
+    userUpdate = req.body.FirstName !== "" ? { ...userUpdate, FirstName: req.body.FirstName } : userUpdate;
+    userUpdate = req.body.LastName !== "" ? { ...userUpdate, LastName: req.body.LastName } : userUpdate,
+    userUpdate = req.body.DisplayName !== "" ? { ...userUpdate, DisplayName: req.body.DisplayName } : userUpdate;
+    if (req.body.Email !== "") {
+      if (!validateEmail(req.body.Email)) {
+        req.flash("error", "Fail to update user with this info")
+        return res.redirect('/user');
+      }
+      else userUpdate = { ...userUpdate, Email: req.body.Email }
+    }
+    if (req.body.NewPassword !== "") {
+      const hash = bcrypt.hashSync(req.body.NewPassword, 10);
+      userUpdate = { ...userUpdate, Password: hash }
+    }
+    debug({userUpdate})
+    const userUpdated = await UserModel.patch(userUpdate)
+    req.session.isAuth = true;
+    req.session.authUser = userUpdated;
+    debug({ userUpdated })
+    req.flash("success", "Udate user info success")
+    return res.redirect('/user');
+  })
+
+// student
+router.route('/confirm/:CourseID')
+  .get(isAuth, async function (req, res) {
+    const user = await UserModel.single(req.session.authUser.UserID);
+    const course = await CourseModel.getSingleByID(req.params.CourseID);
+    if (!course) {
+      req.flash("noti", "Your course you wait is not exist");
+      return res.redirect('/courses');
+    }
+    const balanse = user.Wallet - course.Price;
+    return res.render('user/confirm.hbs', {
+      title: course.Name,
+      course,
+      user,
+      balanse,
+      isOK: balanse >= 0
+    })
+  })
+  .post(isAuth, async function (req, res) {
+    const UserID = req.session.authUser.UserID
+    const user = await UserModel.single(UserID);
+    const course = await CourseModel.getSingleByID(req.params.CourseID);
+    if (!course) {
+      req.flash("noti", "Your course you wait is not exist");
+      return res.redirect('/courses');
+    }
+    const balanse = user.Wallet - course.Price;
+    if (balanse < 0) {
+      req.flash("error", "You dont have enough money")
+      return res.redirect(req.get('referer'));
+    }
+    // update user wallet
+    const userUpdate = { UserID, 'Wallet': balanse }
+    await UserModel.patch(userUpdate)
+    // update register course
+    const newPurchased = await PurchaseModel.add({ CourseID: course.CourseID, StudentID: user.UserID })
+    debug({newPurchased})
+    req.flash('success', 'You just register succesll this course');
+    return res.redirect(`/study/${course.CourseID}`)
   })
 
 router.route('/wish')
   .get(isAuth, async function (req, res) {
-    try {
-      const StudentID = req.session.authUser.ID;
-      const my_id_courses = await PurchaseModel.getWishByStudentID(StudentID);
-      let my_courses = [];
-      for (let i = 0; i < my_id_courses.length; i++) {
-        try {
-          const course = await CourseModel.getSingleByID(my_id_courses[i].CourseID);
-          const rateInfo = await CourseModel.getRateInfo(my_id_courses[i].CourseID);
-          my_courses.push({ ...course, ...rateInfo })
-        } catch (err) {
-          debug(err)
-        }
-      }
-      // debug(my_courses)
-      return res.render('user/watch_list.hbs', {
-        title: 'Watch List',
-        page: 'student',
-        isEmpty: my_courses.length == 0,
-        my_courses
-      })
-    } catch (err) {
-      debug(err)
-      req.flash("error", "Fail to fetch course")
-      return res.render('user/watch_list.hbs', {
-        title: 'My Sourse',
-        page: 'student',
-        isEmpty: true,
-      })
-    }
-  })
-  .post(isAuth, async function (req, res) {
-    try {
-      const CourseID = req.body.CourseID;
-      const StudentID = req.session.studentID
-      await PurchaseModel.delWish({CourseID, StudentID})
-      req.flash('warn', 'Delete success')
-    }
-    catch(error) {
-      debug(error)
-      req.flash('error', 'Delete error')
-    }
-    return res.redirect('/wish');
-  })
-
-router.get('/my-course', isAuth , async function (req, res) {
-  try {
-    const StudentID = req.session.authUser.ID;
-    const my_id_courses = await PurchaseModel.getByStudentID(StudentID);
+    const StudentID = req.session.authUser.UserID;
+    const my_id_courses = await PurchaseModel.getWishByStudentID(StudentID);
     let my_courses = [];
-    for(let i=0; i<my_id_courses.length;i++){
-      try {
-        const course = await CourseModel.getSingleByID(my_id_courses[i].CourseID);
-        const rateInfo = await CourseModel.getRateInfo(my_id_courses[i].CourseID);
-        my_courses.push({...course, ...rateInfo})
-      } catch (err) {
-        debug(err)
-      }
+    for (const e of my_id_courses) {
+      const course = await CourseModel.getSingleByID(e.CourseID)
+      my_courses.push(course)
     }
-    // debug(my_courses)
-    return res.render('user/my_course.hbs', {
-      title: 'My Sourse',
+    return res.render('user/watch_list.hbs', {
+      title: 'Watch List',
       page: 'student',
       isEmpty: my_courses.length == 0,
       my_courses
     })
-  } catch (err) {
-    debug(err)
-    req.flash("error", "Fail to fetch course")
-    return res.render('user/my_course.hbs', {
-      title: 'My Sourse',
-      page: 'student',
-      isEmpty: true,
+  })
+  .post(isAuth, async function (req, res) {
+    const CourseID = req.body.CourseID;
+    const StudentID = req.session.authUser.UserID;
+    const newWished = await PurchaseModel.addWish({ CourseID, StudentID })
+    const wish = await PurchaseModel.getWishByStudentID(StudentID);
+    return res.json({
+      status: true,
+      data: newWished,
+      wish_length: wish.length,
     })
+  })
+
+router.get('/my-course', isAuth, async function (req, res) {
+  const StudentID = req.session.authUser.UserID;
+  const my_id_courses = await PurchaseModel.getByStudentID(StudentID);
+  let my_courses = [];
+  for (const e of my_id_courses) {
+    const course = await CourseModel.getSingleByID(e.CourseID)
+    my_courses.push(course)
   }
+  return res.render('user/my_course.hbs', {
+    title: 'My Sourse',
+    page: 'student',
+    isEmpty: my_courses.length == 0,
+    my_courses
+  })
 });
 
 router.get('/feedback', function (req, res) {
