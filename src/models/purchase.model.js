@@ -11,8 +11,12 @@ const getLastElement = db.catchErrorDB(async function () {
 }, debug);
 
 module.exports = {
-  all() {return db.load(`select * from ${TBL_PUR}`)},
-  allWish() { return db.load(`select * from ${TBL_WIS}`) },
+  all: db.catchErrorDB(async function() {
+    return await db.getNoCondition(TBL_PUR);
+  }, debug),
+  allWish: db.catchErrorDB(async function() {
+    return await db.getNoCondition(TBL_WIS);
+  }, debug),
 
   getByStudentID: db.catchErrorDB(async function(StudentID) {
     return await db.get({StudentID},TBL_PUR);
@@ -25,16 +29,11 @@ module.exports = {
     await db.add({ ...entity, 'DatePurchased': new Date() }, TBL_PUR);
     return await getLastElement();
   }, debug),
-
   addWish: db.catchErrorDB(async function (entity) {
     await db.add(entity, TBL_WIS);
     return await getLastElement();
   }, debug),
 
-  del(entity) {
-    const condition = { ID: entity.ID };
-    return db.del(condition, TBL_PUR);
-  },
   delWish(entity) {
     return db.load(`DELETE FROM ${TBL_WIS} WHERE StudentID = ${entity.StudentID} and CourseID = ${entity.CourseID}`);
   },
