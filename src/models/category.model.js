@@ -63,11 +63,11 @@ module.exports = {
 
   addField(entity) {return db.add(entity, TBL_FIELD)},
   delField(entity) {
-    const condition = { ID: entity.ID };
+    const condition = { FieldID: entity.FieldID };
     return db.del(condition, TBL_FIELD);
   },
   patchField(entity) {
-    const condition = { ID: entity.ID };
+    const condition = { FieldID: entity.FieldID };
     delete entity.ID;
     return db.patch(entity, condition, TBL_FIELD);
   }

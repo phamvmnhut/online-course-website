@@ -9,12 +9,14 @@ function showDetail(userID) {
     }).done(function(res) {
         console.log(res);
         ldsRollerStop();
-        editingUserID = userID;
-        showNewForm();
-        disableUserForm();
-        setFormData(res.user);
-        showEditRemoveBtn();
-        $('#register-btn').hide();
+        if (res.status) {
+            editingUserID = userID;
+            showNewForm();
+            disableUserForm();
+            setFormData(res.user);
+            showEditRemoveBtn();
+            $('#register-btn').hide();
+        }
     }).fail(function(err) {
         ldsRollerStop();
         showMessageError(err.message)
@@ -55,8 +57,9 @@ function submitUserForm() {
         console.log(res);
         ldsRollerStop();
         hideUserForm();
-        if (res.status && res.user) {
+        if (res.status) {
             // window.location = window.location.pathname;
+            location.reload();
         } else {
             Swal.fire({
                 icon: 'error',

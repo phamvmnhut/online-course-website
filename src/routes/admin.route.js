@@ -6,6 +6,7 @@ const router = express.Router();
 const userModel = require('./../models/user.model');
 const courseModel = require('./../models/Course.model');
 const { isAdmin } = require('../middleware/auth');
+const db = require('./../utils/db');
 
 router.use(isAdmin)
 
@@ -28,9 +29,9 @@ router.get('/user', async function(req, res) {
 });
 
 router.get('/course', async function(req, res) {
-    const query = `select course.id, course.name, user.displayname as teacher, category.name as category, course.datemodified from 
-    (course left join user on course.teacherid = user.id)
-    left join category on course.categoryid = category.id;`;
+    const query = `select course.courseid as id, course.coursename as name, user.displayname as teacher, category.categoryname as category, course.datemodified from 
+    (course left join user on course.teacherid = user.userid)
+    left join category on course.categoryid = category.categoryid;`;
     courses = await courseModel.query(query);
     res.render('admin/admin-course.hbs', {
         layout: 'admin_layout',
@@ -39,10 +40,16 @@ router.get('/course', async function(req, res) {
     });
 });
 
-router.get('/category', function(req, res) {
-    res.render('admin/index.hbs', {
+router.get('/cat/field', async function(req, res) {
+    const query = `select field.FieldID, field.FieldName, field.FieldDescription, ifnull(fno.NOCat, 0) as NOCat from 
+    field left join (
+        select fieldid, count(fieldid) as nocat from category group by category.fieldid
+    ) fno on field.fieldid = fno.fieldid;`;
+    fields = await db.load(query);
+    res.render('admin/admin-field.hbs', {
         layout: 'admin_layout',
-        categoryTab: true
+        categoryTab: true,
+        fields: fields
     });
 });
 
