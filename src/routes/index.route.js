@@ -57,10 +57,10 @@ router.route('/login')
     req.session.isAuth = true;
     req.session.authUser = user;
     
-    if (user.Role == 2) {
-      res.redirect('/admin');
-      return;
-    }
+    // if (user.Role == 2) {
+    //   res.redirect('/admin');
+    //   return;
+    // }
     let url = req.session.retUrl || '/';
     if (url.endsWith("/login") || url.endsWith('/register')) url = '/'
     return res.redirect(url);

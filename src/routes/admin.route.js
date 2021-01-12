@@ -7,6 +7,7 @@ const userModel = require('./../models/user.model');
 const courseModel = require('./../models/course.model');
 const { isAdmin } = require('../middleware/auth');
 const db = require('./../utils/db');
+const config = require('../config/default.json')
 
 router.use(isAdmin)
 
@@ -20,23 +21,45 @@ router.get('/', async function(req, res) {
 });
 
 router.get('/user', async function(req, res) {
-    users = await userModel.all();
+    const page = Math.max(1, +req.query.page || 1);
+    const limit = config.pagination.limit;
+    const offset = (page - 1)*limit;
+    const qt = `select count(*) as total from user`;
+    const qu = `select * from user order by user.userid limit ${limit} offset ${offset};`
+    const nousers = (await db.load(qt))[0].total;
+    const nopages = Math.ceil(nousers/limit);
+    users = await db.load(qu);
     res.render('admin/admin-user.hbs', {
         layout: 'admin_layout',
         userTab: true,
-        users: users
+        users: users,
+        nopages: nopages,
+        curpage: page,
     });
 });
 
 router.get('/course', async function(req, res) {
-    const query = `select course.courseid as id, course.coursename as name, user.displayname as teacher, category.categoryname as category, course.datemodified from 
+    const page = Math.max(1, +req.query.page || 1);
+    const limit = config.pagination.limit;
+    const offset = (page - 1)*limit;
+    const qt = `select count(*) as total from course`;
+    const nousers = (await db.load(qt))[0].total;
+    const nopages = Math.ceil(nousers/limit);
+
+    const qc = `select course.courseid as id, course.coursename as name, user.displayname as teacher, category.categoryname as category, course.datemodified from 
     (course left join user on course.teacherid = user.userid)
-    left join category on course.categoryid = category.categoryid;`;
-    courses = await db.load(query);
+    left join category on course.categoryid = category.categoryid
+    order by course.courseid
+    limit ${limit}
+    offset ${offset}`;
+
+    courses = await db.load(qc);
     res.render('admin/admin-course.hbs', {
         layout: 'admin_layout',
         courseTab: true,
         courses: courses,
+        nopages: nopages,
+        curpage: page,
     });
 });
 
