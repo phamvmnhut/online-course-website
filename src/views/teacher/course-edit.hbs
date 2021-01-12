@@ -1,6 +1,12 @@
 {{!-- 
 Cap nhat thong tin, upload video, danh dau hoan thanh
  --}}
+  <script>
+var loadFile = function(event) {
+	var image = document.getElementById('output');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+</script>
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="public/img/breadcrumb.jpg">
         <div class="container">
@@ -28,9 +34,11 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__pic">
                             <div class="product__details__pic__item">
-                                <img class="product__details__pic__item--large"
+                                <img id= "output" class="product__details__pic__item--large"
                                     src="/public/img/product/details/product-details-1.jpg" alt="">
                             </div>
+                            <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+                            <b><label for="file" style="cursor: pointer;" class="primary-btn">Change Image</label></b>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
@@ -38,15 +46,6 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
                             <form action="" method="POST">
                                 <div class="row">
                                     <div class="col-lg-8 col-md-6">
-                                        <div class="row">
-                                            <div class="checkout__input">
-                                                <p>Status </p>
-                                                <select name="State" required>
-                                                    <option value="0" {{#ifeq course.State 0}}selected{{/ifeq}}>Uploading</option>
-                                                    <option value="1" {{#ifeq course.State 1}}selected{{/ifeq}}>Completed</option>
-                                                </select>
-                                            </div>
-                                         </div>
                                         <div class="checkout__input">
                                             <p>Course's Name</p>
                                             <input type="text" name="CourseName" value="{{course.CourseName}}">
@@ -73,10 +72,27 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
                                             <p>Short Description</p>
                                             <textarea name="ShortDescription">{{course.ShortDescription}}</textarea>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="checkout__input">
+                                                    <p><b>Status</b></p>
+                                                    <select name="State" required>
+                                                        <option value="0" {{#ifeq course.State 0}}selected{{/ifeq}}>Uploading</option>
+                                                        <option value="1" {{#ifeq course.State 1}}selected{{/ifeq}}>Completed</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="checkout__input">
+                                                    <p><span>.</span></p>
+                                                    <button type="submit" class="site-btn">UPDATE INFO</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-12 text-center">
+                                    {{!-- <div class="col-lg-12 text-center">
                                         <button type="submit" class="site-btn">UPDATE INFO</button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>
@@ -105,8 +121,6 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
                                                 <div class="row">
                                                     <div class="col-lg-12 text-center">
                                                         <textarea name="FullDescription" placeholder="About this course" >{{course.FullDescription}}</textarea>
-                                                    </div>
-                                                    <div class="col-lg-12 text-center">
                                                         <button type="submit" class="site-btn">UPDATE DESCSRIPTION</button>
                                                     </div>
                                                 </div>
@@ -115,30 +129,42 @@ Cap nhat thong tin, upload video, danh dau hoan thanh
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                    <div class="contact-form spad">
+                                    <div class="lesson spad">
                                         <div class="container">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Section</th>
-                                                        <th>Title</th>
-                                                        <th>Description</th>
-                                                        <th>Video</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {{#each lessons}}
-                                                    <tr>
-                                                        <td>{{Section}}</td>
-                                                        <td>{{LessonTitle}}</td>
-                                                        <td>{{LessonDescription}}</td>
-                                                        <td>{{Video}}</td>
-                                                    </tr>
-                                                    {{/each}}
-                                                </tbody>
-                                            </table>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="lesson__table">
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Section</th>
+                                                                    <th>Title</th>
+                                                                    <th>Description</th>
+                                                                    <th>Video</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {{#each lessons}}
+                                                                <tr>
+                                                                    <td>{{Section}}</td>
+                                                                    <td>{{LessonTitle}}</td>
+                                                                    <td>{{LessonDescription}}</td>
+                                                                    <td>{{Video}}</td>
+                                                                </tr>
+                                                                {{/each}}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12 text-center">
+                                                    <a class="primary-btn" href="/own-course/{{course.CourseID}}/lesson/add">Add New Lesson</a>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        <a href="/own-course/{{course.CourseID}}/lesson/add">Add New Lesson</a>
+
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-3" role="tabpanel">

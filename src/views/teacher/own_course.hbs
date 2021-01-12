@@ -20,11 +20,8 @@
     </section>
     <!-- Breadcrumb Section End -->
 
-    <section class="shoping-cart spad">
+    <section class="lesson spad">
         <div class="container">
-            <div class="row">
-                <a href="/own-course/add"><strong>NEW COURSE</strong> </a>
-            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
@@ -68,9 +65,9 @@
                                     <td class="shoping__cart__price">
                                         {{#if State}} Completed {{else}} Uploading{{/if}}
                                     </td>
-                                    <td>
-                                        <a href="/own-course/{{CourseID}}/edit"><strong>EDIT</strong></a> | 
-                                        <a href="/own-course/{{CourseID}}/del"><strong>DEL</strong></a> 
+                                    <td class="edit__del__btn">
+                                        <a href="/own-course/{{CourseID}}/edit"><i class="fa fa-pencil"></i></a> 
+                                        <a href="/own-course/{{CourseID}}/del"><i class="fa fa-trash"></i></a> 
                                     </td>
                                     <td >
                                         <div class="blog__item__text">
@@ -85,6 +82,11 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <a href="/own-course/add" class="primary-btn">NEW COURSE </a>
                 </div>
             </div>
         </div>

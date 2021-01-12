@@ -98,7 +98,7 @@ a:hover,
 a:focus {
 	text-decoration: none;
 	outline: none;
-	color: #ffffff;
+	color: white ;
 }
 
 ul,
@@ -164,7 +164,7 @@ ol {
 	display: inline-block;
 	font-size: 14px;
 	padding: 10px 28px 10px;
-	color: #ffffff;
+	color: #ffffff !important;
 	text-transform: uppercase;
 	font-weight: 700;
 	background: #7fad39;
@@ -2122,7 +2122,7 @@ ol {
 }
 
 .checkout__input p span {
-	color: #dd2222;
+	color:white;
 }
 
 .checkout__input input {
@@ -2903,7 +2903,7 @@ ol {
 }
 
 .contact-form form button {
-	font-size: 18px;
+	font-size: 14px;
 	letter-spacing: 2px;
 }
 

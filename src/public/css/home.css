@@ -151,6 +151,17 @@
 	resize: none;
 }
 
+.checkout__input select {
+	position: absolute;
+	width: 100%;
+	height: 46px;
+	border: 1px solid #ebebeb;
+	padding-left: 20px;
+	font-size: 16px;
+	color: #000000;
+	border-radius: 4px;
+}
+
 
 .user__rating a i {
 	font-size: 50px;
@@ -175,4 +186,141 @@
 	padding: 13px 30px 12px;
 	background: white;
 	border: none;
+}
+
+.lesson {
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+
+.lesson__table {
+	margin-bottom: 30px;
+}
+
+.lesson__table table {
+	width: 100%;
+	text-align: center;
+}
+
+.lesson__table table thead tr {
+	border-bottom: 1px solid #ebebeb;
+}
+
+.lesson__table table thead th {
+	font-size: 16px;
+	font-weight: 700;
+	color: #1c1c1c;
+	padding-bottom: 20px;
+}
+
+.lesson__table table thead th.shoping__product {
+	text-align: left;
+}
+
+.lesson__table table tbody tr td {
+	padding-top: 30px;
+	padding-bottom: 30px;
+	border-bottom: 1px solid #ebebeb;
+}
+
+.lesson__table table tbody tr td.shoping__cart__item {
+	width: 630px;
+	text-align: left;
+}
+
+.lesson__table table tbody tr td.shoping__cart__item img {
+	display: inline-block;
+	margin-right: 25px;
+}
+
+.lesson__table table tbody tr td.shoping__cart__item h5 {
+	color: #1c1c1c;
+	display: inline-block;
+}
+
+.lesson__table table tbody tr td.shoping__cart__price {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	width: 100px;
+}
+
+.lesson__table table tbody tr td.shoping__cart__total {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	width: 110px;
+}
+
+.lesson__table table tbody tr td.shoping__cart__item__close {
+	text-align: right;
+}
+
+.lesson__table table tbody tr td.shoping__cart__item__close span {
+	font-size: 24px;
+	color: #b2b2b2;
+	cursor: pointer;
+}
+
+.lesson__table table tbody tr td.shoping__cart__quantity {
+	width: 225px;
+}
+
+.lesson__table table tbody tr td.shoping__cart__quantity .pro-qty {
+	width: 120px;
+	height: 40px;
+}
+
+.lesson__table table tbody tr td.shoping__cart__quantity .pro-qty input {
+	color: #1c1c1c;
+}
+
+.lesson__table table tbody tr td.shoping__cart__quantity .pro-qty input::placeholder {
+	color: #1c1c1c;
+}
+
+.lesson__table table tbody tr td.shoping__cart__quantity .pro-qty .qtybtn {
+	width: 15px;
+}
+
+.edit__del__btn {
+	position:relative;
+	text-align: center;
+}
+
+.edit__del__btn a {
+	display: inline-block;
+	margin-left: auto;
+}
+
+.edit__del__btn a:hover {
+	background: #7fad39;
+	border-color: #7fad39;
+}
+
+.edit__del__btn a:hover i {
+	color: #ffffff;
+	transform: rotate(360deg);
+}
+
+.edit__del__btn a {
+	font-size: 16px;
+	color: #1c1c1c;
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid #ebebeb;
+	background: #ffffff;
+	display: block;
+	border-radius: 50%;
+}
+
+.edit__del__btn a i {
+	transform: rotate(0);
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
 }
