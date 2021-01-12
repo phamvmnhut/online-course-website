@@ -3,6 +3,12 @@ const debug = require('debug')('app:user>model');
 
 const TBL_USERS = 'User';
 
+/**User role
+* 0: student
+* 1: teacher
+* 2: admin
+ */
+
 module.exports = {
   getLastElement: db.catchErrorDB(async function () {
     return await db.load(`SELECT * FROM ${TBL_USERS} WHERE UserID = (SELECT MAX(UserID) FROM ${TBL_USERS})`);
