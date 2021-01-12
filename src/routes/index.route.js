@@ -34,13 +34,15 @@ router.get('/', async function (req, res) {
   const courseEditerChoose = await CourseModel.getEditerChoose();
   const courseLastedByTime = await CourseModel.getLatestByTime();
   const courseTopPurchased = await CourseModel.getTopPurchase();
+  const allCourses = await CourseModel.all();
   return res.render('guest/home.hbs', {
     title: "Home",
     page: 'home',
     catewithfield,
     courseEditerChoose,
     courseLastedByTime,
-    courseTopPurchased
+    courseTopPurchased,
+    allCourses
   })
 })
 
