@@ -32,7 +32,7 @@ router.get('/course', async function(req, res) {
     const query = `select course.courseid as id, course.coursename as name, user.displayname as teacher, category.categoryname as category, course.datemodified from 
     (course left join user on course.teacherid = user.userid)
     left join category on course.categoryid = category.categoryid;`;
-    courses = await courseModel.query(query);
+    courses = await db.load(query);
     res.render('admin/admin-course.hbs', {
         layout: 'admin_layout',
         courseTab: true,
@@ -52,6 +52,22 @@ router.get('/cat/field', async function(req, res) {
         fields: fields
     });
 });
+
+router.get('/cat/category', async function(req, res) {
+    const query = `select category.CategoryName, category.CategoryID, category.CategoryDescription, field.FieldName, ifnull(cno.sl, 0) as NOCourse
+    from category join field on category.fieldid = field.fieldid
+    left join (select course.categoryid, count(courseid) as sl from course group by course.categoryid) cno 
+        on category.categoryid = cno.categoryid;`;
+    categories = await db.load(query);
+    fields = await db.load('select * from field;');
+    res.render('admin/admin-category.hbs', {
+        layout: 'admin_layout',
+        categoryTab: true,
+        categories: categories,
+        fields: fields,
+    });
+});
+
 
 // router.get('/user/:id', function(req, res) {
 //     id = req.params.id;

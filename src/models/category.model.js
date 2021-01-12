@@ -53,6 +53,7 @@ module.exports = {
     return rows[0];
   }, debug),
   del: db.catchErrorDB(async function (entity) {
+    const CategoryID = entity.CategoryID;
     await db.del({ CategoryID }, TBL_CAT);
     return true;
   }, debug),
@@ -73,7 +74,8 @@ module.exports = {
     return rows[0];
   }, debug),
   delField: db.catchErrorDB(async function (entity) {
-    await db.del({ FieldID }, TBL_FIELD);
+    const FieldID = entity.FieldID;
+    await db.del({FieldID}, TBL_FIELD);
     return true;
   }, debug),
 };
