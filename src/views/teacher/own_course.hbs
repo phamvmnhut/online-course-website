@@ -3,15 +3,15 @@
 
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="public/img/breadcrumb.jpg">
+    <section class="breadcrumb-section set-bg" data-setbg="/public/img/breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Registered List</h2>
+                        <h2>Owner Course List</h2>
                         <div class="breadcrumb__option">
                             <a href="/">Home</a>
-                            <span>Registered list</span>
+                            <span>Owner Course list</span>
                         </div>
                     </div>
                 </div>
@@ -23,6 +23,9 @@
     <section class="shoping-cart spad">
         <div class="container">
             <div class="row">
+                <a href="/own-course/add"><strong>NEW COURSE</strong> </a>
+            </div>
+            <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
                         <table>
@@ -30,7 +33,7 @@
                                 <tr>
                                     <th class="shoping__product">Courses</th>
                                     <th>Status</th>
-                                    <th>Study</th>
+                                    <th>Edit</th>
                                     <th>Date registered</th>
                                 </tr>
                             </thead>
@@ -45,7 +48,7 @@
                                     <td class="shoping__cart__item">
                                         <a href="/detail/{{CourseID}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="public/img/user/registered_list/rl-1.jpg" alt="">
+                                                <img src="/public/img/user/registered_list/rl-1.jpg" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 <h6>{{CourseName}} - {{DisplayName}}</h6>
@@ -63,10 +66,11 @@
                                         </a>
                                     </td>
                                     <td class="shoping__cart__price">
-                                        {{#if State}}Complete{{else}}Studing{{/if}}
+                                        {{#if State}} Completed {{else}} Uploading{{/if}}
                                     </td>
                                     <td>
-                                        <strong><a href="study/{{CourseID}}">LEARN</a></strong>
+                                        <a href="/own-course/{{CourseID}}/edit"><strong>EDIT</strong></a> | 
+                                        <a href="/own-course/{{CourseID}}/del"><strong>DEL</strong></a> 
                                     </td>
                                     <td >
                                         <div class="blog__item__text">

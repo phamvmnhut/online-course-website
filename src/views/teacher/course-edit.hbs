@@ -1,0 +1,169 @@
+{{!-- 
+Cap nhat thong tin, upload video, danh dau hoan thanh
+ --}}
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="public/img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Update Course</h2>
+                        <div class="breadcrumb__option">
+                            <a href="/">Home</a>
+                            <a href="/">Course</a>
+                            <span>Update course</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Course Details Section Begin -->
+    <section class="product-details spad">
+        <div class="container">
+            {{!-- <form action="" submit="false"> --}}
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product__details__pic">
+                            <div class="product__details__pic__item">
+                                <img class="product__details__pic__item--large"
+                                    src="/public/img/product/details/product-details-1.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="checkout__form">
+                            <form action="" method="POST">
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-6">
+                                        <div class="row">
+                                            <div class="checkout__input">
+                                                <p>Status </p>
+                                                <select name="State" required>
+                                                    <option value="0" {{#ifeq course.State 0}}selected{{/ifeq}}>Uploading</option>
+                                                    <option value="1" {{#ifeq course.State 1}}selected{{/ifeq}}>Completed</option>
+                                                </select>
+                                            </div>
+                                         </div>
+                                        <div class="checkout__input">
+                                            <p>Course's Name</p>
+                                            <input type="text" name="CourseName" value="{{course.CourseName}}">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="checkout__input">
+                                                    <p>Price</p>
+                                                    <input type="text" name="Price" value="{{course.Price}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                               <div class="checkout__input">
+                                                <p>Category</p>
+                                                <select name="CategoryID" required>
+                                                    {{#each cates}}
+                                                    <option value="{{CategoryID}}" {{#ifeq CategoryID ../course.CategoryID}}selected{{/ifeq}} >{{CategoryName}}</option>
+                                                    {{/each}}
+                                                </select>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="checkout__input">
+                                            <p>Short Description</p>
+                                            <textarea name="ShortDescription">{{course.ShortDescription}}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 text-center">
+                                        <button type="submit" class="site-btn">UPDATE INFO</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                                        aria-selected="true">Description</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                                        aria-selected="false">Syllabus</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                                        aria-selected="false">Feedback</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                    <div class="contact-form spad">
+                                        <div class="container">
+                                            <form action="" method="POST">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-center">
+                                                        <textarea name="FullDescription" placeholder="About this course" >{{course.FullDescription}}</textarea>
+                                                    </div>
+                                                    <div class="col-lg-12 text-center">
+                                                        <button type="submit" class="site-btn">UPDATE DESCSRIPTION</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                    <div class="contact-form spad">
+                                        <div class="container">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Section</th>
+                                                        <th>Title</th>
+                                                        <th>Description</th>
+                                                        <th>Video</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each lessons}}
+                                                    <tr>
+                                                        <td>{{Section}}</td>
+                                                        <td>{{LessonTitle}}</td>
+                                                        <td>{{LessonDescription}}</td>
+                                                        <td>{{Video}}</td>
+                                                    </tr>
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <a href="/own-course/{{course.CourseID}}/lesson/add">Add New Lesson</a>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                    <div class="contact-form spad">
+                                        <div class="container">
+                                            {{!-- <form action="" >
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-center">
+                                                        <textarea placeholder="All chapters"></textarea>
+                                                        <textarea placeholder="Review chapters"></textarea>
+                                                    </div>
+                                                </div>
+                                            </form> --}}
+                                            <p>
+                                                Danh sach cac Feedback
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{!-- </form> --}}
+        </div>
+    </section>
+    <!-- Course Details Section End -->
+

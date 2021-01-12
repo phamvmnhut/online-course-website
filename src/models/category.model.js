@@ -4,12 +4,14 @@ const debug = require('debug')('app:category>model');
 const TBL_CAT = 'Category';
 const TBL_FIELD = 'Field';
 
+const getLastElement = db.catchErrorDB(async function () {
+  const row = await db.load(`SELECT * FROM ${TBL_CAT} WHERE CategoryID = (SELECT MAX(CategoryID) FROM ${TBL_CAT})`);
+  if (row.length === 0) return null;
+  return row[0];
+}, debug);
+
 module.exports = {
-  getLastElement: db.catchErrorDB(async function () {
-    const row = await db.load(`SELECT * FROM ${TBL_CAT} WHERE CategoryID = (SELECT MAX(CategoryID) FROM ${TBL_CAT})`);
-    if (row.length === 0) return null;
-    return row[0];
-  }, debug),
+  getLastElement,
 
   all: db.catchErrorDB(async function () {
     const cates = await db.getNoCondition(TBL_CAT)
@@ -43,7 +45,7 @@ module.exports = {
 
   add: db.catchErrorDB(async function (entity) {
     await db.add(entity, TBL_CAT);
-    return await this.getLastElement();
+    return await getLastElement();
   }, debug),
   path: db.catchErrorDB(async function (entity) {
     const condition = { CategoryID: entity.CategoryID };
@@ -64,7 +66,7 @@ module.exports = {
 
   addField: db.catchErrorDB(async function (entity) {
     await db.add(entity, TBL_FIELD);
-    return await this.getLastElement();
+    return await getLastElement();
   }, debug),
   pathField: db.catchErrorDB(async function (entity) {
     const condition = { FieldID: entity.FieldID };

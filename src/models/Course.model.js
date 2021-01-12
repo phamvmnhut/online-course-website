@@ -13,21 +13,21 @@ const TBL_CAT = 'Category';
  */
 const getSingleByID = db.catchErrorDB( async function (CourseID) {
   const course = await db.load(`SELECT C.CourseID, C.CourseName, CAT.CategoryID, CAT.CategoryName, 
-                                    T.DisplayName, T.UserID, C.Avatar, C.DateModified, 
+                                    T.DisplayName,C.TeacherID, C.Avatar, C.DateModified, C.State,
                                       C.Price, C.Discount, C.ShortDescription, C.FullDescription,
                                       avg(CR.Point) as Point, count(CR.CourseID) as Count 
                                       FROM Course as C 
                                         left join ${TBL_USER} as T on C.TeacherID = T.UserID
                                         left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID
-                                        join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
-                                          where C.CourseID = ${CourseID} AND C.State = 1
+                                        left join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
+                                          where C.CourseID = ${CourseID}
                                             group by C.CourseID`);
   if (course.length == 0) return null;
   return course[0];
 }, debug);
 
 const getLastElement = db.catchErrorDB(async function () {
-  const row = await db.load(`SELECT * FROM ${TBL_CAT} WHERE CourseID = (SELECT MAX(CourseID) FROM ${TBL_COU})`);
+  const row = await db.load(`SELECT * FROM ${TBL_COU} WHERE CourseID = (SELECT MAX(CourseID) FROM ${TBL_COU})`);
   if (row.length === 0) return null;
   return row[0];
 }, debug);
@@ -69,7 +69,7 @@ module.exports = {
   }, debug),
 
   getByCate: db.catchErrorDB(async function (CategoryID) {
-    const rows = await db.load(`select * from ${TBL_COU} WHERE CategoryID = ${CategoryID}`);
+    const rows = await db.load(`select * from ${TBL_COU} WHERE CategoryID = ${CategoryID} AND State = 1`);
     courses = []
     for (const e of rows) {
       const course = await getSingleByID(e.CourseID);
@@ -94,6 +94,12 @@ module.exports = {
   }, debug),
 
   add: db.catchErrorDB(async function (entity) {
+    entity = {
+      ...entity,
+      DateModified: new Date(),
+      Discount: 0,
+      State: 0
+    }
     await db.add(entity, TBL_COU);
     return await getLastElement();
   }, debug),
