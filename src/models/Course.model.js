@@ -14,9 +14,9 @@ const TBL_CAT = 'Category';
 const getSingleByID = db.catchErrorDB( async function (CourseID) {
   const course = await db.load(`SELECT C.CourseID, C.CourseName, CAT.CategoryID, CAT.CategoryName, 
                                     T.DisplayName,C.TeacherID, C.Avatar, C.DateModified, C.State,
-                                      C.Price, C.Discount, C.ShortDescription, C.FullDescription,
+                                      C.Price, C.Discount, C.ShortDescription, C.FullDescription, C.Viewed,
                                       avg(CR.Point) as Point, count(CR.CourseID) as Count 
-                                      FROM Course as C 
+                                      FROM ${TBL_COU} as C 
                                         left join ${TBL_USER} as T on C.TeacherID = T.UserID
                                         left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID
                                         left join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
@@ -91,6 +91,48 @@ module.exports = {
   getRates: db.catchErrorDB(async function (CourseID) {
     return db.load(`select r.CourseRatingID, r.StudentID, r.Point, r.Feedback, U.DisplayName  
       from CourseRating as r left join User as U on U.UserID = r.StudentID where r.CourseID = ${CourseID}`);
+  }, debug),
+
+  getEditerChoose: db.catchErrorDB(async function () {
+    const rows = [
+      {CourseID: 1},
+      {CourseID: 3},
+      {CourseID: 6},
+      {CourseID: 7},
+      {CourseID: 8},
+      {CourseID: 9},
+    ]
+    courses = []
+    for (const e of rows) {
+      const course = await getSingleByID(e.CourseID);
+      if (course) {courses.push(course);}
+    }
+    return courses;
+  }, debug),
+  getLatestByTime: db.catchErrorDB(async function () {
+    const rows = await db.load(`SELECT *, UNIX_TIMESTAMP(DateModified) AS DATE
+                                              FROM ${TBL_COU}
+                                              WHERE State = 1
+                                              ORDER BY DATE DESC
+                                              LIMIT 3;`)
+    courses = []
+    for (const e of rows) {
+      const course = await getSingleByID(e.CourseID);
+      if (course) {courses.push(course);}
+    }
+    return courses;
+  }, debug),
+  getTopPurchase: db.catchErrorDB(async function () {
+    const rows = await db.load(`SELECT CourseID, count(*) as SL FROM ${TBL_PUR} 
+                                          group by CourseID 
+                                          order by SL 
+                                          limit 3;`)
+    courses = []
+    for (const e of rows) {
+      const course = await getSingleByID(e.CourseID);
+      if (course) {courses.push(course);}
+    }
+    return courses;
   }, debug),
 
   add: db.catchErrorDB(async function (entity) {
