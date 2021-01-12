@@ -1,6 +1,9 @@
 {{!-- thay doi thong tin (email, name, password)
  --}}
 
+{{!-- thay doi thong tin (email, name, password)
+ --}}
+
 
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="public/img/breadcrumb.jpg">
@@ -25,19 +28,35 @@
         <div class="container">
             <div class="checkout__form">
                 <h4>Information</h4>
-                <p>Thong tin user o day</p>
-                <p><span>FirstName: </span>{{user.FirstName}}</p>
-                <p><span>LastName: </span>{{user.LastName}}</p>
-                <p><span>DisplayName: </span>{{user.DisplayName}}</p>
-                <p><span>Email: </span>{{user.Email}}</p>
-                <p><span>Avatar: </span>{{user.Avatar}}</p>
-                <p><span>Wallet: </span>{{user.Wallet}}</p>
+                <form action="user/edit" method="get">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4>Avatar</h4>
+                                <div><img src="public/img/user/avatar-2.jpg" alt=""></div>
+                                <h4><button type="submit" class="site-btn">Edit Profile</button></h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-lg-6">
+                            <div class="checkout__order">
+                                <h4>Your Info</h4>
+                                <div class="checkout__order__products">Name</div>
+                                <ul>
+                                    <li>First Name: <b>{{user.FirstName}}</b></li>
+                                    <li>Last Name: <b>{{user.LastName}}</b></li>
+                                    <li>Display Name:  <b>{{user.DisplayName}}</b> </li>
+                                </ul>
+                                <div class="checkout__order__products">Email </div>
+                                <p>{{user.Email}}</p>
+                                <div class="checkout__order__total">Wallet <span>${{user.Wallet}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </div>
         {{#if isTeacher}}
         <p>Danh sach cac khoa hoc o day</p>
         {{/if}}
-        <a href="/user/edit">Edit Profile</a>
+        </div>
     </section>
     <!-- User Profile Section End -->
-
