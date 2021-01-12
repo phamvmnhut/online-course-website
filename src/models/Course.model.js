@@ -58,6 +58,16 @@ module.exports = {
     return courses;
   }, debug),
 
+  getByTeacherID: db.catchErrorDB(async function (TeacherID) {
+    const rows = await db.load(`select * from ${TBL_COU} WHERE TeacherID = ${TeacherID}`);
+    courses = []
+    for (const e of rows) {
+      const course = await getSingleByID(e.CourseID);
+      if (course) {courses.push(course);}
+    }
+    return courses;
+  }, debug),
+
   getByCate: db.catchErrorDB(async function (CategoryID) {
     const rows = await db.load(`select * from ${TBL_COU} WHERE CategoryID = ${CategoryID}`);
     courses = []

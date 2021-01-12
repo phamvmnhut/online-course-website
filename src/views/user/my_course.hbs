@@ -43,19 +43,19 @@
                                 {{#each my_courses}}
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <a href="/detail/{{ID}}" class="latest-product__item">
+                                        <a href="/detail/{{CourseID}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
                                                 <img src="public/img/user/registered_list/rl-1.jpg" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>{{Name}} </h6>
+                                                <h6>{{CourseName}} - {{DisplayName}}</h6>
                                                 {{!-- <div class="rating"> --}}
                                                     {{!-- <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i> --}}
-                                                    <p>{{avg}}/5 ({{count}} reviews)</p>
+                                                    <p>{{Point}}/5 ({{Count}} reviews)</p>
                                                     
                                                 {{!-- </div>     --}}
                                                 <span>${{Price}}</span>
@@ -66,7 +66,7 @@
                                         {{#if State}}Complete{{else}}Studing{{/if}}
                                     </td>
                                     <td>
-                                        <strong><a href="study/{{ID}}">LEARN</a></strong>
+                                        <strong><a href="study/{{CourseID}}">LEARN</a></strong>
                                     </td>
                                     <td >
                                         <div class="blog__item__text">

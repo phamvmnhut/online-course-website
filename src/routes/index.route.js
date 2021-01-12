@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const { validateEmail } = require('../utils/validate');
 
-const { isAuth } = require('../middleware/auth');
+const { isAuth, isTeacher } = require('../middleware/auth');
 
 const { UserModel, CategoryModel, CourseModel, PurchaseModel} = require('../models');
 
@@ -340,14 +340,37 @@ router.get('/study/:id', isAuth, function (req, res) {
 })
 
 // teacher
-router.get('/update_course', function (req, res) {
-  res.render('teacher/update_course.hbs', {
+router.get('/own-course', isTeacher, async function (req, res) {
+  const TeacherID = req.session.authUser.UserID;
+  const own_courses = await CourseModel.getByTeacherID(TeacherID);
+  return res.render('teacher/own_course.hbs', {
+    title: 'Own Sourse',
+    page: 'teacher',
+    isEmpty: own_courses.length == 0,
+    own_courses
   })
-})
-
-router.get('/upload_course', function (req, res) {
-  res.render('teacher/upload_course.hbs', {
+});
+router.route('/own-course/add')
+  .get(isTeacher, async function (req, res) {
+    return res.render('teacher/course-add.hbs', {
+      title: 'Own Sourse',
+      page: 'teacher'
+    })
   })
-})
+  .post(isTeacher, async function (req, res) {
+    return res.redirect('/own-course')
+  })
+router.route('/own-course/:CourseID/edit')
+  .get(isTeacher, async function (req, res) {
+    const course = await CourseModel.getSingleByID(req.params.CourseID);
+    return res.render('teacher/course-edit.hbs', {
+      title: 'Own Sourse',
+      page: 'teacher',
+      course
+    })
+  })
+  .post(isTeacher, async function (req, res) {
+    return res.redirect('/own-course')
+  })
 
 module.exports = router;

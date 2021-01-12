@@ -1,18 +1,17 @@
-    {{!-- Danh sach khoa hoc yeu thich (xoa & xem chi tiet khoa hoc) --}}
-    
-    
-    
-    
+{{!-- Danh sach khoa hoc da dang ky va trang thai
+ --}}
+
+
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="public/img/breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Watch List</h2>
+                        <h2>Registered List</h2>
                         <div class="breadcrumb__option">
                             <a href="/">Home</a>
-                            <span>Watchlist</span>
+                            <span>Registered list</span>
                         </div>
                     </div>
                 </div>
@@ -21,7 +20,6 @@
     </section>
     <!-- Breadcrumb Section End -->
 
-    <!-- Shoping Cart Section Begin -->
     <section class="shoping-cart spad">
         <div class="container">
             <div class="row">
@@ -31,7 +29,9 @@
                             <thead>
                                 <tr>
                                     <th class="shoping__product">Courses</th>
-                                    <th></th>
+                                    <th>Status</th>
+                                    <th>Study</th>
+                                    <th>Date registered</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,29 +40,40 @@
                                     <th>You dont have any course</th>
                                 </tr>
                                 {{else}}
-                                {{#each my_courses}}
+                                {{#each own_courses}}
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <a href="/detail/{{Course}}" class="latest-product__item">
+                                        <a href="/detail/{{CourseID}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="public/img/user/watch_list/wl-1.jpg" alt="">
+                                                <img src="public/img/user/registered_list/rl-1.jpg" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 <h6>{{CourseName}} - {{DisplayName}}</h6>
-                                                {{!-- <div class="rating">
-                                                    <i class="fa fa-star"></i>
+                                                {{!-- <div class="rating"> --}}
+                                                    {{!-- <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i> --}}
                                                     <p>{{Point}}/5 ({{Count}} reviews)</p>
+                                                    
                                                 {{!-- </div>     --}}
                                                 <span>${{Price}}</span>
                                             </div>
                                         </a>
                                     </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
+                                    <td class="shoping__cart__price">
+                                        {{#if State}}Complete{{else}}Studing{{/if}}
+                                    </td>
+                                    <td>
+                                        <strong><a href="study/{{CourseID}}">LEARN</a></strong>
+                                    </td>
+                                    <td >
+                                        <div class="blog__item__text">
+                                            <ul>
+                                                <li><i class="fa fa-calendar-o"></i> {{formatDate DateModified}}</li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                                 {{/each}}
@@ -72,14 +83,5 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Upadate List</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
-    <!-- Shoping Cart Section End -->
