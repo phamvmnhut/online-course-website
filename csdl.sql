@@ -55,6 +55,7 @@ create table `Course` (
     `CategoryID` int not null,
     `Discount` int,
     `Avatar` varchar(255),
+    `Viewed` bigint,
     `DateModified` datetime not null,
 
     primary key (`CourseID`)
@@ -107,14 +108,6 @@ create table `CourseRating`(
     `Feedback` text character set utf8mb4 not null,
 
     primary key (`CourseRatingID`)
-);
-
-drop table if exists `Wallet`;
-create table `Wallet`(
-    `StudentID` int not null,
-    `CourseID` int not null,
-
-    primary key (`StudentID`, `CourseID`)
 );
 
 alter table Category add foreign key (FieldID) references Field(FieldID);

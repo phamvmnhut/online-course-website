@@ -27,10 +27,17 @@ const router = express.Router();
 // route for guest
 router.get('/', async function (req, res) {
   const catewithfield = await CategoryModel.withField();
+  
+  const courseEditerChoose = await CourseModel.getEditerChoose();
+  const courseLastedByTime = await CourseModel.getLatestByTime();
+  const courseTopPurchased = await CourseModel.getTopPurchase();
   return res.render('guest/home.hbs', {
     title: "Home",
     page: 'home',
-    catewithfield
+    catewithfield,
+    courseEditerChoose,
+    courseLastedByTime,
+    courseTopPurchased
   })
 })
 
@@ -166,6 +173,9 @@ router.get('/detail/(:id)?', async function (req, res) {
     req.flash("noti", "Dont exit this course with this ID");
     return res.redirect('/');
   }
+  
+  await CourseModel.path({CourseID: course.CourseID, Viewed: parseInt(course.Viewed) +1})
+  
   const rates = await CourseModel.getRates(req.params.id);
   const soleInfo = await CourseModel.getSoleInfo(req.params.id, userID);
   const relatedCourse = await CourseModel.getByCate(course.CategoryID);
