@@ -140,7 +140,8 @@ module.exports = {
       ...entity,
       DateModified: new Date(),
       Discount: 0,
-      State: 0
+      State: 0,
+      Viewed: 0
     }
     await db.add(entity, TBL_COU);
     return await getLastElement();

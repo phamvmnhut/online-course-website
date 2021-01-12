@@ -7,6 +7,9 @@ const { validateEmail } = require('../utils/validate');
 const { UserModel, CategoryModel, CourseModel, PurchaseModel, LessonModel} = require('../models');
 
 const { isAuth, isTeacher } = require('../middleware/auth');
+
+const { uploadImg } = require('../utils/upload');
+
 const isTeacherOwnCourse = async function (req, res, next) {
   const TeacherID = req.session.authUser.UserID;
   const course = await CourseModel.getSingleByID(req.params.CourseID);
@@ -374,6 +377,7 @@ router.get('/own-course', isTeacher, async function (req, res) {
     own_courses
   })
 });
+
 router.route('/own-course/add')
   .get(isTeacher, async function (req, res) {
     const cates = await CategoryModel.all();
@@ -383,9 +387,10 @@ router.route('/own-course/add')
       cates
     })
   })
-  .post(isTeacher, async function (req, res) {
+  .post(isTeacher, uploadImg ,async function (req, res) {
     const TeacherID = req.session.authUser.UserID;
-    const newCourse = await CourseModel.add({...req.body, TeacherID})
+    delete req.body.image;
+    const newCourse = await CourseModel.add({...req.body,Avatar: req.file.filename, TeacherID})
     if (!newCourse) {
       req.flash('error', 'Fail to add new course')
       return res.redirect('/own-course')
