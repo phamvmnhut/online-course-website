@@ -20,15 +20,15 @@
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th class="sort-col" scope="col">
-                <span>Tên </span>
+                <span>Name </span>
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th class="sort-col" scope="col">
-                <span>Mô tả </span>
+                <span>Description </span>
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th class="sort-col" scope="col">
-                <span>Số lượng </span>
+                <span>Categories </span>
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
         </tr>
@@ -47,7 +47,7 @@
 
 <div class="w-100 d-flex justify-content-center">
     <button type="button" class="btn btn-primary w-75" id="add-btn" onclick="showNewForm()">
-        new field
+        Create New Field
     </button>
 </div>
 <!-- Modal -->
@@ -57,7 +57,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-center col-12" id=",mainFormLabel">
-                    Thông tin field
+                    Field
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -73,21 +73,21 @@
                                 <input name="id" type="text" class="form-control" required="">
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label class="label">Số lượng category</label>
+                                <label class="label">Categories</label>
                                 <input name="cat" type="text" placeholder="0" class="form-control" required="">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12 form-group">
-                                <label class="label">Tên</label>
+                                <label class="label">Name</label>
                                 <input name="name" type="text" placeholder="name" class="form-control" required="">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12 form-group">
-                                <label class="label">Mô tả</label>
+                                <label class="label">Description</label>
                                 <textarea name="des" placeholder="description" class="form-control" rows="6"
                                     required=""></textarea>
                             </div>

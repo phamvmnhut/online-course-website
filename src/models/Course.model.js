@@ -153,6 +153,7 @@ module.exports = {
     return await db.get(condition, TBL_COU);
   }, debug),
   del: db.catchErrorDB(async function (entity) {
-    return await db.del({ CourseID }, TBL_COU);
+    const CourseID = entity.CourseID;
+    return await db.del({CourseID: CourseID }, TBL_COU);
   }, debug),
 };

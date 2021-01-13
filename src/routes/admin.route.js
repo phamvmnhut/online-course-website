@@ -12,20 +12,15 @@ const config = require('../config/default.json')
 router.use(isAdmin)
 
 router.get('/', async function(req, res) {
-    users = await userModel.all();
-    res.render('admin/admin-user.hbs', {
-        layout: 'admin_layout',
-        userTab: true,
-        users: users,
-    });
+    res.redirect('/admin/user?page=1');
 });
 
 router.get('/user', async function(req, res) {
     const page = Math.max(1, +req.query.page || 1);
     const limit = config.pagination.limit;
     const offset = (page - 1)*limit;
-    const qt = `select count(*) as total from user`;
-    const qu = `select * from user order by user.userid limit ${limit} offset ${offset};`
+    const qt = `select count(*) as total from User`;
+    const qu = `select * from User order by User.UserID limit ${limit} offset ${offset};`
     const nousers = (await db.load(qt))[0].total;
     const nopages = Math.ceil(nousers/limit);
     users = await db.load(qu);
@@ -42,14 +37,14 @@ router.get('/course', async function(req, res) {
     const page = Math.max(1, +req.query.page || 1);
     const limit = config.pagination.limit;
     const offset = (page - 1)*limit;
-    const qt = `select count(*) as total from course`;
+    const qt = `select count(*) as total from Course`;
     const nousers = (await db.load(qt))[0].total;
     const nopages = Math.ceil(nousers/limit);
 
-    const qc = `select course.courseid as id, course.coursename as name, user.displayname as teacher, category.categoryname as category, course.datemodified from 
-    (course left join user on course.teacherid = user.userid)
-    left join category on course.categoryid = category.categoryid
-    order by course.courseid
+    const qc = `select Course.CourseID, Course.CourseName, User.DisplayName as TeacherName, Category.CategoryName, Course.DateModified
+    from (Course left join User on Course.TeacherID = User.UserID)
+    left join Category on Course.CategoryID = Category.CategoryID
+    order by Course.CourseID
     limit ${limit}
     offset ${offset}`;
 
@@ -64,10 +59,10 @@ router.get('/course', async function(req, res) {
 });
 
 router.get('/cat/field', async function(req, res) {
-    const query = `select field.FieldID, field.FieldName, field.FieldDescription, ifnull(fno.NOCat, 0) as NOCat from 
-    field left join (
-        select fieldid, count(fieldid) as nocat from category group by category.fieldid
-    ) fno on field.fieldid = fno.fieldid;`;
+    const query = `select Field.FieldID, Field.FieldName, Field.FieldDescription, ifnull(fno.NOCat, 0) as NOCat from 
+    Field left join (
+        select FieldID, count(*) as nocat from Category group by Category.FieldID
+    ) fno on Field.FieldID = fno.FieldID;`;
     fields = await db.load(query);
     res.render('admin/admin-field.hbs', {
         layout: 'admin_layout',
@@ -77,12 +72,12 @@ router.get('/cat/field', async function(req, res) {
 });
 
 router.get('/cat/category', async function(req, res) {
-    const query = `select category.CategoryName, category.CategoryID, category.CategoryDescription, field.FieldName, ifnull(cno.sl, 0) as NOCourse
-    from category join field on category.fieldid = field.fieldid
-    left join (select course.categoryid, count(courseid) as sl from course group by course.categoryid) cno 
-        on category.categoryid = cno.categoryid;`;
+    const query = `select Category.CategoryName, Category.CategoryID, Category.CategoryDescription, Field.FieldName, ifnull(cno.sl, 0) as NOCourses
+    from Category join Field on Category.FieldID = Field.FieldID
+    left join (select Course.CategoryID, count(CourseID) as sl from Course group by Course.CategoryID) cno 
+        on Category.Categoryid = cno.CategoryID;`;
     categories = await db.load(query);
-    fields = await db.load('select * from field;');
+    fields = await db.load('select * from Field;');
     res.render('admin/admin-category.hbs', {
         layout: 'admin_layout',
         categoryTab: true,

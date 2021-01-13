@@ -91,7 +91,7 @@ router.route('/user/:id')
 
 router.route('/course/:id')
     .delete(async function(req, res) {
-        const re = await courseModel.del({ ID: req.params.id })
+        const re = await courseModel.del({ CourseID: req.params.id })
         if (re) {
             return res.json({ status: true })
         }
@@ -107,7 +107,7 @@ router.route('/cat-field')
     .delete(async function(req, res) {
         fieldID = req.body.FieldID;
 
-        const countCat = await db.load(`select count(*) as nocat from category where category.fieldid = ${fieldID}`);
+        const countCat = await db.load(`select count(*) as nocat from Category where Category.FieldID = ${fieldID}`);
         if (countCat[0].nocat > 0) {
             return res.json({ status: false });
         }
@@ -122,11 +122,11 @@ router.route('/cat-field')
 router.route('/cat-field/:id')
     .get(async function(req, res) {
         fieldID = req.params.id;
-        const query = `select field.FieldID, field.FieldName, field.FieldDescription, ifnull(fno.NOCat, 0) as NOCat from 
-  field left join (
-      select fieldid, count(fieldid) as nocat from category where category.fieldid = ${fieldID}
-  ) fno on field.fieldid = fno.fieldid
-  where field.fieldid = ${fieldID};`
+        const query = `select Field.FieldID, Field.FieldName, Field.FieldDescription, ifnull(fno.NOCat, 0) as NOCat from 
+                        Field left join (
+                            select FieldID, count(FieldID) as nocat from Category where Category.FieldID = ${fieldID}
+                        ) fno on Field.FieldID = fno.FieldID
+                        where Field.FieldID = ${fieldID};`
         const re = await db.load(query);
         if (re) {
             return res.json({ status: false, field: re[0] });
@@ -137,11 +137,11 @@ router.route('/cat-field/:id')
 router.route('/cat-category/:id')
     .get(async function(req, res) {
         catID = req.params.id;
-        const query = ` select category.CategoryName, category.CategoryID, category.CategoryDescription, field.FieldName, ifnull(cno.sl, 0) as NOCourse
-                        from category join field on category.fieldid = field.fieldid
-                        left join (select course.categoryid, count(courseid) as sl from course group by course.categoryid) cno 
-                            on category.categoryid = cno.categoryid
-                        where category.categoryid = ${catID};`
+        const query = ` select Category.CategoryName, Category.CategoryID, Category.CategoryDescription, Field.FieldName, ifnull(cno.sl, 0) as NOCourses
+                        from Category join Field on Category.FieldID = Field.FieldID
+                        left join (select Course.CategoryID, count(CourseID) as sl from Course group by Course.CategoryID) cno 
+                            on Category.CategoryID = cno.CategoryID
+                        where Category.CategoryID = ${catID};`
         const re = await db.load(query);
         if (re) {
             return res.json({ status: false, cat: re[0] });
@@ -158,9 +158,9 @@ router.route('/cat-category')
     .delete(async function(req, res) {
         catID = req.body.CategoryID;
 
-        const countCourse = await db.load(`select count(*) as nocourse from course where course.categoryid = ${catID};`);
+        const countCourses = await db.load(`select count(*) as nocourses from Course where Course.CategoryID = ${catID};`);
 
-        if (countCourse[0].nocourse > 0) {
+        if (countCourses[0].nocourses > 0) {
             return res.json({ status: false });
         }
         const re = await catModel.del(req.body);

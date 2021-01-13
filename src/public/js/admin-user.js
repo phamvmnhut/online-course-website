@@ -58,13 +58,12 @@ function submitUserForm() {
         ldsRollerStop();
         hideUserForm();
         if (res.status) {
-            // window.location = window.location.pathname;
             location.reload();
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Thao tác thất bại',
-                text: res.err || 'Something went wrong!',
+                title: 'Error',
+                text: res.err || 'Unknown error has occurred!',
             });
         }
     }).fail(function(err) {

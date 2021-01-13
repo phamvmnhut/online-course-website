@@ -108,7 +108,7 @@ function submitForm(){
 
 function setFormData(cat){
     mainForm.id.value = cat.CategoryID || '';
-    mainForm.courses.value = cat.NOCourse || '';
+    mainForm.courses.value = cat.NOCourses || '';
     mainForm.name.value = cat.CategoryName;
     mainForm.des.value = cat.CategoryDescription;
 }
