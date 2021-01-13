@@ -103,230 +103,42 @@
                     <div class="featured__controls">
                         <ul>
                             <li class="active" data-filter="*">All</li>
-                            <li data-filter=".oranges">Language</li>
-                            <li data-filter=".fresh-meat">IT</li>
-                            <li data-filter=".vegetables">Art</li>
-                            <li data-filter=".fastfood">Marketing</li>
+                            {{#if catewithfield}}
+                            {{#each catewithfield}}
+                            {{#each categorys}}
+                            <li data-filter=".{{CategoryName}}">{{CategoryName}}</li>
+                            {{/each}}
+                            {{/each}}
+                            {{/if}}
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="row featured__filter">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                {{#each allCourses}}
+                <div class="col-lg-3 col-md-4 col-sm-6 mix {{CategoryName}}">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-1.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
+                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-{{CourseID}}.jpg">
+                            <div class="category"><i class="fa "><a href=""> {{CategoryName}} </a></i>
                             </div>
 
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a href="/detail/{{CourseID}}"><i class="fa fa-external-link-square"></i></a></li>
+                                <li><a href="/confirm/{{CourseID}}"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
+                            <h5><a href="#">{{CourseName}}</a>{{DisplayName}}</h5>
                             <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
+                                <i class="fa fa-star">{{Point}}/5 </i>
+                                ({{Count}} Reviews)
                             </div>    
-                            <div class="product__item__price">$30.00</div>
+                            <div class="product__item__price">${{Price}}</div>
                         </div>
                      </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-2.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
-                            </div>    
-
-                            <div class="product__item__price">$30.00 </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-3.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood oranges">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-4.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-5.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-6.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-7.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-8.jpg">
-                            <div class="category"><i class="fa "><a href=""> category </a></i>
-                            </div>
-
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="/course_details"><i class="fa fa-external-link-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__discount__item__text">
-                            <h5><a href="#">Course's Name</a>(Teacher's Name)</h5>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                (18)
-                            </div>    
-
-                            <div class="product__item__price">$30.00</div>
-                        </div>
-                    </div>
-                </div>
+                {{/each}}
             </div>
         </div>
     </section>
