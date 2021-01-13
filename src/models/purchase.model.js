@@ -23,7 +23,7 @@ module.exports = {
     return await db.get({StudentID},TBL_PUR);
   }, debug),
   getWishByStudentID: db.catchErrorDB(async function(StudentID) {
-    return await db.get({StudentID},TBL_WIS);
+    return await db.get({StudentID}, TBL_WIS);
   }, debug),
 
   checkStudentRegisted: db.catchErrorDB(async function(StudentID, CourseID) {

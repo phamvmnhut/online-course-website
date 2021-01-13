@@ -31,73 +31,75 @@ var loadFile = function(event) {
         <div class="container">
             {{!-- <form action="" submit="false"> --}}
                 <div class="row">
-                    <form  enctype="multipart/form-data" method="POST">
-                    <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="product__details__pic">
-                            <div class="product__details__pic__item">
-                                <img id= "output" class="product__details__pic__item--large"
-                                    src="/public/img/{{course.Avatar}}" alt="">
-                            </div>
-                            <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
-                            <b><label for="file" style="cursor: pointer;" class="primary-btn">Change Image</label></b>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="checkout__form">
-                            {{!-- <form action="" method="POST"> --}}
-                                <div class="row">
-                                    <div class="col-lg-8 col-md-6">
-                                        <div class="checkout__input">
-                                            <p>Course's Name</p>
-                                            <input type="text" name="CourseName" value="{{course.CourseName}}">
+                    <div class="col-lg-12">
+                        <form  enctype="multipart/form-data" method="POST">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="product__details__pic">
+                                        <div class="product__details__pic__item">
+                                            <img id= "output" class="product__details__pic__item--large"
+                                                src="/public/img/{{course.Avatar}}" alt="">
                                         </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="checkout__input">
-                                                    <p>Price</p>
-                                                    <input type="text" name="Price" value="{{course.Price}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                               <div class="checkout__input">
-                                                <p>Category</p>
-                                                <select name="CategoryID" required>
-                                                    {{#each cates}}
-                                                    <option value="{{CategoryID}}" {{#ifeq CategoryID ../course.CategoryID}}selected{{/ifeq}} >{{CategoryName}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="checkout__input">
-                                            <p>Short Description</p>
-                                            <textarea name="ShortDescription">{{course.ShortDescription}}</textarea>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="checkout__input">
-                                                    <p><b>Status</b></p>
-                                                    <select name="State" required>
-                                                        <option value="0" {{#ifeq course.State 0}}selected{{/ifeq}}>Uploading</option>
-                                                        <option value="1" {{#ifeq course.State 1}}selected{{/ifeq}}>Completed</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="checkout__input">
-                                                    <p><span>.</span></p>
-                                                    <button type="submit" class="site-btn">UPDATE INFO</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+                                        <b><label for="file" style="cursor: pointer;" class="primary-btn">Change Image</label></b>
                                     </div>
                                 </div>
-                            {{!-- </form> --}}
-                        </div>
+                                <div class="col-lg-6 col-md-6" >
+                                    <div class="checkout__form">
+                                        {{!-- <form action="" method="POST"> --}}
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <div class="checkout__input">
+                                                        <p>Course's Name</p>
+                                                        <input type="text" name="CourseName" value="{{course.CourseName}}">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="checkout__input">
+                                                                <p>Price</p>
+                                                                <input type="number" name="Price" value="{{course.Price}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                        <div class="checkout__input">
+                                                            <p>Category</p>
+                                                            <select name="CategoryID" required>
+                                                                {{#each cates}}
+                                                                <option value="{{CategoryID}}" {{#ifeq CategoryID ../course.CategoryID}}selected{{/ifeq}} >{{CategoryName}}</option>
+                                                                {{/each}}
+                                                            </select>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="checkout__input">
+                                                        <p>Short Description</p>
+                                                        <textarea name="ShortDescription">{{course.ShortDescription}}</textarea>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="checkout__input">
+                                                                <p><b>Status</b></p>
+                                                                <select name="State" required>
+                                                                    <option value="0" {{#ifeq course.State 0}}selected{{/ifeq}}>Uploading</option>
+                                                                    <option value="1" {{#ifeq course.State 1}}selected{{/ifeq}}>Completed</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="checkout__input">
+                                                                <p><span>.</span></p>
+                                                                <button type="submit" class="site-btn">UPDATE INFO</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{!-- </form> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    </div>
-                    </form>
                     <div class="col-lg-12">
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">

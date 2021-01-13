@@ -2,9 +2,9 @@
 
 {{#section 'css'}}
 <style>
-    .active td{
-        color: chartreuse;
-    }
+.selected{
+    font-weight: bold;
+}
 </style>
 {{/section}}
 
@@ -94,7 +94,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 {{#each lessons}}
-                                                                <tr {{#ifeq Section ../SectionCur.Section}}class="active"{{/ifeq}}>
+                                                                <tr {{#ifeq Section ../SectionCur.Section}}class="selected"{{/ifeq}}>
                                                                     <td hidden>{{Section}}</td>
                                                                     <td>{{LessonTitle}}</td>
                                                                     <td>{{LessonDescription}}</td>
