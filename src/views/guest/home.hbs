@@ -61,7 +61,7 @@
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                            data-setbg="/public/img/{{Avatar}}">
+                                            data-setbg="/public/img/size360/{{Avatar}}">
                                             <div class="product__discount__percent">-{{Discount}}%</div>
                                             <div class="category"><i class="fa "><a href="/course?cate={{CategoryID}}">{{CategoryName}}</a></i>
                                             </div>
@@ -118,7 +118,7 @@
                 {{#each allCourses}}
                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{CategoryName}}">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/public/img/{{Avatar}}">
+                        <div class="featured__item__pic set-bg" data-setbg="/public/img/size270/{{Avatar}}">
                             <div class="category"><i class="fa "><a href=""> {{CategoryName}} </a></i>
                             </div>
 
@@ -129,7 +129,7 @@
                             </ul>
                         </div>
                         <div class="product__discount__item__text">
-                            <h5><a href="#">{{CourseName}}</a>{{DisplayName}}</h5>
+                            <h5><a href="#">{{CourseName}}</a> - {{DisplayName}}</h5>
                             <div class="rating">
                                 <i class="fa fa-star">{{Point}}/5 </i>
                                 ({{Count}} Reviews)
@@ -158,14 +158,6 @@
                         <img src="/public/img/banner/banner-2.jpg" alt="">
                     </div>
                 </div>
-                <!-- <div class="col-lg-6 col-md-6 col-sm-6 banner__pic" data-setbg="public/img/banner/banner-1.jpg">
-                    <div class="hero__text">
-                        <span>QUANG CAO</span>
-                        <p>Thong tin gioi thieu</p>
-                        <a href="#" class="primary-btn">SHOP NOW</a>
-                    </div>
-                </div> -->
-
             </div>
         </div>
     </div>
@@ -183,7 +175,7 @@
                                 {{#each courseLastedByTime}}
                                 <a href="/detail/{{CourseID}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="/public/img/{{Avatar}}" alt="">
+                                        <img src="/public/img/size110/{{Avatar}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{CourseName}} ({{DisplayName}})</h6>
@@ -207,7 +199,7 @@
                                 {{#each courseTopPurchased}}
                                 <a href="/detail/{{CourseID}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="/public/img/{{Avatar}}" alt="">
+                                        <img src="/public/img/size110/{{Avatar}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{CourseName}} ({{DisplayName}})</h6>

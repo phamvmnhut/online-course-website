@@ -199,7 +199,7 @@
 
 .lesson__table table {
 	width: 100%;
-	text-align: center;
+	text-align: center !important;
 }
 
 .lesson__table table thead tr {
@@ -317,6 +317,45 @@
 }
 
 .edit__del__btn a i {
+	transform: rotate(0);
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+}
+
+.study__btn {
+	text-align: center;
+}
+
+.study__btn button {
+}
+
+.study__btn button:hover {
+	background: #7fad39;
+	border-color: #7fad39;
+}
+
+.study__btn button:hover i {
+	color: #ffffff;
+	transform: rotate(360deg);
+}
+
+.study__btn button {
+	font-size: 16px;
+	color: #1c1c1c;
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid #ebebeb;
+	background: #ffffff;
+	display: block;
+	border-radius: 50%;
+}
+
+.study__btn button i {
 	transform: rotate(0);
 	-webkit-transition: all, 0.3s;
 	-moz-transition: all, 0.3s;

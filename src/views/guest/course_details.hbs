@@ -25,7 +25,7 @@
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
                             <img class="product__details__pic__item--large"
-                                src="/public/img/{{course.Avatar}}" alt="">
+                                src="/public/img/size560/{{course.Avatar}}" alt="">
                         </div>
                     </div>
                 </div>
@@ -33,13 +33,10 @@
                     <div class="product__details__text">
                         <h3>{{course.CourseName}} - {{course.DisplayName}}</h3>
                         <div class="product__details__rating">
-                            {{!-- <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i> --}}
-                            <span>({{#if course.Point}}{{course.Point}}{{else}}~{{/if}}/5)</span>
-                            <span>({{course.Count}} reviews)</span>
+                            <div class="rating">
+                                <i class="fa fa-star">{{#if course.Point}}{{course.Point}}{{else}}~{{/if}}/5 </i>
+                                ({{course.Count}} Reviews)
+                            </div>    
                         </div>
                         <div class="product__details__price">${{course.Price}}</div>
                         <p>{{course.ShortDescription}}</p>
@@ -77,7 +74,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>{{course.Count}}</span></a>
+                                    aria-selected="false">Reviews <span>({{course.Count}})</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -145,7 +142,7 @@
                     {{#each relatedCourse }}
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/public/img/{{Avatar}}">
+                            <div class="product__item__pic set-bg" data-setbg="/public/img/size270/{{Avatar}}">
                                 <div class="category"><i class="fa "><a href="/courses?cate={{CategoryID}}">{{CategoryName}}</a></i>
                                 </div>
                                 <div class="best__seller"><i class="fa fa-star">best seller</i></div>
