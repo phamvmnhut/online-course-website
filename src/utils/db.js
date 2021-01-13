@@ -31,6 +31,7 @@ module.exports = {
   getNoCondition: (tableName) => pool_query(`SELECT * from ${tableName}`),
   get: (condition, tableName) => pool_query(`SELECT * from ${tableName} WHERE ?`, condition),
   getLast: (tableName) => pool_query(`SELECT * from ${tableName}`),
+  get2Condition: (condition1, condition2, tableName) => pool_query(`SELECT * from ${tableName} WHERE ? AND ?`, [condition1, condition2]),
   add: (entity, tableName) => pool_query(`INSERT INTO ${tableName} SET ?`, entity),
   del: (condition, tableName) => pool_query(`DELETE FROM ${tableName} WHERE ?`, condition),
   patch: (entity, condition, tableName) => pool_query(`UPDATE ${tableName} SET ? WHERE ?`, [entity, condition])

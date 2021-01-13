@@ -20,9 +20,9 @@ let diskStorageVid = multer.diskStorage({
     callback(null, path.join(__dirname, '../', '/public/vid/'));
   },
   filename: (req, file, callback) => {
-    let math = ["image/mp4", "image/mpeg"];
+    let math = ["video/mp4", "video/mpeg"];
     if (math.indexOf(file.mimetype) === -1) {
-      let errorMess = `The file ${file.originalname} is invalid. Only allowed to upload mp4 jpeg or mpeg.`;
+      let errorMess = `The file ${file.originalname} is invalid. Only allowed to upload mp4 or mpeg.`;
       return callback(errorMess, null);
     }
     let filename = `${Date.now()}-${file.originalname}`;

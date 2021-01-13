@@ -38,7 +38,9 @@ module.exports = {
   getLastElement,
 
   getBySection: db.catchErrorDB(async function (Section) {
-    return await db.get({ Section }, TBL_LES);
+    const rows = await db.get({ Section }, TBL_LES);
+    if (rows.length === 0) return null;
+    return rows[0];
   }, debug),
     
   getByCourseID: db.catchErrorDB(async function (CourseID) {

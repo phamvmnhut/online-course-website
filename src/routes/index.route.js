@@ -8,7 +8,7 @@ const { UserModel, CategoryModel, CourseModel, PurchaseModel, LessonModel} = req
 
 const { isAuth, isTeacher } = require('../middleware/auth');
 
-const { uploadImg } = require('../utils/upload');
+const { uploadImg, uploadVid } = require('../utils/upload');
 
 const isTeacherOwnCourse = async function (req, res, next) {
   const TeacherID = req.session.authUser.UserID;
@@ -425,17 +425,23 @@ router.route('/own-course/:CourseID/edit')
       return res.redirect(req.get('referer'))
     }
     req.flash('success', "update success Course")
-    return res.redirect('/own-course')
+    return res.redirect(`/own-course/${req.course.CourseID}/edit`)
   })
 router.route('/own-course/:CourseID/del')
-  .get(isTeacher, async function (req, res) {
+  .get(isTeacher,isTeacherOwnCourse, async function (req, res) {
     return res.render('teacher/course-del.hbs', {
       title: 'Own Sourse',
       page: 'teacher',
     })
   })
-  .post(isTeacher, async function (req, res) {
-    return res.redirect('/own-course')
+  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
+    const updatedCourse = await CourseModel.path({CourseID: req.course.CourseID, Deleted: 1})
+    if (!updatedCourse) {
+      req.flash('error', "delete fail Course")
+      return res.redirect(req.get('referer'))
+    }
+    req.flash('success', "deleted success Course")
+    return res.redirect(`/own-course/${req.course.CourseID}/edit`)
   })
 
 router.route('/own-course/:CourseID/lesson/add')
@@ -446,9 +452,14 @@ router.route('/own-course/:CourseID/lesson/add')
       course: req.course
     })
   })
-  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
+  .post(isTeacher, isTeacherOwnCourse, uploadVid ,async function (req, res) {
     const CourseID = req.course.CourseID;
-    const newLesson = await LessonModel.add({ ...req.body, CourseID })
+    delete req.body.video;
+    let newLessonTdo = { ...req.body, CourseID }
+    if (req.file !== undefined) {
+      newLessonTdo = { ...newLessonTdo, Video: req.file.filename }
+    }
+    const newLesson = await LessonModel.add(newLessonTdo)
     if (!newLesson) {
       req.flash('error', 'Fail to add new lesson')
       return res.redirect(req.get('referer'))
@@ -459,6 +470,10 @@ router.route('/own-course/:CourseID/lesson/add')
 router.route('/own-course/:CourseID/lesson/:Section/edit')
   .get(isTeacher, isTeacherOwnCourse, async function (req, res) {
     const lesson = await LessonModel.getBySection(req.params.Section)
+    if (!lesson) {
+      req.flash('error', "Fail to load this Lesson")
+      return res.redirect(`/own-course/${CourseID}/edit`)
+    }
     return res.render('teacher/lesson-edit.hbs', {
       title: 'Own Sourse',
       page: 'teacher',
@@ -466,14 +481,19 @@ router.route('/own-course/:CourseID/lesson/:Section/edit')
       lesson,
     })
   })
-  .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
+  .post(isTeacher, isTeacherOwnCourse, uploadVid, async function (req, res) {
     const Section = req.params.Section
-    const newLesson = await LessonModel.patch({ ...req.body, Section })
-    if (!newLesson) {
-      req.flash('error', 'Fail to add new lesson')
+    delete req.body.video;
+    let updateLessonTdo = { ...req.body, Section }
+    if (req.file !== undefined) {
+      updateLessonTdo = { ...updateLessonTdo, Video: req.file.filename }
+    }
+    const updateLesson = await LessonModel.patch(updateLessonTdo)
+    if (!updateLesson) {
+      req.flash('error', 'Fail to add update lesson')
       return res.redirect(req.get('referer'))
     }
-    req.flash('success', 'Success to add new Lesson')
+    req.flash('success', 'Success to update Lesson')
     return res.redirect(`/own-course/${req.course.CourseID}/edit`)
   })
 router.route('/own-course/:CourseID/lesson/:Section/del')

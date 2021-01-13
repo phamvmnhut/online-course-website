@@ -20,7 +20,7 @@ const getSingleByID = db.catchErrorDB( async function (CourseID) {
                                         left join ${TBL_USER} as T on C.TeacherID = T.UserID
                                         left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID
                                         left join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
-                                          where C.CourseID = ${CourseID}
+                                          where C.CourseID = ${CourseID} AND C.Deleted = 0
                                             group by C.CourseID`);
   if (course.length == 0) return null;
   return course[0];
@@ -37,10 +37,10 @@ module.exports = {
   getLastElement,
 
   all: db.catchErrorDB(async function () {
-    return await db.getNoCondition(TBL_COU);
+    return await db.get({Deleted: 0},TBL_COU);
   }, debug),
   allEditing: db.catchErrorDB(async function () {
-    const rows = await db.get( {State : 0},TBL_COU);
+    const rows = await db.get2Condition( {State : 0}, {Deleted: 0},TBL_COU);
     courses = []
     for (const e of rows) {
       const course = await getSingleByID(e.CourseID);
@@ -49,7 +49,7 @@ module.exports = {
     return courses;
   }, debug),
   allCompleted: db.catchErrorDB(async function () {
-    const rows = await db.get( {State : 1},TBL_COU);
+    const rows = await db.get2Condition( {State : 1}, {Deleted: 0}, TBL_COU);
     courses = []
     for (const e of rows) {
       const course = await getSingleByID(e.CourseID);
@@ -59,7 +59,7 @@ module.exports = {
   }, debug),
 
   getByTeacherID: db.catchErrorDB(async function (TeacherID) {
-    const rows = await db.load(`select * from ${TBL_COU} WHERE TeacherID = ${TeacherID}`);
+    const rows = await db.get2Condition({TeacherID}, {Deleted: 0}, TBL_COU)
     courses = []
     for (const e of rows) {
       const course = await getSingleByID(e.CourseID);
@@ -69,7 +69,7 @@ module.exports = {
   }, debug),
 
   getByCate: db.catchErrorDB(async function (CategoryID) {
-    const rows = await db.load(`select * from ${TBL_COU} WHERE CategoryID = ${CategoryID} AND State = 1`);
+    const rows = await db.load(`select * from ${TBL_COU} WHERE CategoryID = ${CategoryID} AND State = 1 AND Deleted = 0`);
     courses = []
     for (const e of rows) {
       const course = await getSingleByID(e.CourseID);
