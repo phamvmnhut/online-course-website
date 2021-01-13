@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const { validateEmail } = require('../utils/validate');
 
-const { UserModel, CategoryModel, CourseModel, PurchaseModel, LessonModel} = require('../models');
+const { UserModel, CategoryModel, CourseModel, PurchaseModel, LessonModel, LearningModel} = require('../models');
 
 const { isAuth, isTeacher } = require('../middleware/auth');
 
@@ -20,6 +20,22 @@ const isTeacherOwnCourse = async function (req, res, next) {
   if (course.TeacherID != TeacherID) {
     req.flash('You dont have permission to this action')
     return res.redirect('/own-course');
+  }
+  req.course = course;
+  return next();
+}
+const isStudentRegisted = async function (req, res, next){
+  const StudentID = req.session.authUser.UserID;
+  const CourseID = await req.params.CourseID
+  const course = await CourseModel.getSingleByID(CourseID);
+  if (!course) {
+    req.flash('Dont have this course')
+    return res.redirect('/my-course');
+  }
+  const purchased = await PurchaseModel.checkStudentRegisted(StudentID, CourseID);
+  if (!purchased) {
+    req.flash('You dont have this course in purchased for do this action')
+    return res.redirect('/my-course');
   }
   req.course = course;
   return next();
@@ -274,19 +290,28 @@ router.route('/user/edit')
 // student
 router.route('/confirm/:CourseID')
   .get(isAuth, async function (req, res) {
-    const user = await UserModel.single(req.session.authUser.UserID);
-    const course = await CourseModel.getSingleByID(req.params.CourseID);
+    const UserID = req.session.authUser.UserID
+    const CourseID = req.params.CourseID;
+    const user = await UserModel.single(UserID);
+    const course = await CourseModel.getSingleByID(CourseID);
     if (!course) {
       req.flash("noti", "Your course you wait is not exist");
       return res.redirect('/courses');
     }
     const balanse = user.Wallet - course.Price;
+
+    const soleInfo = await CourseModel.getSoleInfo(CourseID, UserID);
+    if (soleInfo.isSole) {
+      req.flash('noti', "you readly have this course")
+      return res.redirect(`/study/${CourseID}`)
+    }
+
     return res.render('user/confirm.hbs', {
       title: course.Name,
       course,
       user,
       balanse,
-      isOK: balanse >= 0
+      isOK: balanse >= 0,
     })
   })
   .post(isAuth, async function (req, res) {
@@ -356,16 +381,36 @@ router.get('/my-course', isAuth, async function (req, res) {
   })
 });
 
-router.get('/feedback', function (req, res) {
+router.get('/study/:CourseID/feedback', function (req, res) {
   res.render('user/feedback.hbs', {
   })
 })
 
-router.get('/study/:id', isAuth, function (req, res) {
-  res.render('user/studying.hbs', {
+router.route('/study/:CourseID/')
+.get(isAuth, isStudentRegisted, async function (req, res) {
+  const CourseID = req.params.CourseID;
+  const StudentID = req.session.authUser.UserID;
+
+  // get learning position
+  const Learning = await LearningModel.getOne({CourseID, StudentID});
+  // render video
+  const lessons = await  LessonModel.getByCourseID(CourseID);
+  const SectionCur = lessons.filter(e => e.Section == Learning.Section)[0]
+
+  // get info
+  const rates = await CourseModel.getRates(CourseID);
+
+  return res.render('user/studying.hbs', {
     title: 'Learning',
-    page: 'student'
+    page: 'student',
+    lessons,
+    SectionCur,
+    rates,
+    course: req.course
   })
+})
+.post(isAuth, isStudentRegisted, async function (req, res){
+  return res.json({})
 })
 
 // teacher
@@ -437,8 +482,8 @@ router.route('/own-course/:CourseID/del')
     })
   })
   .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
-    const updatedCourse = await CourseModel.path({CourseID: req.course.CourseID, Deleted: 1})
-    if (!updatedCourse) {
+    const delCourse = await CourseModel.del(req.params.CourseID)
+    if (!delCourse) {
       req.flash('error', "delete fail Course")
       return res.redirect(req.get('referer'))
     }

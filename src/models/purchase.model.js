@@ -25,6 +25,11 @@ module.exports = {
     return await db.get({StudentID},TBL_WIS);
   }, debug),
 
+  checkStudentRegisted: db.catchErrorDB(async function(StudentID, CourseID) {
+    const rows = await db.get2Condition({StudentID}, {CourseID},TBL_PUR);
+    return rows.length > 0;
+  }, debug),
+
   add: db.catchErrorDB( async function(entity) {
     await db.add({ ...entity, 'DatePurchased': new Date() }, TBL_PUR);
     return await getLastElement();
