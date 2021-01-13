@@ -3,6 +3,7 @@ const debug = require('debug')('app:purchase>model');
 
 const TBL_PUR = 'Purchased';
 const TBL_WIS = 'Favorite';
+const TBL_COU_RAT = 'CourseRating';
 
 const getLastElement = db.catchErrorDB(async function () {
   const row = await db.load(`SELECT * FROM ${TBL_PUR} WHERE DatePurchased = (SELECT MAX(DatePurchased) FROM ${TBL_PUR})`);
@@ -27,7 +28,8 @@ module.exports = {
 
   checkStudentRegisted: db.catchErrorDB(async function(StudentID, CourseID) {
     const rows = await db.get2Condition({StudentID}, {CourseID},TBL_PUR);
-    return rows.length > 0;
+    if (rows.length == 0 ) return false;
+    return rows[0]
   }, debug),
 
   add: db.catchErrorDB( async function(entity) {
@@ -48,5 +50,14 @@ module.exports = {
     delete entity.ID;
     return db.patch(entity, condition, TBL_PUR);
   },
-  getLastElement
+  getLastElement,
+
+  checkHad: db.catchErrorDB( async function(CourseID, StudentID) {
+    const rows = await db.get2Condition({StudentID}, {CourseID}, TBL_COU_RAT);
+    if (rows.length == 0 ) return false;
+    return rows[0]
+  }, debug),
+  addFeedback: db.catchErrorDB(async function(entity) {
+    return db.add(entity, TBL_COU_RAT);
+  }),
 };

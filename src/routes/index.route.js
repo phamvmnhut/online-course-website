@@ -199,6 +199,7 @@ router.get('/detail/(:id)?', async function (req, res) {
   
   const rates = await CourseModel.getRates(req.params.id);
   const soleInfo = await CourseModel.getSoleInfo(req.params.id, userID);
+  const lessons = await  LessonModel.getByCourseID(course.CourseID);
   const relatedCourse = await CourseModel.getByCate(course.CategoryID);
 
   return res.render('guest/course_details.hbs', {
@@ -207,6 +208,7 @@ router.get('/detail/(:id)?', async function (req, res) {
     course,
     rates,
     soleInfo,
+    lessons,
     relatedCourse,
     activeID: req.params.id
   })
@@ -393,12 +395,21 @@ router.route('/study/:CourseID/')
 
   // get learning position
   const Learning = await LearningModel.getOne({CourseID, StudentID});
+  if (! Learning) {
+    req.flash("This course dont have any Lesson")
+    return res.render('user/studying.hbs', {
+      title: 'Learning',
+      page: 'student',
+      isNotReadyToLearn: true,
+    })
+  }
   // render video
   const lessons = await  LessonModel.getByCourseID(CourseID);
   const SectionCur = lessons.filter(e => e.Section == Learning.Section)[0]
 
   // get info
   const rates = await CourseModel.getRates(CourseID);
+  const feedback = await PurchaseModel.checkHad(CourseID, StudentID)
 
   return res.render('user/studying.hbs', {
     title: 'Learning',
@@ -406,12 +417,36 @@ router.route('/study/:CourseID/')
     lessons,
     SectionCur,
     rates,
-    course: req.course
+    course: req.course,
+    feedback
   })
 })
-.post(isAuth, isStudentRegisted, async function (req, res){
-  return res.json({})
-})
+  .post(isAuth, isStudentRegisted, async function (req, res) {
+    // debug(req.body);
+    const CourseID = req.params.CourseID;
+    const StudentID = req.session.authUser.UserID;
+    if (req.body.Section !== undefined) {
+      const Section = req.body.Section
+      const updateLearning = await LearningModel.patch({ Section, CourseID, StudentID })
+      return res.json({ status: updateLearning })
+    }
+    if (req.body.CourseRatingID !== undefined) {
+      if (req.body.CourseRatingID == 0) { //add fb
+        delete req.body.CourseRatingID
+        const newFeedbackTdo = { CourseID, StudentID, ...req.body }
+        const addNewFeedback = await PurchaseModel.addFeedback(newFeedbackTdo)
+        if (!addNewFeedback) {
+          req.flash('warn', 'add new feedback fial')
+
+        } else {
+          res.flash('success', "add new feedback success")
+        }
+        return res.redirect(req.get('referer'))
+      } else {
+        // update feedback
+      }
+    }
+  })
 
 // teacher
 router.get('/own-course', isTeacher, async function (req, res) {
@@ -457,7 +492,7 @@ router.route('/own-course/:CourseID/edit')
       course : req.course,
       cates,
       lessons,
-      rates
+      rates,
     })
   })
   .post(isTeacher, isTeacherOwnCourse, uploadImg, async function (req, res) {

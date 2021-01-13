@@ -15,6 +15,9 @@ const add = db.catchErrorDB(async function (entity) {
   const CourseID = entity.CourseID;
   const StudentID = entity.StudentID;
   const LessonFirst = await LessonModel.getByCourseID(CourseID);
+  if (LessonFirst.length == 0) {
+    return false;
+  }
   await db.add({ CourseID, StudentID, Section: LessonFirst[0].Section, State: 0 }, TBL_LER);
   const res =  await db.get2Condition({ CourseID }, { StudentID }, TBL_LER);
   return res[0];
@@ -37,6 +40,7 @@ module.exports = {
   patch: db.catchErrorDB(async function (entity) {
     const CourseID = entity.CourseID;
     const StudentID = entity.StudentID;
+    const Section = entity.Section
     await db.load(`UPDATE ${TBL_LER} SET Section=${Section} WHERE CourseID=${CourseID} AND StudentID=${StudentID}`)
     const res = await db.get2Condition({ CourseID }, { StudentID }, TBL_LER);
     return res[0];

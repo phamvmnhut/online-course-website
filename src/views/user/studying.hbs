@@ -1,4 +1,13 @@
 {{!-- Xem video bai giang va trang thai bai giang --}}
+
+{{#section 'css'}}
+<style>
+    .active td{
+        color: chartreuse;
+    }
+</style>
+{{/section}}
+
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="/public/img/breadcrumb.jpg">
         <div class="container">
@@ -21,8 +30,14 @@
     <!-- Course Details Section Begin -->
     <section class="product-details spad">
         <div class="container">
+            {{#if isNotReadyToLearn}} 
+            <div class="col-lg-12 text-center">
+                Khong co video thi lay gi ma xem
+            </div>
+            {{else}}
             <div class="row">
                 <div class="col-lg-12 text-center">
+                    <h5>{{SectionCur.LessonTitle}}</h5>
                     <video
                         id="my-player"
                         class="video-js"
@@ -50,7 +65,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>(2)</span></a>
+                                    aria-selected="false">Reviews <span>({{rates.length}})</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -71,6 +86,7 @@
                                                         <table>
                                                             <thead>
                                                                 <tr>
+                                                                    <th hidden>Section</th>
                                                                     <th>Title</th>
                                                                     <th>Description</th>
                                                                     <th>Learn</th>
@@ -78,10 +94,11 @@
                                                             </thead>
                                                             <tbody>
                                                                 {{#each lessons}}
-                                                                <tr>
+                                                                <tr {{#ifeq Section ../SectionCur.Section}}class="active"{{/ifeq}}>
+                                                                    <td hidden>{{Section}}</td>
                                                                     <td>{{LessonTitle}}</td>
                                                                     <td>{{LessonDescription}}</td>
-                                                                    <td><button>ICON</button></td>
+                                                                    <td><button onclick="clickToLearn(this)">ICON</button></td>
                                                                 </tr>
                                                                 {{/each}}
                                                             </tbody>
@@ -90,13 +107,77 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
                                 <div class="product__details__tab__desc">
                                     <div class="contact-form spad">
                                         <div class="container">
+                                            <form method="POST">
+                                                {{#if feedback}}
+                                                <div class="row">
+                                                    <input name="CourseRatingID" value="{{feedback.CourseRatingID}}" hidden>
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <div class="checkout__form">
+                                                            <div class="row">
+                                                                <div class="col-lg-8 col-md-6">
+                                                                    <div class="checkout__input">
+                                                                        <p>Start</p>
+                                                                        <input type="number" name="Point" required value="{{feedback.Point}}">
+                                                                    </div>                               
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <div class="checkout__form">
+                                                            <div class="row">
+                                                                <div class="col-lg-8 col-md-6">
+                                                                    <div class="checkout__input">
+                                                                        <p>Feedback</p>
+                                                                        <input type="text" name="Feedback" required value="{{feedback.Feedback}}">
+                                                                    </div>                               
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-lg-12 text-center">
+                                                        <button type="submit" class="site-btn">UPDATE FEEDBACK</button>
+                                                    </div>
+                                                </div>
+                                                {{else}}
+                                                <div class="row">
+                                                    <input name="CourseRatingID" value="0" hidden>
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <div class="checkout__form">
+                                                            <div class="row">
+                                                                <div class="col-lg-8 col-md-6">
+                                                                    <div class="checkout__input">
+                                                                        <p>Start</p>
+                                                                        <input type="number" name="Point" required >
+                                                                    </div>                               
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <div class="checkout__form">
+                                                            <div class="row">
+                                                                <div class="col-lg-8 col-md-6">
+                                                                    <div class="checkout__input">
+                                                                        <p>Feedback</p>
+                                                                        <input type="text" name="Feedback" required >
+                                                                    </div>                               
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-lg-12 text-center">
+                                                        <button type="submit" class="site-btn">ADD FEEDBACK</button>
+                                                    </div>
+                                                </div>
+                                                {{/if}}
+                                            </form>
                                             {{#each rates }}
                                             <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
                                             {{/each}}
@@ -108,8 +189,26 @@
                     </div>
                 </div>
             </div>
+            {{/if}}
         </div>
     </section>
     <!-- Course Details Section End -->
 
-
+{{#section 'js'}}
+<script>
+function clickToLearn(e){
+    const Section = $(e).parent().parent().children()[0].innerText
+    $.ajax({
+        type: "POST",
+        // The key needs to match your method's input parameter (case-sensitive).
+        data: JSON.stringify({Section}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data){window.location.reload();},
+        failure: function(errMsg) {
+            alert(errMsg);
+        }
+        });
+}
+</script>
+{{/section}}

@@ -85,7 +85,8 @@ module.exports = {
     const isSole = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseID} and StudentID = ${UserID}`);
     return {
       ...rare_info[0],
-      'isSole': isSole[0].count == 1
+      'isSole': isSole[0].count == 1,
+      rate: isSole[0]
     }
   }, debug),
   getRates: db.catchErrorDB(async function (CourseID) {
