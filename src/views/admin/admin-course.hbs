@@ -32,7 +32,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center col-12" id="filterFormLabel">
-                        Bộ lọc tìm kiếm
+                        Filter
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -42,30 +42,30 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12 form-group">
-                                <h6 class="card-subtitle mb-2 text-muted">Tìm kiếm theo</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Search By</h6>
                                 <div class="custom-control custom-checkbox ml-3">
                                     <input name="coursename" value="true" type="checkbox" class="custom-control-input"
                                         id="coursename" checked>
-                                    <label class="custom-control-label" for="coursename">Tên khoá học</label>
+                                    <label class="custom-control-label" for="coursename">Course's name</label>
                                 </div>
                                 <div class="custom-control custom-checkbox ml-3">
                                     <input name="teachername" type="checkbox" class="custom-control-input"
                                         id="teachername" checked>
-                                    <label class="custom-control-label" for="teachername">Tên giảng viên</label>
+                                    <label class="custom-control-label" for="teachername">Teacher's name</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <h6 class="card-subtitle mb-2 text-muted">Giá tiền</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Price</h6>
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label class="label">Lớn hơn</label>
+                                <label class="label">Greater</label>
                                 <input name="w-min" placeholder="0" type="text" class="form-control">
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label class="label">Nhỏ hơn</label>
+                                <label class="label">Lesser</label>
                                 <input name="w-max" type="text" placeholder="1_000_000" class="form-control"
                                     minlength="0" maxlength="15">
                             </div>
@@ -73,28 +73,28 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <h6 class="card-subtitle mb-2 text-muted">Số lượng học viên</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Total students</h6>
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label class="label">Lớn hơn</label>
+                                <label class="label">Greater</label>
                                 <input name="no-min" placeholder="0" type="text" class="form-control">
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label class="label">Nhỏ hơn</label>
+                                <label class="label">Lesser</label>
                                 <input name="no-max" type="text" placeholder="1_000_000" class="form-control"
                                     minlength="0" maxlength="15">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <h6 class="card-subtitle mb-2 text-muted">Giá tiền</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Price</h6>
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label class="label">Lớn hơn</label>
+                                <label class="label">Greater</label>
                                 <input name="w-min" placeholder="0" type="text" class="form-control">
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label class="label">Nhỏ hơn</label>
+                                <label class="label">Lesser</label>
                                 <input name="w-max" type="tel" placeholder="1_000_000" class="form-control"
                                     minlength="0" maxlength="15">
                             </div>
@@ -114,11 +114,11 @@
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th class="sort-col" scope="col">
-                <span>Tên </span>
+                <span>Name </span>
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th class="sort-col" scope="col">
-                <span>Giảng viên </span>
+                <span>Teacher </span>
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th class="sort-col" scope="col">
@@ -126,7 +126,7 @@
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th class="sort-col" scope="col">
-                <span>Ngày cập nhật </span>
+                <span>Date Modified </span>
                 <i class="align-middle sort-icon" data-feather="chevron-up" style="padding-bottom: 5px;"></i>
             </th>
             <th scope="col" class="d-flex justify-content-center">
@@ -138,13 +138,13 @@
     <tbody>
         {{#each courses}}
         <tr>
-            <th class="user-id" scope="row">{{id}}</th>
-            <td>{{name}}</td>
-            <td>{{teacher}}</td>
-            <td>{{category}}</td>
-            <td>{{formatDate datemodified}}</td>
+            <th class="user-id" scope="row">{{CourseID}}</th>
+            <td>{{CourseName}}</td>
+            <td>{{TeacherName}}</td>
+            <td>{{CategoryName}}</td>
+            <td>{{formatDate DateModified}}</td>
             <td class="d-flex justify-content-center">
-                <button class="btn btn-danger" onclick="removeCourse({{id}})">
+                <button class="btn btn-danger" onclick="removeCourse({{CourseID}})">
                     <i class="align-middle" data-feather="minus"></i>
                 </button>
             </td>

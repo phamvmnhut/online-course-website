@@ -153,6 +153,7 @@ module.exports = {
     await db.patch(entity, condition, TBL_COU);
     return await db.get(condition, TBL_COU);
   }, debug),
+
   del: db.catchErrorDB(async function (CourseID) {
     const condition = { CourseID };
     await db.patch({Deleted: 1}, condition, TBL_COU);
