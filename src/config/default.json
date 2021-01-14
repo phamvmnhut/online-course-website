@@ -1,5 +1,6 @@
 {
     "pagination": {
-        "limit": 5
+        "tablelimit": 5,
+        "courselimit": 6
     }
 }

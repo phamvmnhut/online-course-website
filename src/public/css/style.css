@@ -1662,6 +1662,18 @@ ol {
 	margin-right: 0;
 }
 
+.product__pagination .active {
+	background: #7fad39;
+	border-color: #7fad39;
+	color: #ffffff;
+}
+
+.product__pagination .disabled {
+	pointer-events: none;
+	cursor: default;
+	opacity: 0.6;
+}
+
 /*---------------------
   Shop Details
 -----------------------*/

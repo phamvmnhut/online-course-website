@@ -18,7 +18,7 @@ router.get('/user', async function(req, res) {
     const roleParsed = parseInt(req.query.role);
     const role = isNaN(roleParsed) ? -1 : roleParsed;
     const page = Math.max(1, +req.query.page || 1);
-    const limit = config.pagination.limit;
+    const limit = config.pagination.tablelimit;
     const offset = (page - 1) * limit;
     const nousers = await UserModel.totalUses(role);
     const nopages = Math.ceil(nousers / limit);
@@ -43,7 +43,7 @@ router.get('/course', async function(req, res) {
     const w_max = req.query['w-max'];
 
     const page = Math.max(1, +req.query.page || 1);
-    const limit = config.pagination.limit;
+    const limit = config.pagination.tablelimit;
     const offset = (page - 1) * limit;
     await CourseModel.loadCourseView({key, cat, no_min, no_max, w_min, w_max});
 
