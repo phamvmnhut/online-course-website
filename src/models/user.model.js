@@ -9,6 +9,8 @@ const TBL_USERS = 'User';
 * 2: admin
  */
 
+
+
 module.exports = {
   getLastElement: db.catchErrorDB(async function () {
     return await db.load(`SELECT * FROM ${TBL_USERS} WHERE UserID = (SELECT MAX(UserID) FROM ${TBL_USERS})`);
@@ -40,13 +42,26 @@ module.exports = {
   patch: db.catchErrorDB(async function (entity) {
     const condition = { UserID: entity.UserID };
     delete entity.UserID;
-    await db.patch(entity, condition, TBL_USERS);
+    var x = await db.patch(entity, condition, TBL_USERS);
     const user = await db.get(condition, TBL_USERS)
     return user[0];
   }, debug),
 
   del: db.catchErrorDB(async function (UserID) {
-    await db.del({ UserID }, TBL_USERS);
     return true
   }, debug),
+
+  allByRole: db.catchErrorDB(async function(role, limit, offset){
+    var qr = (role == -1) ? '' : `where Role=${role}`
+    return db.load(`select * from User ${qr} order by UserID limit ${limit} offset ${offset};`)
+  }, debug),
+
+  totalUses: db.catchErrorDB(async function(role){
+    var qr = (role == -1) ? '' : `where Role=${role}`
+    const rows = await db.load(`select count(*) as total from User ${qr};`);
+    if (rows && rows.length != 0) {
+      return rows[0].total;
+    }
+    return 0;
+  }, debug)
 }

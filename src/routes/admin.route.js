@@ -3,8 +3,7 @@ const app = require('../app');
 const debug = require('debug')('app:admin');
 
 const router = express.Router();
-const userModel = require('./../models/user.model');
-const courseModel = require('./../models/Course.model');
+const { UserModel, CourseModel, CategoryModel} = require('../models');
 const { isAdmin } = require('../middleware/auth');
 const db = require('./../utils/db');
 const config = require('../config/default.json')
@@ -16,46 +15,50 @@ router.get('/', async function(req, res) {
 });
 
 router.get('/user', async function(req, res) {
+    const roleParsed = parseInt(req.query.role);
+    const role = isNaN(roleParsed) ? -1 : roleParsed;
     const page = Math.max(1, +req.query.page || 1);
     const limit = config.pagination.limit;
-    const offset = (page - 1)*limit;
-    const qt = `select count(*) as total from User`;
-    const qu = `select * from User order by User.UserID limit ${limit} offset ${offset};`
-    const nousers = (await db.load(qt))[0].total;
-    const nopages = Math.ceil(nousers/limit);
-    users = await db.load(qu);
+    const offset = (page - 1) * limit;
+    const nousers = await UserModel.totalUses(role);
+    const nopages = Math.ceil(nousers / limit);
+    users = await UserModel.allByRole(role, limit, offset);
     res.render('admin/admin-user.hbs', {
         layout: 'admin_layout',
         userTab: true,
+        role: role,
         users: users,
         nopages: nopages,
         curpage: page,
     });
 });
 
+
 router.get('/course', async function(req, res) {
+    const key = req.query.key;
+    const cat = req.query.category;
+    const no_min = req.query['no-min'];
+    const no_max = req.query['no-max'];
+    const w_min = req.query['w-min'];
+    const w_max = req.query['w-max'];
+
     const page = Math.max(1, +req.query.page || 1);
     const limit = config.pagination.limit;
-    const offset = (page - 1)*limit;
-    const qt = `select count(*) as total from Course`;
-    const nousers = (await db.load(qt))[0].total;
-    const nopages = Math.ceil(nousers/limit);
+    const offset = (page - 1) * limit;
+    await CourseModel.loadCourseView({key, cat, no_min, no_max, w_min, w_max});
 
-    const qc = `select Course.CourseID, Course.CourseName, User.DisplayName as TeacherName, Category.CategoryName, Course.DateModified
-    from (Course left join User on Course.TeacherID = User.UserID)
-    left join Category on Course.CategoryID = Category.CategoryID
-    where Course.Deleted = 0
-    order by Course.CourseID
-    limit ${limit}
-    offset ${offset}`;
-
-    courses = await db.load(qc);
+    categories = await CategoryModel.all();
+    courses = await CourseModel.getCoursesFromView(limit, offset);
+    const nousers = await CourseModel.getTotalCoursesInView();
+    const nopages = Math.ceil(nousers / limit);
+    
     res.render('admin/admin-course.hbs', {
         layout: 'admin_layout',
         courseTab: true,
         courses: courses,
         nopages: nopages,
         curpage: page,
+        categories: categories
     });
 });
 
