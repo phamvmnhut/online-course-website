@@ -1,6 +1,8 @@
 const express = require('express');
 const debug = require('debug')('app:home');
 const bcrypt = require('bcryptjs');
+const { generateToken, verifyToken } = require('../utils/jsonwebtoken')
+const sendEmail = require('../utils/email');
 
 const { validateEmail } = require('../utils/validate');
 
@@ -122,9 +124,28 @@ router.route('/register')
       req.flash("error", "Fail to register user")
       return res.redirect('/register');
     }
+    delete userNew.Password
+    const token = await generateToken({UserID: userNew.UserID, Email: userNew.Email});
+    await sendEmail({name: userNew.DisplayName, 
+      email: userNew.Email, 
+      subject: "Verify account", 
+      message: `${process.env.URI}/verify/${token}`
+    })
     req.flash("success", "Register success, Please activate this accoutn, check email");
-    return res.redirect('/login');
+    return res.redirect('/');
   })
+
+router.get('/verify/:Token', async function(req, res){
+  const Token = req.params.Token;
+  const user = await verifyToken(Token)
+  if (! user ) {
+    req.flash('error', 'Expirse is over or fail to verify');
+    return res.redirect('re-send-verify');
+  }
+  await UserModel.patchActive(user.UserID);
+  req.flash('success', 'Verify account success')
+  return res.redirect('/login');
+})
 
 router.route('/logout')
   .get(function (req, res) {
