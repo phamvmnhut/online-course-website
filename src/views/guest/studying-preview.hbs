@@ -32,12 +32,12 @@
         <div class="container">
             {{#if isNotReadyToLearn}} 
             <div class="col-lg-12 text-center">
-                Khong co video thi lay gi ma xem
+                This course is no have any lesson
             </div>
             {{else}}
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <div class="section-title">
+                    <div class="section-title" id="section-lesson-title">
                         <h2>{{SectionCur.LessonTitle}}</h2>
                     </div>
                     <video
@@ -88,7 +88,7 @@
                                                         <table>
                                                             <thead>
                                                                 <tr>
-                                                                    <th hidden>Section</th>
+                                                                    <th hidden>Video</th>
                                                                     <th>Title</th>
                                                                     <th>Description</th>
                                                                     <th></th>
@@ -97,10 +97,15 @@
                                                             <tbody>
                                                                 {{#each lessons}}
                                                                 <tr {{#ifeq Section ../SectionCur.Section}}class="selected"{{/ifeq}}>
-                                                                    <td hidden>{{Section}}</td>
+                                                                    <td hidden>{{Video}}</td>
                                                                     <td>{{LessonTitle}}</td>
                                                                     <td>{{LessonDescription}}</td>
+                                                                    {{#ifeq Video 'demo.mp4'}}
+                                                                    ...
+                                                                    {{else}}
                                                                     <td class="study__btn"><button onclick="clickToLearn(this)"><i class="fa fa-leanpub"></i> </button></td>
+                                                                    {{/ifeq}}
+                                                                    
                                                                 </tr>
                                                                 {{/each}}
                                                             </tbody>
@@ -115,71 +120,6 @@
                                 <div class="product__details__tab__desc">
                                     <div class="contact-form spad">
                                         <div class="container">
-                                            <form method="POST">
-                                                {{#if feedback}}
-                                                <div class="row">
-                                                    <input name="CourseRatingID" value="{{feedback.CourseRatingID}}" hidden>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <div class="checkout__form">
-                                                            <div class="row">
-                                                                <div class="col-lg-8 col-md-6">
-                                                                    <div class="checkout__input">
-                                                                        <p>Start</p>
-                                                                        <input type="number" name="Point" required value="{{feedback.Point}}">
-                                                                    </div>                               
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> 
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <div class="checkout__form">
-                                                            <div class="row">
-                                                                <div class="col-lg-8 col-md-6">
-                                                                    <div class="checkout__input">
-                                                                        <p>Feedback</p>
-                                                                        <input type="text" name="Feedback" required value="{{feedback.Feedback}}">
-                                                                    </div>                               
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> 
-                                                    <div class="col-lg-12 text-center">
-                                                        <button type="submit" class="site-btn">UPDATE FEEDBACK</button>
-                                                    </div>
-                                                </div>
-                                                {{else}}
-                                                <div class="row">
-                                                    <input name="CourseRatingID" value="0" hidden>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <div class="checkout__form">
-                                                            <div class="row">
-                                                                <div class="col-lg-8 col-md-6">
-                                                                    <div class="checkout__input">
-                                                                        <p>Start</p>
-                                                                        <input type="number" name="Point" required >
-                                                                    </div>                               
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> 
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <div class="checkout__form">
-                                                            <div class="row">
-                                                                <div class="col-lg-8 col-md-6">
-                                                                    <div class="checkout__input">
-                                                                        <p>Feedback</p>
-                                                                        <input type="text" name="Feedback" required >
-                                                                    </div>                               
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> 
-                                                    <div class="col-lg-12 text-center">
-                                                        <button type="submit" class="site-btn">ADD FEEDBACK</button>
-                                                    </div>
-                                                </div>
-                                                {{/if}}
-                                            </form>
                                             {{#each rates }}
                                             <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
                                             {{/each}}
@@ -200,17 +140,11 @@
 <script>
 function clickToLearn(e){
     const Section = $(e).parent().parent().children()[0].innerText
-    $.ajax({
-        type: "POST",
-        // The key needs to match your method's input parameter (case-sensitive).
-        data: JSON.stringify({Section}),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(data){window.location.reload();},
-        failure: function(errMsg) {
-            alert(errMsg);
-        }
-        });
+    $(e).parent().parent().addClass('selected')
+    $('#my-player').children('source').attr("src",`/public/vid/${Section}`);
+    $('#section-lesson-title').children('h2').html($(e).parent().parent().children()[1].innerText)
+    $(window).scrollTop(0);
 }
+
 </script>
 {{/section}}
