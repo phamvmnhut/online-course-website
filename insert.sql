@@ -11,16 +11,32 @@ insert into Category value (null, 'France', 'Method of comunication', 2);
 insert into Category value (null, 'Chinese', 'Method of comunication', 2);
 
 
+create table `User`(
+    `UserID` int not null auto_increment,
+    `Wallet` bigint not null,
+    `Avatar` varchar(255),
+    `Email` varchar(255) not null unique,
+    `FirstName` varchar(50) character set utf8mb4,
+    `LastName` varchar(50) character set utf8mb4,
+    `DisplayName` varchar(50),
+    `Password` varchar(100),
+    `Role` tinyint not null,
+    `DateCreated` datetime not null,
+    `Activated` int not null default 0,
+    `Delete` int not null default 0,
+
+    primary key (`UserID`)
+);
 -- insert user 
-insert into User value (null, 0, 'avatar-1', 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48');
-insert into User value (null, 200, 'avatar-2', 'email2@gmail.com', 'John', 'Legend', 'John Legend', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48');
+insert into User value (null, 0, 'avatar-1', 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 200, 'avatar-2', 'email2@gmail.com', 'John', 'Legend', 'John Legend', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
 
-insert into User value (null, 50, 'avatar-3', 'email3@gmail.com', 'Taylor', 'Swift', 'Taylor Swift', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48');
-insert into User value (null, 400, 'avatar-4', 'email4@gmail.com', 'Justin', 'Bieber', 'Justin Bieber', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48');
-insert into User value (null, 400, 'avatar-5', 'email5@gmail.com', 'Lady', 'Gaga', 'Lady Gaga', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48');
+insert into User value (null, 50, 'avatar-3', 'email3@gmail.com', 'Taylor', 'Swift', 'Taylor Swift', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 400, 'avatar-4', 'email4@gmail.com', 'Justin', 'Bieber', 'Justin Bieber', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 9);
+insert into User value (null, 400, 'avatar-5', 'email5@gmail.com', 'Lady', 'Gaga', 'Lady Gaga', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
 
-insert into User value (null, 500, null, 'email6@gmail.com', 'first name', 'last name', 'admin1', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48');
-insert into User value (null, 200, null, 'email7@gmail.com', 'first name', 'last name', 'admin2', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48');
+insert into User value (null, 500, null, 'email6@gmail.com', 'first name', 'last name', 'admin1', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 200, null, 'email7@gmail.com', 'first name', 'last name', 'admin2', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 0, 0);
 
 -- insert Course
 insert into Course value (null, 3, 'Ordered Data Structures', 'In this course, you will learn new data structures for efficiently storing and retrieving data that is structured in an ordered sequence',

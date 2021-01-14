@@ -90,7 +90,8 @@ const loadCourseView = db.catchErrorDB(async function(filter){
 
   const createViewQuery = `
   create view CourseView as
-  select Course.CourseID, Course.CourseName, User.DisplayName as TeacherName, Category.CategoryName, Course.DateModified
+  select Course.CourseID, Course.CourseName, User.DisplayName as TeacherName, Category.CategoryName,
+  Course.DateModified, Course.Price, Course.Avatar
   from (Course left join User on Course.TeacherID = User.UserID)
   left join Category on Course.CategoryID = Category.CategoryID
   where Course.Deleted = 0 

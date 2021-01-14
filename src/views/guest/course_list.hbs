@@ -1,120 +1,135 @@
-{{#section 'css'}} 
+{{#section 'css'}}
 <style>
     .active_sidebar {
         font-weight: bold;
     }
 </style>
-{{/section}} 
+{{/section}}
 
-    <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="/public/img/breadcrumb.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>Course List</h2>
-                        <div class="breadcrumb__option">
-                            <a href="/">Home</a>
-                            <span>Course List</span>
-                        </div>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/public/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Course List</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Home</a>
+                        <span>Course List</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Breadcrumb Section End -->
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
 
-    <!-- Product Section Begin -->
-    <section class="product spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-5">
-                    <div class="sidebar">
-                        <div class="sidebar__item">
-                            <form id="frm-search" action="#">
-                                <input type="text" placeholder="Search..." name="search">
-                                <button type="submit" id="btn-search"><span class="icon_search"></span></button>
-                            </form>
-                        </div>
-                        <div class="sidebar__item">
-                            <h4>Categories</h4>
-                            <ul>
-                                {{#each cates}}
-                                <li {{#if Active}}class="active_sidebar"{{/if}} ><a href="javascript:;" onclick="selectParam('cate','{{CategoryID}}' )">{{CategoryName}}</a></li>
-                                {{/each}}
-                            </ul>
-                        </div>
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <form id="frm-search" action="#">
+                            <input type="text" placeholder="Search..." name="search">
+                            <button type="submit" id="btn-search"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Categories</h4>
+                        <ul>
+                            {{#each cates}}
+                            <li {{#if Active}}class="active_sidebar" {{/if}}><a href="javascript:;"
+                                    onclick="selectParam('cate','{{CategoryID}}' )">{{CategoryName}}</a></li>
+                            {{/each}}
+                        </ul>
                     </div>
                 </div>
-                <div class="col-lg-9 col-md-7">
-                    <div class="filter__item">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-5">
-                                <div class="filter__sort">
-                                    <span>Sort By</span>
-                                    <select onchange="selectParam('sort', this.value)">
-                                        <option value="price">Price</option>
-                                        <option value="rate">Rate</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4">
-                                <div class="filter__found">
-                                    <h6><span>{{courses_length}}</span> Courses found</h6>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-3">
-                                <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="filter__item">
                     <div class="row">
-                        {{#if courses}}
-                        {{#each courses}}
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="/public/img/{{Avatar}}">
-                                    <div class="category"><i class="fa "><a href="/courses?cate={{CategoryID}}">{{CategoryName}}</a></i>
-                                    </div>
-                                    <div class="best__seller"><i class="fa fa-star">best seller</i></div>
-                                    <ul class="product__item__pic__hover">
-                                        <li><a href="javascript:onClickHeart({{CourseID}})"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="/detail/{{CourseID}}"><i class="fa fa-external-link-square"></i></a></li>
-                                        <li><a href="/confirm/{{CourseID}}"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__discount__item__text">
-                                    <h5><a href="/detail/{{CourseID}}">{{CourseName}}</a> - {{DisplayName}}</h5>
-                                    <div class="rating">
-                                        <i class="fa fa-star">{{Point}}/5 </i>
-                                        ({{Count}} Reviews)
-                                    </div>    
-                                    <div class="product__item__price">${{Price}}</div>
-                                </div>
+                        <div class="col-lg-4 col-md-5">
+                            <div class="filter__sort">
+                                <span>Sort By</span>
+                                <select onchange="selectParam('sort', this.value)">
+                                    <option value="price">Price</option>
+                                    <option value="rate">Rate</option>
+                                </select>
                             </div>
                         </div>
-                        {{/each}}
-                        <div class="col-lg-9 col-md-7">
-                            <div class="product__pagination">
-                                <a href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span>{{courses_length}}</span> Courses found</h6>
                             </div>
                         </div>
-                        {{else}}
-                        <p>Dont have any course</p>
-                        {{/if}}
-                        
+                        <div class="col-lg-4 col-md-3">
+                            <div class="filter__option">
+                                <span class="icon_grid-2x2"></span>
+                                <span class="icon_ul"></span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="row">
+                    {{#if courses}}
+                    {{#each courses}}
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="/public/img/{{Avatar}}">
+                                <div class="category"><i class="fa "><a
+                                            href="/courses?cate={{CategoryID}}">{{CategoryName}}</a></i>
+                                </div>
+                                <div class="best__seller"><i class="fa fa-star">best seller</i></div>
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="javascript:onClickHeart({{CourseID}})"><i class="fa fa-heart"></i></a>
+                                    </li>
+                                    <li><a href="/detail/{{CourseID}}"><i class="fa fa-external-link-square"></i></a>
+                                    </li>
+                                    <li><a href="/confirm/{{CourseID}}"><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__discount__item__text">
+                                <h5><a href="/detail/{{CourseID}}">{{CourseName}}</a> - {{DisplayName}}</h5>
+                                <div class="rating">
+                                    <i class="fa fa-star">{{Point}}/5 </i>
+                                    ({{Count}} Reviews)
+                                </div>
+                                <div class="product__item__price">${{Price}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{#ifgt nopages 1}}
+                    <div class="col-lg-9 col-md-7 mx-auto">
+                        <div class="product__pagination">
+                            <a class="{{#ifeq curpage 1}}disabled{{/ifeq}}" href="?page={{add curpage -1}}">
+                                <i class="fa fa-long-arrow-left"></i>
+                            </a>
+                            {{#loop 1 nopages}}
+                            {{#ifeq ../curpage this}}
+                            <a class="active" href="javascript:;">{{this}}</a>
+                            {{else}}
+                            <a href="?page={{this}}">{{this}}</a>
+                            {{/ifeq}}
+                            {{/loop}}
+                            <a class="{{#ifeq curpage nopages}}disabled{{/ifeq}}" href="?page={{add curpage 1}}">
+                                <i class="fa fa-long-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {{/ifgt}}
+                    {{else}}
+                    <p>Dont have any course</p>
+                    {{/if}}
+
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Product Section End -->
+    </div>
+</section>
+<!-- Product Section End -->
 
 {{#section 'js'}}
 <script>
@@ -126,8 +141,8 @@
         search: '',
         page: 1
     };
-    for(let key in params){
-        if(!urlParams.has(key)){
+    for (let key in params) {
+        if (!urlParams.has(key)) {
             urlParams.append(key, params[key]);
         }
     }
@@ -136,22 +151,23 @@
     // $('#catename').val(urlParams.get('category'));
     $('#btn-search').parent().children()[0].value = urlParams.get('search')
 
-    $('#frm-search').on('submit', function(e){
+    $('#frm-search').on('submit', function (e) {
         e.preventDefault()
     })
 
-    $('#btn-search').on('click', function(e) {
-        selectParam('search', $(this).parent().children()[0].value )
+    $('#btn-search').on('click', function (e) {
+        selectParam('search', $(this).parent().children()[0].value)
     })
 
-    function selectParam(key, value, reset=false){
-        if(reset){
-            for(let key in params){
-                urlParams.set(key, params[key]);}
+    function selectParam(key, value, reset = false) {
+        if (reset) {
+            for (let key in params) {
+                urlParams.set(key, params[key]);
+            }
         }
         urlParams.set(key, value);
         const url = `/courses?${urlParams.toString()}`;
-        location.href=url;
+        location.href = url;
     };
 </script>
 {{/section}}
