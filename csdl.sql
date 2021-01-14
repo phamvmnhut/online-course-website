@@ -20,6 +20,8 @@ create table `User`(
     `Password` varchar(100),
     `Role` tinyint not null,
     `DateCreated` datetime not null,
+    `Activated` int not null default 0,
+    `Delete` int not null default 0,
 
     primary key (`UserID`)
 );

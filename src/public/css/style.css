@@ -1676,6 +1676,7 @@ ol {
 
 .product__details__pic__item img {
 	min-width: 100%;
+	max-height: 600px;
 }
 
 .product__details__pic__slider img {

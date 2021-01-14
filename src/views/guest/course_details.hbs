@@ -25,7 +25,7 @@
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
                             <img class="product__details__pic__item--large"
-                                src="/public/img/size560/{{course.Avatar}}" alt="">
+                                src="/public/img/{{course.Avatar}}" alt="">
                         </div>
                     </div>
                 </div>
@@ -44,6 +44,7 @@
                         <a href="/study/{{course.CourseID}}" class="primary-btn">Study Countinue</a>
                         {{else}}
                         <a href="/confirm/{{course.CourseID}}" class="primary-btn">register</a>
+                        <a href="/detail/{{course.CourseID}}/preview" class="primary-btn">preview</a>
                         <a href="javascript:onClickHeart({{course.CourseID}})" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         {{/if}}
                         <ul>
@@ -81,7 +82,7 @@
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__tab__desc">
                                     <h6>About this course</h6>
-                                    {{course.FullDescription}}
+                                    {{{course.FullDescription}}}
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
@@ -142,7 +143,7 @@
                     {{#each relatedCourse }}
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/public/img/size270/{{Avatar}}">
+                            <div class="product__item__pic set-bg" data-setbg="/public/img/{{Avatar}}">
                                 <div class="category"><i class="fa "><a href="/courses?cate={{CategoryID}}">{{CategoryName}}</a></i>
                                 </div>
                                 <div class="best__seller"><i class="fa fa-star">best seller</i></div>
@@ -155,15 +156,9 @@
                             <div class="product__discount__item__text">
                                 <h5><a href="/detail/{{CourseID}}">{{CourseName}}</a> - {{DisplayName}}</h5>
                                 <div class="rating">
-                                    {{!-- <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        (18) --}}
-                                    <span>({{Point}}/5)</span>
-                                    <span>({{Count}} reviews)</span>
-                                </div>
+                                    <i class="fa fa-star">{{Point}}/5 </i>
+                                    ({{Count}} Reviews)
+                                </div>    
                                 <div class="product__item__price">${{Price}}</div>
                             </div>
                         </div>

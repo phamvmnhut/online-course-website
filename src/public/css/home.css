@@ -363,3 +363,16 @@
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
 }
+
+.product__details__pic__item video {
+	max-width: 500px;
+	max-height: 500px;
+}
+
+.product__details__pic__slider video {
+	cursor: pointer;
+}
+
+.product__details__pic__slider.owl-carousel .owl-item video {
+	width: auto;
+}

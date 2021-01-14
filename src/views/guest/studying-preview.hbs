@@ -1,0 +1,150 @@
+{{!-- Xem video bai giang va trang thai bai giang --}}
+
+{{#section 'css'}}
+<style>
+.selected{
+    font-weight: bold;
+}
+</style>
+{{/section}}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="/public/img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Studying</h2>
+                        <div class="breadcrumb__option">
+                            <a href="/">Home</a>
+                            <a href="/">Course</a>
+                            <span>Studying</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Course Details Section Begin -->
+    <section class="product-details spad">
+        <div class="container">
+            {{#if isNotReadyToLearn}} 
+            <div class="col-lg-12 text-center">
+                This course is no have any lesson
+            </div>
+            {{else}}
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-title" id="section-lesson-title">
+                        <h2>{{SectionCur.LessonTitle}}</h2>
+                    </div>
+                    <video
+                        id="my-player"
+                        class="video-js"
+                        controls
+                        height="500"
+                        preload="auto"
+                        poster="public/img/poster/poster-1.png"
+                        data-setup='{}'>
+                        <source src="/public/vid/{{SectionCur.Video}}" type="video/mp4" target="_blank"></source>
+
+                    <p class="vjs-no-js">
+                    </p>
+                    </video>
+                </div>
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-1" role="tab"
+                                    aria-selected="true">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-2" role="tab"
+                                    aria-selected="false">Syllabus</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                                    aria-selected="false">Reviews <span>({{rates.length}})</span></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane" id="tabs-1" role="tabpanel">
+                                <div class="product__details__tab__desc">
+                                    <h6>About this course</h6>
+                                        {{{course.FullDescription}}}
+                                    <h6>Teacher Infomation</h6>
+                                        <p>{{course.DisplayName}}</p>
+                                </div>
+                            </div>
+                                <div class="tab-pane active" id="tabs-2" role="tabpanel">
+                                    <div class="lesson spad">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="lesson__table">
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th hidden>Video</th>
+                                                                    <th>Title</th>
+                                                                    <th>Description</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {{#each lessons}}
+                                                                <tr {{#ifeq Section ../SectionCur.Section}}class="selected"{{/ifeq}}>
+                                                                    <td hidden>{{Video}}</td>
+                                                                    <td>{{LessonTitle}}</td>
+                                                                    <td>{{LessonDescription}}</td>
+                                                                    {{#ifeq Video 'demo.mp4'}}
+                                                                    ...
+                                                                    {{else}}
+                                                                    <td class="study__btn"><button onclick="clickToLearn(this)"><i class="fa fa-leanpub"></i> </button></td>
+                                                                    {{/ifeq}}
+                                                                    
+                                                                </tr>
+                                                                {{/each}}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                <div class="product__details__tab__desc">
+                                    <div class="contact-form spad">
+                                        <div class="container">
+                                            {{#each rates }}
+                                            <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </section>
+    <!-- Course Details Section End -->
+
+{{#section 'js'}}
+<script>
+function clickToLearn(e){
+    const Section = $(e).parent().parent().children()[0].innerText
+    $(e).parent().parent().addClass('selected')
+    $('#my-player').children('source').attr("src",`/public/vid/${Section}`);
+    $('#section-lesson-title').children('h2').html($(e).parent().parent().children()[1].innerText)
+    $(window).scrollTop(0);
+}
+
+</script>
+{{/section}}
