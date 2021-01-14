@@ -233,7 +233,7 @@ router.route('/detail/(:CourseID)?/preview')
 
     // get more info
     const rates = await CourseModel.getRates(CourseID);
-
+    const course = await CourseModel.getSingleByID(CourseID)
     lessons = lessons.map((e, i) => { if (i > 1) { return { ...e, Video: 'demo.mp4' } } else { return e } })
     const SectionCur = lessons[0]
 
@@ -242,7 +242,8 @@ router.route('/detail/(:CourseID)?/preview')
       page: 'home',
       lessons,
       rates,
-      SectionCur
+      SectionCur,
+      course
     })
   })
 
