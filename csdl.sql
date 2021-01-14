@@ -63,6 +63,7 @@ create table `Course` (
 
     primary key (`CourseID`)
 );
+alter table `Course` add fulltext(`CourseName`, `ShortDescription`, `FullDescription`);
 
 drop table if exists `Lesson`;
 create table `Lesson`(

@@ -10,17 +10,10 @@ const TBL_USERS = 'User';
  */
 
 /**
- * User Activete
- * 1: activated
- * 0: not active
- */
-
-/**
  * User Delete
  * 1: Yes
  * 0: No
  */
-
 
 module.exports = {
   getLastElement: db.catchErrorDB(async function () {
@@ -67,7 +60,7 @@ module.exports = {
   patch: db.catchErrorDB(async function (entity) {
     const condition = { UserID: entity.UserID };
     delete entity.UserID;
-    await db.patch(entity, condition, TBL_USERS);
+    var x = await db.patch(entity, condition, TBL_USERS);
     const user = await db.get(condition, TBL_USERS)
     return user[0];
   }, debug),
@@ -82,4 +75,18 @@ module.exports = {
     await db.patch({Delete: 1}, {UserID}, TBL_USERS)
     return true
   }, debug),
+
+  allByRole: db.catchErrorDB(async function(role, limit, offset){
+    var qr = (role == -1) ? '' : `where Role=${role}`
+    return db.load(`select * from User ${qr} order by UserID limit ${limit} offset ${offset};`)
+  }, debug),
+
+  totalUses: db.catchErrorDB(async function(role){
+    var qr = (role == -1) ? '' : `where Role=${role}`
+    const rows = await db.load(`select count(*) as total from User ${qr};`);
+    if (rows && rows.length != 0) {
+      return rows[0].total;
+    }
+    return 0;
+  }, debug)
 }

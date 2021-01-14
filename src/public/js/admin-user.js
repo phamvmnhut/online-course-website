@@ -1,16 +1,16 @@
-var editingStyle = 0;
-var editingUserID = -1;
+var method = '';
+var userID = 0;
 
-function showDetail(userID) {
+function showDetail(uid) {
     ldsRollerStart();
     $.ajax({
         method: 'get',
-        url: `/api/user/${userID}`,
+        url: `/api/user/${uid}`,
     }).done(function(res) {
         console.log(res);
         ldsRollerStop();
         if (res.status) {
-            editingUserID = userID;
+            userID = uid;
             showNewForm();
             disableUserForm();
             setFormData(res.user);
@@ -37,16 +37,12 @@ function changeAvatarPreview(input) {
 }
 
 function submitUserForm() {
-
-    if (editingStyle < 1 || editingStyle > 3) {
-        return;
-    }
     user = getFormData();
-    user.UserID = editingUserID;
-    const method = editingStyle === 1 ? 'post' : editingStyle === 2 ? 'patch' : 'delete';
+    user.UserID = userID;
+
     var url = '/api/user/';
     if (method !== 'post') {
-        url += user.ID;
+        url += user.UserID;
     }
     ldsRollerStart();
     $.ajax({
@@ -74,23 +70,21 @@ function submitUserForm() {
 
 function showNewForm() {
     //  data-toggle="modal" data-target="#userFormModal"
-    editingStyle = 1;
+    method = 'post';
     enableUserForm();
-    setFormData({ FirstName: '', LastName: '', Email: '', Password: '', Wallet: 0, DateCreated: new Date(), Role: 0 })
+    setFormData({ FirstName: '', LastName: '', DisplayName:'', Email: '', Password: '', Wallet: 0, DateCreated: new Date(), Role: 0 })
     hideEditRemoveBtn();
     $('#register-btn').show();
     $('#userFormModal').modal('show');
 }
 
 function hideUserForm() {
-    editingUserID = -1;
-    editingStyle = 0;
     $('#userFormModal').modal('hide');
 }
 
 function editUser() {
-    editingStyle = 2;
-    setUserFormDisabled({ firstName: false, lastName: false, email: false, password: true, wallet: false, dateCreated: true, role: true });
+    method = 'patch';
+    setUserFormDisabled({ firstName: false, lastName: false, displayName:false, email: false, password: true, wallet: false, dateCreated: true, role: true });
 
     $('#register-btn').html('Save');
     $('#register-btn').show();
@@ -99,9 +93,8 @@ function editUser() {
 }
 
 function removeUser() {
-    editingStyle = 3;
-    console.log('Remove');
-
+    method = 'delete';
+    
     hideEditRemoveBtn();
     submitUserForm();
 }
@@ -119,6 +112,7 @@ function showEditRemoveBtn() {
 function disableUserForm() {
     userForm.firstName.disabled = true;
     userForm.lastName.disabled = true;
+    userForm.displayName.disabled = true;
     userForm.email.disabled = true;
     userForm.password.disabled = true;
     userForm.wallet.disabled = true;
@@ -129,6 +123,7 @@ function disableUserForm() {
 function enableUserForm() {
     userForm.firstName.disabled = false;
     userForm.lastName.disabled = false;
+    userForm.displayName.disabled = false;
     userForm.email.disabled = false;
     userForm.password.disabled = false;
     userForm.wallet.disabled = false;
@@ -139,6 +134,7 @@ function enableUserForm() {
 function setUserFormDisabled(formDisabled) {
     userForm.firstName.disabled = formDisabled.firstName;
     userForm.lastName.disabled = formDisabled.lastName;
+    userForm.displayName.disabled = formDisabled.displayName;
     userForm.email.disabled = formDisabled.email;
     userForm.password.disabled = formDisabled.password;
     userForm.wallet.disabled = formDisabled.wallet;
@@ -150,6 +146,7 @@ function setFormData(user) {
     console.log(user);
     userForm.firstName.value = user.FirstName;
     userForm.lastName.value = user.LastName;
+    userForm.displayName.value = user.DisplayName;
     userForm.email.value = user.Email;
     // userForm.password.value = user.Password;
     userForm.wallet.value = user.Wallet;
@@ -160,13 +157,14 @@ function setFormData(user) {
 function getFormData() {
     firstName = userForm.firstName.value;
     lastName = userForm.lastName.value;
+    displayName = userForm.displayName.value;
     email = userForm.email.value;
     password = userForm.password.value;
     wallet = userForm.wallet.value;
     dateCreated = userForm.dateCreated.value;
     role = userForm.role.value;
 
-    user = { FirstName: firstName, LastName: lastName, Email: email, Password: password, Wallet: wallet, DateCreated: dateCreated, Role: role };
+    user = { FirstName: firstName, LastName: lastName, DisplayName: displayName, Email: email, Password: password, Wallet: wallet, DateCreated: dateCreated, Role: role };
     return user;
 }
 
@@ -190,7 +188,13 @@ function changeDisplayRoleType(r) {
 
 // -----
 
+function roleChanged(){
+    location.href = `/admin/user?role=${$("#role-filter").val()}`;
+}
+
 ldsRollerStop();
 $('#input-edit-avt').change(function() {
     changeAvatarPreview(this);
 });
+
+$('#role-filter').change(roleChanged);

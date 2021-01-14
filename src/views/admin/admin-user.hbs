@@ -12,96 +12,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.js"></script>
 {{/section}}
 
-<form name="search" method="GET">
-  <div class="input-group mb-5 mt-2 ml-auto mr-auto col-8">
-    <div class="input-group-prepend">
-      <div class="filter-btn btn btn-outline-info " data-toggle="modal" data-target="#filterFormModal">
-        <i class="align-middle" data-feather="filter"></i>
-      </div>
-    </div>
-    <input name="key" type="text" class="search-input form-control" placeholder="Search">
-    <div class="input-group-append">
-      <button type="submit" class="btn btn-outline-info">
-        <i class="align-middle" data-feather="search"></i>
-      </button>
-    </div>
+<div class="row mb-4">
+  <div class="col-sm-6 form-group mx-auto">
+    <label class="label">Role</label>
+    <select name="role-filter" class="form-control selectpicker filter" data-live-search="true" id="role-filter">
+      <option value="-1" {{#ifeq role -1}}selected{{/ifeq}}>All</option>
+      <option value="0" {{#ifeq role 0}}selected{{/ifeq}}>Student</option>
+      <option value="1" {{#ifeq role 1}}selected{{/ifeq}}>Teacher</option>
+      <option value="2" {{#ifeq role 2}}selected{{/ifeq}}>Admin</option>
+    </select>
   </div>
-
-  <div class="modal fade" id="filterFormModal" tabindex="-1" role="dialog" aria-labelledby="filterFormLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-center col-12" id="filterFormLabel">
-            Filter
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </h5>
-        </div>
-        <div class="modal-body px-lg-5 pt-4">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-12 form-group">
-                <h6 class="card-subtitle mb-2 text-muted">Search By</h6>
-                <div class="custom-control custom-checkbox ml-3">
-                  <input name="name" value="true" type="checkbox" class="custom-control-input" id="name" checked>
-                  <label class="custom-control-label" for="name">Name</label>
-                </div>
-                <div class="custom-control custom-checkbox ml-3">
-                  <input name="email" type="checkbox" class="custom-control-input" id="email" checked>
-                  <label class="custom-control-label" for="email">Email</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-sm-12">
-                <h6 class="card-subtitle mb-2 text-muted">Wallet</h6>
-              </div>
-              <div class="col-sm-6 form-group">
-                <label class="label">Greater</label>
-                <input name="w-min" placeholder="0" type="text" class="form-control">
-              </div>
-              <div class="col-sm-6 form-group">
-                <label class="label">Lesser</label>
-                <input name="w-max" type="text" placeholder="1_000_000" class="form-control" minlength="0"
-                  maxlength="15">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-sm-12">
-                <h6 class="card-subtitle mb-2 text-muted">Date Created</h6>
-              </div>
-              <div class="col-sm-6 form-group">
-                <label class="label">Start</label>
-                <input name="d-min" type="date" class="form-control" max="2002-12-31" min="1959-01-01"
-                  data-date-format="dd/mm/yyyy" placeholder="23/01/1998">
-              </div>
-              <div class="col-sm-6 form-group">
-                <label class="label">End</label>
-                <input name="d-max" type="date" class="form-control" max="2002-12-31" min="1959-01-01"
-                  data-date-format="dd/mm/yyyy" placeholder="23/01/1998">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6 m-auto form-group">
-                <label class="label">Role</label>
-                <select name="role" class="form-control selectpicker filter" data-live-search="true" id="filter-role">
-                  <option value="-1">All</option>
-                  <option value="0">Student</option>
-                  <option value="1">Teacher</option>
-                  <option value="2">Admin</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
+</div>
 
 <table id="main-table" class="table table-hover">
   <thead class="thead-light">
@@ -186,6 +107,12 @@
             </div>
             <div class="row">
               <div class="col-sm-12 form-group">
+                <label class="label">Display Name</label>
+                <input name="displayName" type="text" placeholder="Nguyễn Văn A" class="form-control" required="">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 form-group">
                 <label class="label">Email</label>
                 <input name="email" type="email" placeholder="nguyenvana@gmail.com" class="form-control" required="">
               </div>
@@ -232,6 +159,10 @@
     </div>
   </div>
 </div>
+
+{{#ifemp users}}
+<h3 class="text-center">No data available</h3>
+{{/ifemp}}
 
 {{>pagination}}
 

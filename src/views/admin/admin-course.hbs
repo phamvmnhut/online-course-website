@@ -11,14 +11,14 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.js"></script>
 {{/section}}
 
-<form name="search" onsubmit="return false;" method="GET">
+<form name="search" method="GET">
     <div class="input-group mb-5 mt-2 ml-auto mr-auto col-8">
         <div class="input-group-prepend">
             <div class="filter-btn btn btn-outline-info " data-toggle="modal" data-target="#filterFormModal">
                 <i class="align-middle" data-feather="filter"></i>
             </div>
         </div>
-        <input name="key" type="text" class="search-input form-control" placeholder="Search" required="">
+        <input name="key" type="text" class="search-input form-control" placeholder="Search">
         <div class="input-group-append">
             <button type="submit" class="btn btn-outline-info">
                 <i class="align-middle" data-feather="search"></i>
@@ -42,17 +42,14 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12 form-group">
-                                <h6 class="card-subtitle mb-2 text-muted">Search By</h6>
-                                <div class="custom-control custom-checkbox ml-3">
-                                    <input name="coursename" value="true" type="checkbox" class="custom-control-input"
-                                        id="coursename" checked>
-                                    <label class="custom-control-label" for="coursename">Course's name</label>
-                                </div>
-                                <div class="custom-control custom-checkbox ml-3">
-                                    <input name="teachername" type="checkbox" class="custom-control-input"
-                                        id="teachername" checked>
-                                    <label class="custom-control-label" for="teachername">Teacher's name</label>
-                                </div>
+                                <label class="label">Category</label>
+                                <select name="category" class="form-control selectpicker filter" data-live-search="true"
+                                    id="field">
+                                    <option value="-1">All</option>
+                                    {{#each categories}}
+                                    <option value="{{CategoryID}}">{{CategoryName}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
 
@@ -137,7 +134,9 @@
         {{/each}}
     </tbody>
 </table>
-
+{{#ifemp courses}}
+<h3 class="text-center">No data available</h3>
+{{/ifemp}}
 {{>pagination}}
 
 <div class="lds-roller">

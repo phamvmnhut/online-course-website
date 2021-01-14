@@ -86,6 +86,9 @@ router.route('/user')
                 LastName: req.body.LastName,
                 FirstName: req.body.FirstName,
                 DisplayName: req.body.DisplayName || "NoName",
+                Role: req.body.Role,
+                DateCreated: req.body.DateCreated,
+                Password: hash,
             }
             const userNew = await UserModel.add(user);
             return res.json({
@@ -112,8 +115,8 @@ router.route('/user/:id')
             Email: req.body.Email,
             LastName: req.body.LastName,
             FirstName: req.body.FirstName,
-            Password: hash,
             DisplayName: req.body.DisplayName || "NoName",
+            UserID: req.params.id,
         }
         const re = await UserModel.patch(user)
         if (re) {
@@ -122,7 +125,7 @@ router.route('/user/:id')
         return res.json({ status: false })
     })
     .delete(async function(req, res) {
-        const re = await UserModel.patch(req.body)
+        const re = await UserModel.del(req.params.id);
         if (re) {
             return res.json({ status: true })
         }
