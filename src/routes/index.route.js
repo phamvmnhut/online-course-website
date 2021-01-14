@@ -4,11 +4,11 @@ const bcrypt = require('bcryptjs');
 
 const { validateEmail } = require('../utils/validate');
 
-const { UserModel, CategoryModel, CourseModel, PurchaseModel, LessonModel} = require('../models');
+const { UserModel, CategoryModel, CourseModel, PurchaseModel, LessonModel, LearningModel} = require('../models');
 
 const { isAuth, isTeacher } = require('../middleware/auth');
 
-const { uploadImg, uploadVid } = require('../utils/upload');
+const { uploadImg, uploadVid, uploadAva } = require('../utils/upload');
 
 const isTeacherOwnCourse = async function (req, res, next) {
   const TeacherID = req.session.authUser.UserID;
@@ -20,6 +20,22 @@ const isTeacherOwnCourse = async function (req, res, next) {
   if (course.TeacherID != TeacherID) {
     req.flash('You dont have permission to this action')
     return res.redirect('/own-course');
+  }
+  req.course = course;
+  return next();
+}
+const isStudentRegisted = async function (req, res, next){
+  const StudentID = req.session.authUser.UserID;
+  const CourseID = await req.params.CourseID
+  const course = await CourseModel.getSingleByID(CourseID);
+  if (!course) {
+    req.flash('Dont have this course')
+    return res.redirect('/my-course');
+  }
+  const purchased = await PurchaseModel.checkStudentRegisted(StudentID, CourseID);
+  if (!purchased) {
+    req.flash('You dont have this course in purchased for do this action')
+    return res.redirect('/my-course');
   }
   req.course = course;
   return next();
@@ -82,7 +98,7 @@ router.route('/register')
   .get(function (req, res) {
     return res.render('guest/register.hbs', {title: "Register", page: 'home',})
   })
-  .post(async function (req, res, next) {
+  .post(uploadAva, async function (req, res, next) {
     const hash = bcrypt.hashSync(req.body.password, 10);
     if (!validateEmail(req.body.email)) {
       req.flash("error", "Fail to register user")
@@ -90,7 +106,7 @@ router.route('/register')
     }
     const user = {
       Wallet: 0,
-      Avatar: "",
+      Avatar: req.file !== undefined ? req.file.filename : "avatar-1.jpg",
       Email: req.body.email,
       LastName: req.body.last_name,
       FirstName: req.body.first_name,
@@ -183,6 +199,7 @@ router.get('/detail/(:id)?', async function (req, res) {
   
   const rates = await CourseModel.getRates(req.params.id);
   const soleInfo = await CourseModel.getSoleInfo(req.params.id, userID);
+  const lessons = await  LessonModel.getByCourseID(course.CourseID);
   const relatedCourse = await CourseModel.getByCate(course.CategoryID);
 
   return res.render('guest/course_details.hbs', {
@@ -191,6 +208,7 @@ router.get('/detail/(:id)?', async function (req, res) {
     course,
     rates,
     soleInfo,
+    lessons,
     relatedCourse,
     activeID: req.params.id
   })
@@ -234,6 +252,11 @@ router.route('/user/edit')
       req.flash("error", "Error in find this user account");
       return res.redirect('/user')
     }
+    debug(req.body)
+    if (req.body.OldPassword == undefined) {
+      req.flash("error", "Please enter your password");
+      return res.redirect('/user')
+    }
     const ret = bcrypt.compareSync(req.body.OldPassword, user.Password);
     if (ret === false) {
       req.flash("error", "Please enter correct your password");
@@ -262,6 +285,8 @@ router.route('/user/edit')
       const hash = bcrypt.hashSync(req.body.NewPassword, 10);
       userUpdate = { ...userUpdate, Password: hash }
     }
+    userUpdate = req.file !== undefined ? { ...userUpdate, Avatar: req.file.filename } : userUpdate;
+    
     debug({userUpdate})
     const userUpdated = await UserModel.patch(userUpdate)
     req.session.isAuth = true;
@@ -274,19 +299,28 @@ router.route('/user/edit')
 // student
 router.route('/confirm/:CourseID')
   .get(isAuth, async function (req, res) {
-    const user = await UserModel.single(req.session.authUser.UserID);
-    const course = await CourseModel.getSingleByID(req.params.CourseID);
+    const UserID = req.session.authUser.UserID
+    const CourseID = req.params.CourseID;
+    const user = await UserModel.single(UserID);
+    const course = await CourseModel.getSingleByID(CourseID);
     if (!course) {
       req.flash("noti", "Your course you wait is not exist");
       return res.redirect('/courses');
     }
     const balanse = user.Wallet - course.Price;
+
+    const soleInfo = await CourseModel.getSoleInfo(CourseID, UserID);
+    if (soleInfo.isSole) {
+      req.flash('noti', "you readly have this course")
+      return res.redirect(`/study/${CourseID}`)
+    }
+
     return res.render('user/confirm.hbs', {
       title: course.Name,
       course,
       user,
       balanse,
-      isOK: balanse >= 0
+      isOK: balanse >= 0,
     })
   })
   .post(isAuth, async function (req, res) {
@@ -328,17 +362,6 @@ router.route('/wish')
       my_courses
     })
   })
-  .post(isAuth, async function (req, res) {
-    const CourseID = req.body.CourseID;
-    const StudentID = req.session.authUser.UserID;
-    const newWished = await PurchaseModel.addWish({ CourseID, StudentID })
-    const wish = await PurchaseModel.getWishByStudentID(StudentID);
-    return res.json({
-      status: true,
-      data: newWished,
-      wish_length: wish.length,
-    })
-  })
 
 router.get('/my-course', isAuth, async function (req, res) {
   const StudentID = req.session.authUser.UserID;
@@ -356,17 +379,70 @@ router.get('/my-course', isAuth, async function (req, res) {
   })
 });
 
-router.get('/feedback', function (req, res) {
+router.get('/study/:CourseID/feedback', function (req, res) {
   res.render('user/feedback.hbs', {
   })
 })
 
-router.get('/study/:id', isAuth, function (req, res) {
-  res.render('user/studying.hbs', {
+router.route('/study/:CourseID/')
+.get(isAuth, isStudentRegisted, async function (req, res) {
+  const CourseID = req.params.CourseID;
+  const StudentID = req.session.authUser.UserID;
+
+  // get learning position
+  const Learning = await LearningModel.getOne({CourseID, StudentID});
+  if (! Learning) {
+    req.flash("This course dont have any Lesson")
+    return res.render('user/studying.hbs', {
+      title: 'Learning',
+      page: 'student',
+      isNotReadyToLearn: true,
+    })
+  }
+  // render video
+  const lessons = await  LessonModel.getByCourseID(CourseID);
+  const SectionCur = lessons.filter(e => e.Section == Learning.Section)[0]
+
+  // get info
+  const rates = await CourseModel.getRates(CourseID);
+  const feedback = await PurchaseModel.checkHad(CourseID, StudentID)
+
+  return res.render('user/studying.hbs', {
     title: 'Learning',
-    page: 'student'
+    page: 'student',
+    lessons,
+    SectionCur,
+    rates,
+    course: req.course,
+    feedback
   })
 })
+  .post(isAuth, isStudentRegisted, async function (req, res) {
+    // debug(req.body);
+    const CourseID = req.params.CourseID;
+    const StudentID = req.session.authUser.UserID;
+    if (req.body.Section !== undefined) {
+      const Section = req.body.Section
+      const updateLearning = await LearningModel.patch({ Section, CourseID, StudentID })
+      return res.json({ status: updateLearning })
+    }
+    if (req.body.CourseRatingID !== undefined) {
+      if (req.body.CourseRatingID == 0) { //add fb
+        delete req.body.CourseRatingID
+        const newFeedbackTdo = { CourseID, StudentID, ...req.body }
+        const addNewFeedback = await PurchaseModel.addFeedback(newFeedbackTdo)
+        if (!addNewFeedback) {
+          req.flash('warn', 'add new feedback fial')
+
+        } else {
+          req.flash('success', "add new feedback success")
+        }
+        return res.redirect(req.get('referer'))
+      } else {
+        // update feedback
+      }
+    }
+  })
 
 // teacher
 router.get('/own-course', isTeacher, async function (req, res) {
@@ -412,7 +488,7 @@ router.route('/own-course/:CourseID/edit')
       course : req.course,
       cates,
       lessons,
-      rates
+      rates,
     })
   })
   .post(isTeacher, isTeacherOwnCourse, uploadImg, async function (req, res) {
@@ -437,8 +513,8 @@ router.route('/own-course/:CourseID/del')
     })
   })
   .post(isTeacher, isTeacherOwnCourse, async function (req, res) {
-    const updatedCourse = await CourseModel.path({CourseID: req.course.CourseID, Deleted: 1})
-    if (!updatedCourse) {
+    const delCourse = await CourseModel.del(req.params.CourseID)
+    if (!delCourse) {
       req.flash('error', "delete fail Course")
       return res.redirect(req.get('referer'))
     }

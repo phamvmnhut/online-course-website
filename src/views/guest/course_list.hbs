@@ -76,12 +76,12 @@
                         {{#each courses}}
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="public/img/product/product-{{CategoryID}}.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="/public/img/size270/{{Avatar}}">
                                     <div class="category"><i class="fa "><a href="/courses?cate={{CategoryID}}">{{CategoryName}}</a></i>
                                     </div>
                                     <div class="best__seller"><i class="fa fa-star">best seller</i></div>
                                     <ul class="product__item__pic__hover">
-                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="javascript:onClickHeart({{CourseID}})"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="/detail/{{CourseID}}"><i class="fa fa-external-link-square"></i></a></li>
                                         <li><a href="/confirm/{{CourseID}}"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
@@ -89,15 +89,9 @@
                                 <div class="product__discount__item__text">
                                     <h5><a href="/detail/{{CourseID}}">{{CourseName}}</a> - {{DisplayName}}</h5>
                                     <div class="rating">
-                                        {{!-- <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                (18) --}}
-                                        <span>({{Point}}/5)</span>
-                                        <span>({{Count}} reviews)</span>
-                                    </div>
+                                        <i class="fa fa-star">{{Point}}/5 </i>
+                                        ({{Count}} Reviews)
+                                    </div>    
                                     <div class="product__item__price">${{Price}}</div>
                                 </div>
                             </div>

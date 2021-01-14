@@ -85,7 +85,8 @@ module.exports = {
     const isSole = await db.load(`select count(*) as count from ${TBL_PUR} where CourseID = ${CourseID} and StudentID = ${UserID}`);
     return {
       ...rare_info[0],
-      'isSole': isSole[0].count == 1
+      'isSole': isSole[0].count == 1,
+      rate: isSole[0]
     }
   }, debug),
   getRates: db.catchErrorDB(async function (CourseID) {
@@ -152,8 +153,10 @@ module.exports = {
     await db.patch(entity, condition, TBL_COU);
     return await db.get(condition, TBL_COU);
   }, debug),
-  del: db.catchErrorDB(async function (entity) {
-    const CourseID = entity.CourseID;
-    return await db.del({CourseID: CourseID }, TBL_COU);
+
+  del: db.catchErrorDB(async function (CourseID) {
+    const condition = { CourseID };
+    await db.patch({Deleted: 1}, condition, TBL_COU);
+    return true
   }, debug),
 };

@@ -221,4 +221,54 @@
         $button.parent().find('input').val(newVal);
     });
 
+    $.ajax({
+        type: "GET",
+        url: '/api/wish',
+        // The key needs to match your method's input parameter (case-sensitive).
+        // data: JSON.stringify({CourseID}),
+        // contentType: "application/json; charset=utf-8",
+        // dataType: "json",
+        success: function(response){
+            $('#wish_number_badge').text(response.wish_length)
+        },
+        failure: function(errMsg) {
+            alert(errMsg)
+        }
+    });
+
 })(jQuery);
+
+function onClickHeart(CourseID){
+    $.ajax({
+    type: "POST",
+    url: '/api/wish',
+    // The key needs to match your method's input parameter (case-sensitive).
+    data: JSON.stringify({CourseID}),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(response){
+        $('#wish_number_badge').text(response.wish_length)
+    },
+    failure: function(errMsg) {
+        alert(errMsg)
+    }
+    });
+}
+
+function deleteWish(CourseID){
+    $.ajax({
+        type: "DELETE",
+        url: '/api/wish',
+        // The key needs to match your method's input parameter (case-sensitive).
+        data: JSON.stringify({CourseID}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response){
+            $('#wish_number_badge').text(response.wish_length)
+            location.reload()
+        },
+        failure: function(errMsg) {
+            alert(errMsg)
+        }
+    });
+}

@@ -2,14 +2,13 @@ const express = require('express');
 const debug = require('debug')('app:api');
 const bcrypt = require('bcryptjs');
 
-const { isAdmin } = require('../middleware/auth');
+const { isAuth, isAdmin } = require('../middleware/auth');
 
 const { validateEmail } = require('../utils/validate');
 
-const { UserModel } = require('../models');
+const { UserModel, PurchaseModel } = require('../models');
 const courseModel = require('../models/Course.model');
 const catModel = require('./../models/category.model');
-
 const db = require('../utils/db');
 
 
@@ -27,6 +26,42 @@ router.get('/is-available', async function(req, res) {
 
     return res.json(false);
 })
+
+router.use(isAuth);
+
+router.route('/wish')
+    .get(async function (req, res) {
+        const UserID = req.session.authUser.UserID;
+        const wish_list = await PurchaseModel.getWishByStudentID(UserID);
+        return res.json({
+            status: true,
+            wish_length: wish_list.length,
+            data: wish_list
+        });
+    })
+    .post(async function (req, res) {
+        const CourseID = req.body.CourseID;
+        const StudentID = req.session.authUser.UserID;
+        const newWished = await PurchaseModel.addWish({ CourseID, StudentID })
+        const wish = await PurchaseModel.getWishByStudentID(StudentID);
+        return res.json({
+            status: true,
+            wish_length: wish.length,
+            data: newWished,
+        })
+    })
+    .delete(async function (req, res) {
+        const CourseID = req.body.CourseID;
+        const StudentID = req.session.authUser.UserID;
+        await PurchaseModel.delWish({ CourseID, StudentID })
+        const wish_list = await PurchaseModel.getWishByStudentID(StudentID);
+        return res.json({
+            status: true,
+            wish_length: wish_list.length,
+            data: wish_list
+        })
+    })
+
 
 router.use(isAdmin)
 

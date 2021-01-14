@@ -1,3 +1,12 @@
+{{#section 'js'}}
+<script>
+var loadFile = function(event) {
+	var image = document.getElementById('output');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+</script>
+{{/section}}
+    
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="public/img/breadcrumb.jpg">
         <div class="container">
@@ -22,7 +31,7 @@
             <div class="checkout__form">
                 <h4>Sign Up</h4>
                 {{!-- Start form  --}}
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
                             <div class="row">
@@ -57,9 +66,22 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
                                 <h4>Your Account</h4>
-                                <div><img src="public/img/user/avatar-1.jpg" alt=""></div>
-                                <h6>DinhPhan123</h6>
-                                <button type="submit" class="site-btn">REGISTER</button>
+                                <div class="product__details__pic">
+                                    <div class="product__details__pic__item">
+                                        <img id="output" class="product__details__pic__item--large"
+                                            src="/public/img/ava/avatar-1.jpg" alt="">
+                                    </div>
+                                    <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+                                    <label for="file" style="cursor: pointer;" class="primary-btn">Upload Image</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="shoping__cart__btns">
+                                <button type="submit" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                                    Register</button>
                             </div>
                         </div>
                     </div>

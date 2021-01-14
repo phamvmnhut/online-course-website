@@ -1,22 +1,24 @@
 {{!-- 
 Cap nhat thong tin, upload video, danh dau hoan thanh
  --}}
+{{#section 'js'}}
    <script>
 var loadFile = function(event) {
 	var video = document.getElementById('output');
 	video.src = URL.createObjectURL(event.target.files[0]);
 };
 </script>
+{{/section}}
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="/public/img/breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>New Course</h2>
+                        <h2>Update Lesson</h2>
                         <div class="breadcrumb__option">
                             <a href="/">Home</a>
-                            <a href="/">Course</a>
+                            <a href="/own-course">Course</a>
                             <span>Update Lesson</span>
                         </div>
                     </div>
@@ -43,15 +45,17 @@ var loadFile = function(event) {
                             </div>
                         </div>
                     </div> 
-                    <div class="product__details__pic">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product__details__pic">
                             <div class="product__details__pic__item">
                                 <video id= "output" class="product__details__pic__item--large"
-                                    src="/public/vid/{{lesson.Video}}" alt="">
+                                    src="/public/vid/{{lesson.Video}}" alt="video here">
                             </div>
                             <p><input type="file"  accept="video/*" name="video" id="file"  onchange="loadFile(event)" style="display: none;"></p>
                             <b><label for="file" style="cursor: pointer;" class="primary-btn">Change Video</label></b>
                         </div>
-                    <div class="col-lg-12 text-center">
+                    </div>
+                    <div class="col-lg-12">
                         <p>Description</p>
                         <div class="checkout__input">
                             <textarea placeholder="About this course" name="LessonDescription">{{lesson.LessonDescription}}</textarea>

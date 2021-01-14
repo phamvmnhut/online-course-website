@@ -61,13 +61,13 @@
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                            data-setbg="public/img/product/highlights/ph-{{CourseID}}.jpg">
+                                            data-setbg="/public/img/size360/{{Avatar}}">
                                             <div class="product__discount__percent">-{{Discount}}%</div>
                                             <div class="category"><i class="fa "><a href="/course?cate={{CategoryID}}">{{CategoryName}}</a></i>
                                             </div>
                 
                                             <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li><a href="javascript:onClickHeart({{CourseID}})"><i class="fa fa-heart"></i></a></li>
                                                 <li><a href="/detail/{{CourseID}}"><i class="fa fa-external-link-square"></i></a></li>
                                                 <li><a href="/confirm/{{CourseID}}"><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
@@ -118,18 +118,18 @@
                 {{#each allCourses}}
                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{CategoryName}}">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="public/img/featured/feature-{{CourseID}}.jpg">
+                        <div class="featured__item__pic set-bg" data-setbg="/public/img/size270/{{Avatar}}">
                             <div class="category"><i class="fa "><a href=""> {{CategoryName}} </a></i>
                             </div>
 
                             <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="javascript:onClickHeart({{CourseID}})"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="/detail/{{CourseID}}"><i class="fa fa-external-link-square"></i></a></li>
                                 <li><a href="/confirm/{{CourseID}}"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="product__discount__item__text">
-                            <h5><a href="#">{{CourseName}}</a>{{DisplayName}}</h5>
+                            <h5><a href="#">{{CourseName}}</a> - {{DisplayName}}</h5>
                             <div class="rating">
                                 <i class="fa fa-star">{{Point}}/5 </i>
                                 ({{Count}} Reviews)
@@ -150,22 +150,14 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="banner__pic">
-                        <img src="public/img/banner/banner-1.jpg" alt="">
+                        <img src="/public/img/banner/banner-1.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="banner__pic">
-                        <img src="public/img/banner/banner-2.jpg" alt="">
+                        <img src="/public/img/banner/banner-2.jpg" alt="">
                     </div>
                 </div>
-                <!-- <div class="col-lg-6 col-md-6 col-sm-6 banner__pic" data-setbg="public/img/banner/banner-1.jpg">
-                    <div class="hero__text">
-                        <span>QUANG CAO</span>
-                        <p>Thong tin gioi thieu</p>
-                        <a href="#" class="primary-btn">SHOP NOW</a>
-                    </div>
-                </div> -->
-
             </div>
         </div>
     </div>
@@ -181,9 +173,9 @@
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
                                 {{#each courseLastedByTime}}
-                                <a href="detail/{{CourseID}}" class="latest-product__item">
+                                <a href="/detail/{{CourseID}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="public/img/latest-product/lp-{{CourseID}}.jpg" alt="">
+                                        <img src="/public/img/size110/{{Avatar}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{CourseName}} ({{DisplayName}})</h6>
@@ -205,9 +197,9 @@
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
                                 {{#each courseTopPurchased}}
-                                <a href="detail/{{CourseID}}" class="latest-product__item">
+                                <a href="/detail/{{CourseID}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="public/img/latest-product/lp-1.jpg" alt="">
+                                        <img src="/public/img/size110/{{Avatar}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{CourseName}} ({{DisplayName}})</h6>
