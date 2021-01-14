@@ -23,7 +23,7 @@ function editBtnClicked(){
     method = 'patch';
     enableForm();
     hideEditRemoveBtn();
-    $('#register-btn').html('Lưu');
+    $('#register-btn').html('Save');
     showRegisterBtn();
 }
 

@@ -42,7 +42,7 @@ function submitUserForm() {
         return;
     }
     user = getFormData();
-    user.ID = editingUserID;
+    user.UserID = editingUserID;
     const method = editingStyle === 1 ? 'post' : editingStyle === 2 ? 'patch' : 'delete';
     var url = '/api/user/';
     if (method !== 'post') {
@@ -92,7 +92,7 @@ function editUser() {
     editingStyle = 2;
     setUserFormDisabled({ firstName: false, lastName: false, email: false, password: true, wallet: false, dateCreated: true, role: true });
 
-    $('#register-btn').html('Lưu');
+    $('#register-btn').html('Save');
     $('#register-btn').show();
     hideEditRemoveBtn();
     ldsRollerStop();
@@ -167,7 +167,6 @@ function getFormData() {
     role = userForm.role.value;
 
     user = { FirstName: firstName, LastName: lastName, Email: email, Password: password, Wallet: wallet, DateCreated: dateCreated, Role: role };
-    user.Avatar = 'adbX.jpg';
     return user;
 }
 
@@ -186,7 +185,7 @@ function formatDate(dd) {
 }
 
 function changeDisplayRoleType(r) {
-    return r == 0 ? 'Học viên' : r == 1 ? 'Giảng viên' : r == 2 ? 'Admin' : '?';
+    return r == 0 ? 'Student' : r == 1 ? 'Teacher' : r == 2 ? 'Admin' : 'Anonymos';
 }
 
 // -----

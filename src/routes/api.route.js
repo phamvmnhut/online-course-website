@@ -85,10 +85,7 @@ router.route('/user')
                 Email: req.body.Email,
                 LastName: req.body.LastName,
                 FirstName: req.body.FirstName,
-                Password: hash,
                 DisplayName: req.body.DisplayName || "NoName",
-                Role: req.body.Role || 0,
-                DateCreated: new Date(),
             }
             const userNew = await UserModel.add(user);
             return res.json({
@@ -110,9 +107,17 @@ router.route('/user/:id')
 
     })
     .patch(async function(req, res) {
-        const user = await UserModel.patch(req.body)
-        if (user) {
-            return res.json({ status: true, user })
+        const user = {
+            Wallet: req.body.Wallet || 0,
+            Email: req.body.Email,
+            LastName: req.body.LastName,
+            FirstName: req.body.FirstName,
+            Password: hash,
+            DisplayName: req.body.DisplayName || "NoName",
+        }
+        const re = await UserModel.patch(user)
+        if (re) {
+            return res.json({ status: true, re })
         }
         return res.json({ status: false })
     })
@@ -126,7 +131,7 @@ router.route('/user/:id')
 
 router.route('/course/:id')
     .delete(async function(req, res) {
-        const re = await courseModel.del({ CourseID: req.params.id })
+        const re = await courseModel.del(req.params.id)
         if (re) {
             return res.json({ status: true })
         }

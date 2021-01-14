@@ -6,7 +6,7 @@ function formatDate(dd) {
     return `${d}-${m}-${y}`;
 }
 function changeDisplayRoleType(r){
-    return r == 0 ? 'Học viên' : r == 1 ? 'Giảng viên' : r == 2 ? 'Admin' : '?';
+    return r == 0 ? 'Student' : r == 1 ? 'Teacher' : r == 2 ? 'Admin' : 'Anonymos';
 }
 
 module.exports = {

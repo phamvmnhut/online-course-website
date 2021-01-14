@@ -44,6 +44,7 @@ router.get('/course', async function(req, res) {
     const qc = `select Course.CourseID, Course.CourseName, User.DisplayName as TeacherName, Category.CategoryName, Course.DateModified
     from (Course left join User on Course.TeacherID = User.UserID)
     left join Category on Course.CategoryID = Category.CategoryID
+    where Course.Deleted = 0
     order by Course.CourseID
     limit ${limit}
     offset ${offset}`;
