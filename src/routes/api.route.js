@@ -65,6 +65,7 @@ router.route('/wish')
 router.route('/study')
 .post(async function (req, res){
     const StudentID = req.session.authUser.UserID;
+    debug('[Study]', req.body)
     await LearningModel.patch({ ...req.body, StudentID})
     return res.json({ status: true})
 })

@@ -6,6 +6,8 @@
     font-weight: bold;
 }
 </style>
+
+<link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
 {{/section}}
 
     <!-- Breadcrumb Section Begin -->
@@ -46,7 +48,7 @@
                         controls
                         height="500"
                         preload="auto"
-                        poster="public/img/poster/poster-1.png"
+                        poster="/public/img/{{course.Avatar}}"
                         data-setup='{}'>
                         <source src="/public/vid/{{SectionCur.Video}}" type="video/mp4" target="_blank"></source>
 
@@ -225,6 +227,8 @@
     <!-- Check Study Complete Section End -->
 
 {{#section 'js'}}
+
+
 <script>
 function clickToLearn(e){
     const Section = $(e).parent().parent().children()[0].innerText
@@ -240,12 +244,40 @@ function clickToLearn(e){
         }
     });
 }
+</script>
+<script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+<script>
+    var myPlayer = videojs('my-player')
+    var timecode = {{#if Learning.State}}{{Learning.State}}{{else}}0{{/if}};
+    var initdone = false;
 
-$('#frm-state-study-course').o
+    // wait for video metadata to load, then set time 
+    myPlayer.currentTime(timecode);
 
+    // iPhone/iPad need to play first, then set the time
+    // events: https://www.w3.org/TR/html5/embedded-content-0.html#mediaevents
+    // myPlayer.on("canplaythrough", function(){
+    //    if(!initdone)
+    //    {
+    //        myPlayer.currentTime(timecode);
+    //        initdone = true;
+    //    }
+    // });
+// console.log(curTime)
 
-
-
+const CourseID = {{course.CourseID}};
+const Section = {{SectionCur.Section}};
+window.setInterval(function(){ 
+    let State = myPlayer.currentTime();
+    $.ajax({
+        type: 'POST',
+        url: '/api/study/',
+        data: JSON.stringify({State, CourseID, Section }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+    })
+    console.log("againt")
+ }, 5000);
 
 </script>
 {{/section}}

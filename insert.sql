@@ -11,15 +11,15 @@ insert into Category value (null, 'France', 'Method of comunication', 2);
 insert into Category value (null, 'Chinese', 'Method of comunication', 2);
 
 -- insert user 
-insert into User value (null, 0, 'avatar-1.jpg', 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
-insert into User value (null, 200, 'avatar-2.jpg', 'email2@gmail.com', 'John', 'Legend', 'John Legend', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 0, 'avatar-1.jpg', 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 1, 0);
+insert into User value (null, 200, 'avatar-2.jpg', 'email2@gmail.com', 'John', 'Legend', 'John Legend', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 1, 0);
 
-insert into User value (null, 50, 'avatar-3.jpg', 'email3@gmail.com', 'Taylor', 'Swift', 'Taylor Swift', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
-insert into User value (null, 400, 'avatar-4.jpg', 'email4@gmail.com', 'Justin', 'Bieber', 'Justin Bieber', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 9);
-insert into User value (null, 400, 'avatar-5.jpg', 'email5@gmail.com', 'Lady', 'Gaga', 'Lady Gaga', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 50, 'avatar-3.jpg', 'email3@gmail.com', 'Taylor', 'Swift', 'Taylor Swift', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 1, 0);
+insert into User value (null, 400, 'avatar-4.jpg', 'email4@gmail.com', 'Justin', 'Bieber', 'Justin Bieber', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 1, 9);
+insert into User value (null, 400, 'avatar-5.jpg', 'email5@gmail.com', 'Lady', 'Gaga', 'Lady Gaga', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 1, 0);
 
-insert into User value (null, 500, null, 'email6@gmail.com', 'first name', 'last name', 'admin1', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 0, 0);
-insert into User value (null, 200, null, 'email7@gmail.com', 'first name', 'last name', 'admin2', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 500, null, 'email6@gmail.com', 'first name', 'last name', 'admin1', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 1, 0);
+insert into User value (null, 200, null, 'email7@gmail.com', 'first name', 'last name', 'admin2', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 1, 0);
 
 -- insert Course
 insert into Course value (null, 3, 'Ordered Data Structures', 'In this course, you will learn new data structures for efficiently storing and retrieving data that is structured in an ordered sequence',
@@ -63,61 +63,61 @@ insert into Course value (null, 4, 'CSS Basics', 'Master the foundational progra
 ','30', 1, 1, 0, "product-4.jpg", 66, '2021-01-07 00:30:48', 0);
 insert into Course value (null, 5, 'Contemporary China', 'Did you know that Chinese is one of the most spoken languages in the world? Whether you’re planning on visiting China to sightsee or are going there to work on a 6-month project, learning the basics of the language will be extremely helpful in your day to day operation.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 6, 0, "product-5.jpg", 66, '2021-01-07 00:30:48', 0);
-insert into Course value (null, 5, 'Get an introduction to the Chinese language with online courses from top universities and institutions. Online courses on edX include extensive videos and other tools to help you learn pronunciation skills in addition to basic vocabulary and grammar. Learn Mandarin Chinese tones, characters and basic language structure and practice core pronunciation and communication skills, all from the comfort of your computer anywhere in the world.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
+insert into Course value (null, 5, 'Chinese language', 'Get an introduction to the Chinese language with online courses from top universities and institutions. Online courses on edX include extensive videos and other tools to help you learn pronunciation skills in addition to basic vocabulary and grammar. Learn Mandarin Chinese tones, characters and basic language structure and practice core pronunciation and communication skills, all from the comfort of your computer anywhere in the world.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 6, 0, "product-6.jpg", 66, '2021-01-07 00:30:48', 0);
 
 
 -- insert lesson
 insert into Lesson value (1, null,'Lesson One', 'Introduction to Computer Science', 'video-1.mp4');
-insert into Lesson value (1, null,'Lesson Two', 'Web Programming with Python and JavaScript', 'video-1.mp4');
-insert into Lesson value (1, null,'Lesson Three', 'HTML5 and CSS Fundamentals', 'video-1.mp4');
+insert into Lesson value (1, null,'Lesson Two', 'Web Programming with Python and JavaScript', 'video-2.mp4');
+insert into Lesson value (1, null,'Lesson Three', 'HTML5 and CSS Fundamentals', 'video-3.mp4');
 
-insert into Lesson value (2, null,'Lesson One', 'Introduction to Python: Absolute Beginner', 'video-1.mp4');
-insert into Lesson value (2, null,'Lesson Two', 'Introduction to Python: Fundamentals', 'video-1.mp4');
+insert into Lesson value (2, null,'Lesson One', 'Introduction to Python: Absolute Beginner', 'video-3.mp4');
+insert into Lesson value (2, null,'Lesson Two', 'Introduction to Python: Fundamentals', 'video-2.mp4');
 insert into Lesson value (2, null,'Lesson Three', 'Artificial Intelligence (AI)', 'video-1.mp4');
 
 insert into Lesson value (3, null,'Lesson One', 'Machine Learning', 'video-1.mp4');
-insert into Lesson value (3, null,'Lesson Two', 'Computing in Python I: Fundamentals and Procedural Programming', 'video-1.mp4');
-insert into Lesson value (3, null,'Lesson Three', 'Computing in Python II: Control Structures', 'video-1.mp4');
+insert into Lesson value (3, null,'Lesson Two', 'Computing in Python I: Fundamentals and Procedural Programming', 'video-3.mp4');
+insert into Lesson value (3, null,'Lesson Three', 'Computing in Python II: Control Structures', 'video-2.mp4');
 
-insert into Lesson value (4, null,'Lesson One', 'The Mandarin for Business Professional Certificate Program', 'video-1.mp4');
+insert into Lesson value (4, null,'Lesson One', 'The Mandarin for Business Professional Certificate Program', 'video-3.mp4');
 insert into Lesson value (4, null,'Lesson Two', 'No previous Chinese language experience ', 'video-1.mp4');
-insert into Lesson value (4, null,'Lesson Three', 'Beyond the basics of conversation', 'video-1.mp4');
+insert into Lesson value (4, null,'Lesson Three', 'Beyond the basics of conversation', 'video-2.mp4');
 
 insert into Lesson value (5, null,'Lesson One', 'In the Mandarin Chinese lessons level series', 'video-1.mp4');
-insert into Lesson value (5, null,'Lesson Two', 'common phrases', 'video-1.mp4');
-insert into Lesson value (5, null,'Lesson Three', 'Asia and the Chinese culture', 'video-1.mp4');
+insert into Lesson value (5, null,'Lesson Two', 'common phrases', 'video-3.mp4');
+insert into Lesson value (5, null,'Lesson Three', 'Asia and the Chinese culture', 'video-2.mp4');
 
-insert into Lesson value (6, null,'Lesson One', 'proper entence structur', 'video-1.mp4');
+insert into Lesson value (6, null,'Lesson One', 'proper entence structur', 'video-2.mp4');
 insert into Lesson value (6, null,'Lesson Two', 'basic structures', 'video-1.mp4');
-insert into Lesson value (6, null,'Lesson Three', 'Videos of common discussions', 'video-1.mp4');
+insert into Lesson value (6, null,'Lesson Three', 'Videos of common discussions', 'video-3.mp4');
 
-insert into Lesson value (7, null,'Lesson One', 'extremely helpful in your day', 'video-1.mp4');
-insert into Lesson value (7, null,'Lesson Two', 'The political and economic world of Post-Mao China.', 'video-1.mp4');
+insert into Lesson value (7, null,'Lesson One', 'extremely helpful in your day', 'video-2.mp4');
+insert into Lesson value (7, null,'Lesson Two', 'The political and economic world of Post-Mao China.', 'video-3.mp4');
 insert into Lesson value (7, null,'Lesson Three', 'The period from Deng Xiaoping’s rise in 1978 to the present.', 'video-1.mp4');
 
 insert into Lesson value (8, null,'Lesson One', 'How to examine Chinese history with a multidisciplinary approach.', 'video-1.mp4');
-insert into Lesson value (8, null,'Lesson Two', 'Study and demonstrate knowledge on your schedule', 'video-1.mp4');
-insert into Lesson value (8, null,'Lesson Three', 'Learn with university partners and peers from around the world', 'video-1.mp4');
+insert into Lesson value (8, null,'Lesson Two', 'Study and demonstrate knowledge on your schedule', 'video-2.mp4');
+insert into Lesson value (8, null,'Lesson Three', 'Learn with university partners and peers from around the world', 'video-3.mp4');
 
 insert into Lesson value (9, null,'Lesson One', 'Try a course before you pay', 'video-1.mp4');
-insert into Lesson value (9, null,'Lesson Two', 'Drive your career forward with university-backed', 'video-1.mp4');
-insert into Lesson value (9, null,'Lesson Three', 'Five important themes in modern', 'video-1.mp4');
+insert into Lesson value (9, null,'Lesson Two', 'Drive your career forward with university-backed', 'video-3.mp4');
+insert into Lesson value (9, null,'Lesson Three', 'Five important themes in modern', 'video-2.mp4');
 
-insert into Lesson value (10, null,'Lesson One', 'Chinese Dream', 'video-1.mp4');
+insert into Lesson value (10, null,'Lesson One', 'Chinese Dream', 'video-3.mp4');
 insert into Lesson value (10, null,'Lesson Two', 'Receive an instructor', 'video-1.mp4');
-insert into Lesson value (10, null,'Lesson Three', 'Train your employees', 'video-1.mp4');
+insert into Lesson value (10, null,'Lesson Three', 'Train your employees', 'video-2.mp4');
 
-insert into Lesson value (11, null,'Lesson One', 'Description', 'video-1.mp4');
-insert into Lesson value (11, null,'Lesson Two', 'Description', 'video-1.mp4');
+insert into Lesson value (11, null,'Lesson One', 'Description', 'video-3.mp4');
+insert into Lesson value (11, null,'Lesson Two', 'Description', 'video-2.mp4');
 insert into Lesson value (11, null,'Lesson Three', 'Description', 'video-1.mp4');
 
-insert into Lesson value (12, null,'Lesson One', 'Description', 'video-1.mp4');
+insert into Lesson value (12, null,'Lesson One', 'Description', 'video-2.mp4');
 insert into Lesson value (12, null,'Lesson Two', 'Description', 'video-1.mp4');
-insert into Lesson value (12, null,'Lesson Three', 'Description', 'video-1.mp4');
+insert into Lesson value (12, null,'Lesson Three', 'Description', 'video-3.mp4');
 
-insert into Lesson value (13, null,'Lesson One', 'Description', 'video-1.mp4');
-insert into Lesson value (13, null,'Lesson Two', 'Description', 'video-1.mp4');
+insert into Lesson value (13, null,'Lesson One', 'Description', 'video-2.mp4');
+insert into Lesson value (13, null,'Lesson Two', 'Description', 'video-3.mp4');
 insert into Lesson value (14, null,'Lesson Three', 'Description', 'video-1.mp4');
 
 -- insert purcahse
