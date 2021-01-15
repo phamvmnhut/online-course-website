@@ -241,13 +241,24 @@ module.exports = {
   path: db.catchErrorDB(async function (entity) {
     const condition = { CourseID: entity.CourseID };
     delete entity.CourseID;
+    entity = {
+      ...entity,
+      DateModified: new Date(),
+    }
     await db.patch(entity, condition, TBL_COU);
     return await db.get(condition, TBL_COU);
   }, debug),
 
+  patchIncView: db.catchErrorDB(async function (CourseID) {
+    const course = await db.get({CourseID}, TBL_COU);
+    if (!course || course.length == 0) return false;
+    await db.patch({Viewed: parseInt(course.Viewed) + 1}, {CourseID}, TBL_COU);
+    return true
+  }, debug),
+
   del: db.catchErrorDB(async function (CourseID) {
     const condition = { CourseID };
-    await db.patch({Deleted: 1}, condition, TBL_COU);
+    await db.patch({Deleted: 1, DateModified: new Date()}, condition, TBL_COU);
     return true
   }, debug),
 

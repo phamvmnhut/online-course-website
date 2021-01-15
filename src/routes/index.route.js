@@ -94,8 +94,7 @@ router.route('/login')
         req.session.authUser = user;
 
         if (user.Role == 2) {
-            res.redirect('/admin');
-            return;
+            return res.redirect('/admin');
         }
         let url = req.session.retUrl || '/';
         if (url.endsWith("/login") || url.endsWith('/register')) url = '/'
@@ -161,7 +160,7 @@ router.route('/logout')
 
 router.get('/courses', async function(req, res) {
     debug("[course query] ", req.query)
-        // by cate 
+    // by cate 
     // let courses = [];
 
     let indexTosetActive = 0;
@@ -169,37 +168,12 @@ router.get('/courses', async function(req, res) {
 
     if (req.query.cate == undefined || req.query.cate == 0) {
         req.query.cate = 0
-        courses = await CourseModel.allCompleted();
         indexTosetActive = cates.length - 1;
     }
     if (req.query.cate != 0) {
-        courses = await CourseModel.getByCate(req.query.cate);
         indexTosetActive = cates.findIndex(x => x.CategoryID == req.query.cate);
     }
     cates[indexTosetActive]["Active"] = true;
-
-    // // sort
-    // if (courses.length > 1) {
-    //     if (req.query.sort != undefined) {
-    //         if (req.query.sort == 'price') {
-    //             courses.sort((a, b) => a.Price > b.Price)
-    //         }
-    //         if (req.query.sort == 'rate') {
-    //             courses.sort((a, b) => a.Point > b.Point)
-    //         }
-    //     }
-    // }
-
-    // // by name
-    // if (courses.length > 0) {
-    //     if (req.query.search != undefined) {
-    //         if (req.query.search.length > 4) {
-    //             // thuc hien search
-    //         } else {
-    //             delete req.query.search
-    //         }
-    //     }
-    // }
 
     const key = req.query.search;
     const cat = req.query.cate;
@@ -213,7 +187,6 @@ router.get('/courses', async function(req, res) {
     const offset = (page - 1) * limit;
     await CourseModel.loadCourseView({ key, cat, no_min, no_max, w_min, w_max });
 
-    categories = await CategoryModel.all();
     courses = await CourseModel.getCoursesFromView(limit, offset);
     const nousers = await CourseModel.getTotalCoursesInView();
     const nopages = Math.ceil(nousers / limit);
@@ -241,7 +214,7 @@ router.get('/detail/:CourseID', async function(req, res) {
         return res.redirect('/');
     }
 
-    await CourseModel.path({ CourseID, Viewed: parseInt(course.Viewed) + 1 })
+    await CourseModel.patchIncView(CourseID)
 
     const rates = await CourseModel.getRates(CourseID);
     const soleInfo = await CourseModel.getSoleInfo(CourseID, UserID);

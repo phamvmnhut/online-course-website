@@ -28,12 +28,12 @@ create table `User`(
     primary key (`UserID`)
 );
 -- insert user 
-insert into User value (null, 0, 'avatar-1', 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
-insert into User value (null, 200, 'avatar-2', 'email2@gmail.com', 'John', 'Legend', 'John Legend', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 0, 'avatar-1.jpg', 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 200, 'avatar-2.jpg', 'email2@gmail.com', 'John', 'Legend', 'John Legend', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
 
-insert into User value (null, 50, 'avatar-3', 'email3@gmail.com', 'Taylor', 'Swift', 'Taylor Swift', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
-insert into User value (null, 400, 'avatar-4', 'email4@gmail.com', 'Justin', 'Bieber', 'Justin Bieber', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 9);
-insert into User value (null, 400, 'avatar-5', 'email5@gmail.com', 'Lady', 'Gaga', 'Lady Gaga', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 50, 'avatar-3.jpg', 'email3@gmail.com', 'Taylor', 'Swift', 'Taylor Swift', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
+insert into User value (null, 400, 'avatar-4.jpg', 'email4@gmail.com', 'Justin', 'Bieber', 'Justin Bieber', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 9);
+insert into User value (null, 400, 'avatar-5.jpg', 'email5@gmail.com', 'Lady', 'Gaga', 'Lady Gaga', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 1, '2021-01-07 00:30:48', 0, 0);
 
 insert into User value (null, 500, null, 'email6@gmail.com', 'first name', 'last name', 'admin1', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 0, 0);
 insert into User value (null, 200, null, 'email7@gmail.com', 'first name', 'last name', 'admin2', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 2, '2021-01-07 00:30:48', 0, 0);
