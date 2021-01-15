@@ -320,7 +320,7 @@ router.route('/user/edit')
             user
         })
     })
-    .post(isAuth, async function(req, res) {
+    .post(isAuth, uploadAva,  async function(req, res) {
         const UserID = req.session.authUser.UserID
         const user = await UserModel.single(UserID)
         if (user === null) {

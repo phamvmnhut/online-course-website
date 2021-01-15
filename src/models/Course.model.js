@@ -116,7 +116,7 @@ const getTotalCoursesInView = db.catchErrorDB(async function(){
 
 const getCoursesFromView = db.catchErrorDB(async function(limit, offset){
   const query = `select * from CourseView
-  order by CourseView.CourseID
+  order by CourseView.CourseID 
   limit ${limit || 0}
   offset ${offset || 0}`;
 
