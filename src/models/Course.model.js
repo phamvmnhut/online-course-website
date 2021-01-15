@@ -19,7 +19,7 @@ const getSingleByID = db.catchErrorDB( async function (CourseID) {
                                       FROM ${TBL_COU} as C 
                                         left join ${TBL_USER} as T on C.TeacherID = T.UserID
                                         left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID
-                                        left join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
+                                        join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
                                           where C.CourseID = ${CourseID} AND C.Deleted = 0
                                             group by C.CourseID`);
   if (course.length == 0) return null;
@@ -58,7 +58,14 @@ function totalStudentsFilterQuery(min, max){
 }
 
 function keyFilterQuery(key){
-  return (!key) ? '' : ` and match (Course.CourseName, Course.ShortDescription, Course.FullDescription) against (\'${key}\') `;
+  if (process.env.NODE_ENV == 'development'){
+    return (!key) ? '' : ` and match (Course.CourseName, Course.ShortDescription, Course.FullDescription) against (\'${key}\') `;
+  }
+  if (process.env.NODE_ENV == 'production'){
+    return (!key) ? '' : ` and Course.CourseName like "%${key}%" `;
+  }
+  return ''
+  
 }
 
 function categoryFilterQuery(category){
@@ -76,6 +83,7 @@ function priceFilterQuery(min, max){
   return priceFilter;
 }
 
+
 const deleteIfExistsCourseView = db.catchErrorDB(async function(){
   const deleteQuery = 'drop view if exists CourseView;'
   const result = await db.load(deleteQuery);
@@ -91,14 +99,16 @@ const loadCourseView = db.catchErrorDB(async function(filter){
   const createViewQuery = `
   create view CourseView as
   select Course.CourseID, Course.CourseName, User.DisplayName as TeacherName, Category.CategoryName,
-  Course.DateModified, Course.Price, Course.Avatar
+  Course.DateModified, Course.Price, Course.Avatar, avg(CourseRating.Point) as Point
   from (Course left join User on Course.TeacherID = User.UserID)
   left join Category on Course.CategoryID = Category.CategoryID
+  left join CourseRating on CourseRating.CourseID = Course.CourseID
   where Course.Deleted = 0 
   ${catFilter}
   ${priceFilter}
   ${totalStudentsFilter}
-  ${keyFilter};`;
+  ${keyFilter}
+  group by Course.CourseID;`;
 
   await deleteIfExistsCourseView();
   const result = await db.load(createViewQuery);
@@ -114,12 +124,17 @@ const getTotalCoursesInView = db.catchErrorDB(async function(){
   return 0;
 }, debug)
 
-const getCoursesFromView = db.catchErrorDB(async function(limit, offset){
+const getCoursesFromView = db.catchErrorDB(async function(limit, offset, sort='date'){
+  let sortBy = '""'
+  if (sort == 'price') sortBy = 'CourseView.Price'
+  if (sort == 'date') sortBy = 'CourseView.DateModified'
+  if (sort == 'rate') sortBy = 'CourseView.Point desc'
   const query = `select * from CourseView
-  order by CourseView.CourseID 
+  order by ${sortBy} 
   limit ${limit || 0}
   offset ${offset || 0}`;
 
+  debug({query})
   return await db.load(query);
 }, debug)
 

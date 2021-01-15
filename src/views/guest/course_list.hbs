@@ -54,8 +54,9 @@
                             <div class="filter__sort">
                                 <span>Sort By</span>
                                 <select onchange="selectParam('sort', this.value)">
-                                    <option value="price">Price</option>
-                                    <option value="rate">Rate</option>
+                                    <option value="date" {{#ifeq sort 'date'}}selected{{/ifeq}}>Date</option>
+                                    <option value="price" {{#ifeq sort 'price'}}selected{{/ifeq}}>Price</option>
+                                    <option value="rate" {{#ifeq sort 'rate'}}selected{{/ifeq}}>Rate</option>
                                 </select>
                             </div>
                         </div>
@@ -104,17 +105,17 @@
                     {{#ifgt nopages 1}}
                     <div class="col-lg-9 col-md-7 mx-auto">
                         <div class="product__pagination">
-                            <a class="{{#ifeq curpage 1}}disabled{{/ifeq}}" href="?page={{add curpage -1}}">
+                            <a class="{{#ifeq curpage 1}}disabled{{/ifeq}}" href="javascript:selectParam('page','{{add curpage -1}}')">
                                 <i class="fa fa-long-arrow-left"></i>
                             </a>
                             {{#loop 1 nopages}}
                             {{#ifeq ../curpage this}}
                             <a class="active" href="javascript:;">{{this}}</a>
                             {{else}}
-                            <a href="?page={{this}}">{{this}}</a>
+                            <a href="javascript:selectParam('page','{{this}}')">{{this}}</a>
                             {{/ifeq}}
                             {{/loop}}
-                            <a class="{{#ifeq curpage nopages}}disabled{{/ifeq}}" href="?page={{add curpage 1}}">
+                            <a class="{{#ifeq curpage nopages}}disabled{{/ifeq}}" href="javascript:selectParam('page','{{add curpage 1}}')">
                                 <i class="fa fa-long-arrow-right"></i>
                             </a>
                         </div>
@@ -136,8 +137,7 @@
     const urlParams = new URLSearchParams(location.search);
     let params = {
         cate: 0,
-        limit: 8,
-        sort: 'price',
+        sort: 'date',
         search: '',
         page: 1
     };

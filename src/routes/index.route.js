@@ -177,6 +177,7 @@ router.get('/courses', async function(req, res) {
 
     const key = req.query.search;
     const cat = req.query.cate;
+    const sort = req.query.sort;
     const no_min = req.query['no-min'];
     const no_max = req.query['no-max'];
     const w_min = req.query['w-min'];
@@ -187,7 +188,7 @@ router.get('/courses', async function(req, res) {
     const offset = (page - 1) * limit;
     await CourseModel.loadCourseView({ key, cat, no_min, no_max, w_min, w_max });
 
-    courses = await CourseModel.getCoursesFromView(limit, offset);
+    courses = await CourseModel.getCoursesFromView(limit, offset, sort);
     const nousers = await CourseModel.getTotalCoursesInView();
     const nopages = Math.ceil(nousers / limit);
 
@@ -195,6 +196,7 @@ router.get('/courses', async function(req, res) {
         title: "Course",
         page: 'course',
         cates,
+        sort,
         courses_length: courses.length,
         courses,
         nopages: nopages,
