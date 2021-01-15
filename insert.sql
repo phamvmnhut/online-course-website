@@ -10,23 +10,6 @@ insert into Category value (null, 'English', 'Method of comunication', 2);
 insert into Category value (null, 'France', 'Method of comunication', 2);
 insert into Category value (null, 'Chinese', 'Method of comunication', 2);
 
-
-create table `User`(
-    `UserID` int not null auto_increment,
-    `Wallet` bigint not null,
-    `Avatar` varchar(255),
-    `Email` varchar(255) not null unique,
-    `FirstName` varchar(50) character set utf8mb4,
-    `LastName` varchar(50) character set utf8mb4,
-    `DisplayName` varchar(50),
-    `Password` varchar(100),
-    `Role` tinyint not null,
-    `DateCreated` datetime not null,
-    `Activated` int not null default 0,
-    `Delete` int not null default 0,
-
-    primary key (`UserID`)
-);
 -- insert user 
 insert into User value (null, 0, 'avatar-1.jpg', 'email1@gmail.com', 'Selena', 'Gomez', 'Selena Gomez', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
 insert into User value (null, 200, 'avatar-2.jpg', 'email2@gmail.com', 'John', 'Legend', 'John Legend', '$2a$10$QzY8lub0NT5LgClXQzYWqOc/bR6Ttn8VW6BzibtyKvjnhjMaz0Cse', 0, '2021-01-07 00:30:48', 0, 0);
@@ -70,17 +53,17 @@ insert into Course value (null, 4, 'Learn Mandarin for doing Business in China',
 ','30', 1, 6, 0, "product-12.jpg", 90, '2021-01-07 00:30:48', 0);
 insert into Course value (null, 5, 'Front-End Web Developer', 'tutorials and sound files explaining aspects of English pronunciation such as word stress, sentence stress and linking','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 1, 0, "product-13.jpg", 72, '2021-01-07 00:30:48', 0);
-insert into Course value (null, 3, 'Python Basics for Data Science', 'This Professional Certificate will start you at the absolute beginning teaching the fundamental binary language of modern computers.
+insert into Course value (null, 3, 'Python Basics for Data Science', 'This Professional Certificate will start you at the absolute beginning teaching the fundamental binary language of modern computers.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 3, 0, "product-1.jpg", 66, '2021-01-07 00:30:48', 0);
-insert into Course value (null, 3, 'Machine Learning with Python: A Practical Introduction', 'Learn to think computationally and write programs to tackle useful problems. Use these courses as stepping stones to more advanced computer science courses.
+insert into Course value (null, 3, 'Machine Learning with Python: A Practical Introduction', 'Learn to think computationally and write programs to tackle useful problems. Use these courses as stepping stones to more advanced computer science courses.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 3, 0, "product-2.jpg", 66, '2021-01-07 00:30:48', 0);
 insert into Course value (null, 3, 'HTML5 and CSS Fundamentals', 'play word games like Hangman, and learn France while having fun!','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 1, 0, "product-3.jpg", 66, '2021-01-07 00:30:48', 0);
-insert into Course value (null, 4, 'CSS Basics', 'Master the foundational programming languages for Web development, HTML5, CSS and JavaScript, to gain skills in one of the fastest growing careers.
+insert into Course value (null, 4, 'CSS Basics', 'Master the foundational programming languages for Web development, HTML5, CSS and JavaScript, to gain skills in one of the fastest growing careers.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 1, 0, "product-4.jpg", 66, '2021-01-07 00:30:48', 0);
-insert into Course value (null, 5, 'Contemporary China', 'Did you know that Chinese is one of the most spoken languages in the world? Whether you’re planning on visiting China to sightsee or are going there to work on a 6-month project, learning the basics of the language will be extremely helpful in your day to day operation.
+insert into Course value (null, 5, 'Contemporary China', 'Did you know that Chinese is one of the most spoken languages in the world? Whether you’re planning on visiting China to sightsee or are going there to work on a 6-month project, learning the basics of the language will be extremely helpful in your day to day operation.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 6, 0, "product-5.jpg", 66, '2021-01-07 00:30:48', 0);
-insert into Course value (null, 5, 'Get an introduction to the Chinese language with online courses from top universities and institutions. Online courses on edX include extensive videos and other tools to help you learn pronunciation skills in addition to basic vocabulary and grammar. Learn Mandarin Chinese tones, characters and basic language structure and practice core pronunciation and communication skills, all from the comfort of your computer anywhere in the world.
+insert into Course value (null, 5, 'Get an introduction to the Chinese language with online courses from top universities and institutions. Online courses on edX include extensive videos and other tools to help you learn pronunciation skills in addition to basic vocabulary and grammar. Learn Mandarin Chinese tones, characters and basic language structure and practice core pronunciation and communication skills, all from the comfort of your computer anywhere in the world.','This course presents an introduction to the basics of financial accounting and finance for IT professionals. The first part of the course will focus on understanding the most important financial statements, namely, the balance sheet, the income statement, and the statement of cash flows. We will then focus on how we can understand the financial health and performance of the company by examining a number of important financial ratios that are derived from the financial statements of the company. The second part of the course will focus on the basics of finance. This includes the concept of time value of money, discounting cash flows, and capital budgeting. The course will also introduce the idea of real options, how they affect a projectÃ¢Â€Â™s NPV, and their impact of the decision to accept/reject a project. Lectures on concepts will be supplemented with numerical examples.
 ','30', 1, 6, 0, "product-6.jpg", 66, '2021-01-07 00:30:48', 0);
 
 
@@ -138,14 +121,14 @@ insert into Lesson value (13, null,'Lesson Two', 'Description', 'video-1.mp4');
 insert into Lesson value (14, null,'Lesson Three', 'Description', 'video-1.mp4');
 
 -- insert purcahse
-insert into Purchased value (1, 1, '2021-01-10 00:30:00');
-insert into Purchased value (2, 1, '2021-01-10 00:30:00');
+insert into Purchased value (1, 1, '2021-01-10 00:30:00', 0, 0, 0);
+insert into Purchased value (2, 1, '2021-01-10 00:30:00', 0, 0, 0);
 
-insert into Purchased value (1, 2, '2021-01-10 00:30:00');
-insert into Purchased value (2, 2, '2021-01-10 00:30:00');
+insert into Purchased value (1, 2, '2021-01-10 00:30:00', 0, 0, 0);
+insert into Purchased value (2, 2, '2021-01-10 00:30:00', 0, 0, 0);
 
-insert into Purchased value (1, 3, '2021-01-10 00:30:00');
-insert into Purchased value (2, 3, '2021-01-10 00:30:00');
+insert into Purchased value (1, 3, '2021-01-10 00:30:00', 0, 0, 0);
+insert into Purchased value (2, 3, '2021-01-10 00:30:00', 0, 0, 0);
 
 -- insert feedback ~ rating
 insert into CourseRating value (null, 1, 1, 5, 'I really like it, best course I''ve ever had.');

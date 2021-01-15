@@ -6,7 +6,7 @@ const { isAuth, isAdmin } = require('../middleware/auth');
 
 const { validateEmail } = require('../utils/validate');
 
-const { UserModel, PurchaseModel } = require('../models');
+const { UserModel, PurchaseModel, LearningModel } = require('../models');
 const courseModel = require('../models/Course.model');
 const catModel = require('./../models/category.model');
 const db = require('../utils/db');
@@ -62,6 +62,19 @@ router.route('/wish')
         })
     })
 
+router.route('/study')
+.post(async function (req, res){
+    const StudentID = req.session.authUser.UserID;
+    await LearningModel.patch({ ...req.body, StudentID})
+    return res.json({ status: true})
+})
+router.route('/study/complete')
+.post(async function (req, res){
+    debug('[study/compelte]',req.body)
+    const StudentID = req.session.authUser.UserID; 
+    const ret = await PurchaseModel.patch({StudentID, ...req.body})
+    return res.json({ status: true, data: ret})
+})
 
 router.use(isAdmin)
 

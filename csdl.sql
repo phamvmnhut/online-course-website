@@ -91,6 +91,9 @@ create table `Purchased`(
     `StudentID` int not null,
     `CourseID` int not null,
     `DatePurchased` datetime not null,
+    `LessonCur` int default 0,
+    `State` int default 0,
+    `isCompleted` int default 0,
 
     primary key (`StudentID`, `CourseID`)
 );

@@ -37,6 +37,7 @@
                                 <tr>
                                     <th class="shoping__product">Courses</th>
                                     <th>Study</th>
+                                    <th>Learning State</th>
                                     <th>Date registered</th>
                                 </tr>
                             </thead>
@@ -61,6 +62,7 @@
                                     <td class="edit__del__btn">
                                         <a href="study/{{CourseID}}"><i class="fa fa-leanpub"></i></a> 
                                     </td>
+                                    <td>{{#if isCompleted }}Completed{{else}}Studing{{/if}}</td>
                                     <td >
                                         <div class="blog__item__text">
                                             <ul>

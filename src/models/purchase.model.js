@@ -11,6 +11,12 @@ const getLastElement = db.catchErrorDB(async function () {
   return row[0];
 }, debug);
 
+const checkStudentRegisted = db.catchErrorDB(async function(StudentID, CourseID) {
+  const rows = await db.get2Condition({StudentID}, {CourseID}, TBL_PUR);
+  if (rows.length == 0 ) return false;
+  return rows[0]
+}, debug);
+
 module.exports = {
   all: db.catchErrorDB(async function() {
     return await db.getNoCondition(TBL_PUR);
@@ -26,30 +32,37 @@ module.exports = {
     return await db.get({StudentID}, TBL_WIS);
   }, debug),
 
-  checkStudentRegisted: db.catchErrorDB(async function(StudentID, CourseID) {
-    const rows = await db.get2Condition({StudentID}, {CourseID},TBL_PUR);
-    if (rows.length == 0 ) return false;
-    return rows[0]
-  }, debug),
+  checkStudentRegisted,
 
-  add: db.catchErrorDB( async function(entity) {
-    await db.add({ ...entity, 'DatePurchased': new Date() }, TBL_PUR);
+  add: db.catchErrorDB(async function (entity) {
+    await db.add({...entity,
+      DatePurchased: new Date(),
+      LessonCur: 0,
+      State: 0,
+      isCompleted: 0
+    }, TBL_PUR);
     return await getLastElement();
   }, debug),
+
   addWish: db.catchErrorDB(async function (entity) {
     await db.add(entity, TBL_WIS);
     return await getLastElement();
   }, debug),
 
-  delWish(entity) {
-    return db.load(`DELETE FROM ${TBL_WIS} WHERE StudentID = ${entity.StudentID} and CourseID = ${entity.CourseID}`);
-  },
+  delWish : db.catchErrorDB( async function (entity){
+    await db.load(`DELETE FROM ${TBL_WIS} WHERE StudentID = ${entity.StudentID} and CourseID = ${entity.CourseID}`);
+    return true
+  }, debug),
   
-  patch(entity) {
-    const condition = { ID: entity.ID };
-    delete entity.ID;
-    return db.patch(entity, condition, TBL_PUR);
-  },
+  patch: db.catchErrorDB(async function (entity) {
+    const CourseID = entity.CourseID
+    const StudentID = entity.StudentID;
+    delete entity.CourseID;
+    delete entity.StudentID;
+    await db.pool_query(`UPDATE ${TBL_PUR} SET ? WHERE ? AND ? `, [entity, { CourseID }, { StudentID }])
+    return await checkStudentRegisted(StudentID, CourseID);
+  }, debug),
+
   getLastElement,
 
   checkHad: db.catchErrorDB( async function(CourseID, StudentID) {

@@ -41,6 +41,7 @@ const isStudentRegisted = async function(req, res, next) {
         return res.redirect('/my-course');
     }
     req.course = course;
+    req.purchase = purchased
     return next();
 }
 
@@ -420,7 +421,7 @@ router.get('/my-course', isAuth, async function(req, res) {
     let my_courses = [];
     for (const e of my_id_courses) {
         const course = await CourseModel.getSingleByID(e.CourseID)
-        my_courses.push(course)
+        my_courses.push({...course, isCompleted: e.isCompleted})
     }
     return res.render('user/my_course.hbs', {
         title: 'My Sourse',
@@ -434,9 +435,9 @@ router.route('/study/:CourseID/')
     .get(isAuth, isStudentRegisted, async function(req, res) {
         const CourseID = req.params.CourseID;
         const StudentID = req.session.authUser.UserID;
-        // get learning position
-        const Learning = await LearningModel.getOne({ CourseID, StudentID });
-        if (!Learning) {
+        const lessons = await LessonModel.getByCourseID(CourseID);
+        
+        if (lessons.length == 0) {
             req.flash("This course dont have any Lesson")
             return res.render('user/studying.hbs', {
                 title: 'Learning',
@@ -445,9 +446,14 @@ router.route('/study/:CourseID/')
             })
         }
         // render video
-        const lessons = await LessonModel.getByCourseID(CourseID);
-        const SectionCur = lessons.filter(e => e.Section == Learning.Section)[0]
-            // get more info
+        let LessonCur;
+        if (req.purchase.LessonCur == 0) {
+            LessonCur = lessons[0]
+        }else {
+            LessonCur = lessons.filter(e => e.Section == req.purchase.LessonCur)[0]
+        }
+        const Learning = await LearningModel.getOne({ CourseID, StudentID, Section: LessonCur.Section });
+        // get more info
         const rates = await CourseModel.getRates(CourseID);
         const feedback = await PurchaseModel.checkHad(CourseID, StudentID)
 
@@ -455,10 +461,12 @@ router.route('/study/:CourseID/')
             title: 'Learning',
             page: 'student',
             lessons,
-            SectionCur,
+            SectionCur: LessonCur,
+            Learning,
             rates,
             course: req.course,
-            feedback
+            feedback,
+            purchase: req.purchase
         })
     })
     .post(isAuth, isStudentRegisted, async function(req, res) {
@@ -467,8 +475,7 @@ router.route('/study/:CourseID/')
         const StudentID = req.session.authUser.UserID;
         // change Section to learning continue
         if (req.body.Section !== undefined) {
-            const Section = req.body.Section
-            const updateLearning = await LearningModel.patch({ Section, CourseID, StudentID })
+            const updateLearning = await PurchaseModel.patch({ LessonCur: req.body.Section, CourseID, StudentID })
             return res.json({ status: updateLearning })
         }
         // add feedback
@@ -487,6 +494,15 @@ router.route('/study/:CourseID/')
                 // update feedback
             }
         }
+        // update course Complete
+        if (req.body.Action != undefined) {
+        if (req.body.Action == 'isCompleteCourse') {
+            const StudentID = req.session.authUser.UserID; 
+            const ret = await PurchaseModel.patch({StudentID, CourseID, isCompleted: req.body.isCompleted})
+            req.flash('success', 'update course status is success')
+            return res.redirect(`/study/${CourseID}/`)
+        }}
+
     })
 
 // teacher

@@ -12,37 +12,34 @@ const TBL_LER = 'Learning';
 const LessonModel = require('./lesson.model');
 
 const add = db.catchErrorDB(async function (entity) {
+  await db.add({ ...entity, State: 0 }, TBL_LER);
+  const res =  await db.pool_query(`SELECT * FROM ${TBL_LER} WHERE ? AND ? AND ?`, [{CourseID}, {StudentID}, {Section}])
+  return res[0];
+}, debug);
+
+const getOne = db.catchErrorDB(async function (entity) {
   const CourseID = entity.CourseID;
   const StudentID = entity.StudentID;
-  const LessonFirst = await LessonModel.getByCourseID(CourseID);
-  if (LessonFirst.length == 0) {
-    return false;
+  const Section = entity.Section;
+  const rows = await db.pool_query(`SELECT * FROM ${TBL_LER} WHERE ? AND ? AND ?`, [{CourseID}, {StudentID}, {Section}])
+  if (rows.length === 0) {
+    return await db.add({CourseID, StudentID, Section, State: 0}, TBL_LER)
   }
-  await db.add({ CourseID, StudentID, Section: LessonFirst[0].Section, State: 0 }, TBL_LER);
-  const res =  await db.get2Condition({ CourseID }, { StudentID }, TBL_LER);
-  return res[0];
+  return rows[0];
 }, debug);
 
 module.exports = {
 
-  getOne: db.catchErrorDB(async function (entity) {
-    const CourseID = entity.CourseID;
-    const StudentID = entity.StudentID;
-    const rows = await db.get2Condition({ CourseID }, { StudentID }, TBL_LER);
-    if (rows.length === 0) {
-      return await add({CourseID, StudentID})
-    }
-    return rows[0];
-  }, debug),
-
+  getOne,
   add,
 
   patch: db.catchErrorDB(async function (entity) {
     const CourseID = entity.CourseID;
     const StudentID = entity.StudentID;
     const Section = entity.Section
-    await db.load(`UPDATE ${TBL_LER} SET Section=${Section} WHERE CourseID=${CourseID} AND StudentID=${StudentID}`)
-    const res = await db.get2Condition({ CourseID }, { StudentID }, TBL_LER);
-    return res[0];
+    const State = entity.State;
+    await db.pool_query(`UPDATE ${TBL_LER} SET ? WHERE ? AND ? AND ?`, [{State}, {CourseID}, {StudentID}, {Section}])
+    return await getOne(entity)
   }, debug),
+
 };
