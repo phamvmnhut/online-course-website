@@ -116,7 +116,11 @@
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
                                 <div class="product__details__tab__desc">
                                     {{#each rates }}
-                                        <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
+                                        <strong>{{DisplayName}}</strong>
+                                        <div class="rating">
+                                            <i class="fa fa-star">{{Point}}</i>/5 
+                                        </div>    
+                                        <p>{{Feedback}}</p>
                                     {{/each}}
 
                                 </div>

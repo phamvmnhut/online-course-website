@@ -4,7 +4,7 @@ insert into Field value (null, 'Language', 'Method of comunication');
 
 insert into Category value (null, 'Web', 'Information and Technology', 1);
 insert into Category value (null, 'Android', 'Information and Technology', 1);
-insert into Category value (null, 'Data Science', 'Information and Technology', 1);
+insert into Category value (null, 'Data', 'Information and Technology', 1);
 
 insert into Category value (null, 'English', 'Method of comunication', 2);
 insert into Category value (null, 'France', 'Method of comunication', 2);
