@@ -376,3 +376,7 @@
 .product__details__pic__slider.owl-carousel .owl-item video {
 	width: auto;
 }
+
+.study__clip {
+	margin-left: 125px;
+}
