@@ -71,6 +71,16 @@ module.exports = {
     return rows[0]
   }, debug),
   addFeedback: db.catchErrorDB(async function(entity) {
-    return db.add(entity, TBL_COU_RAT);
+    return await db.add(entity, TBL_COU_RAT);
   }),
+  patchFeedback: db.catchErrorDB(async function(entity) {
+    const CourseRatingID = entity.CourseRatingID
+    delete entity.CourseID;
+    delete entity.StudentID;
+    delete entity.CourseRatingID
+    await db.patch(entity, {CourseRatingID}, TBL_COU_RAT)
+    const feedback = await db.get({CourseRatingID}, TBL_COU_RAT)
+    if (feedback.length == 0) return false
+    return feedback[0]
+  }, debug),
 };

@@ -221,6 +221,9 @@
         $button.parent().find('input').val(newVal);
     });
 
+})(jQuery);
+
+function getWishNumber(){
     $.ajax({
         type: "GET",
         url: '/api/wish',
@@ -235,8 +238,7 @@
             alert(errMsg)
         }
     });
-
-})(jQuery);
+}
 
 function onClickHeart(CourseID){
     $.ajax({

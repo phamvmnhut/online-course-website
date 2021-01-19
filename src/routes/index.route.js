@@ -496,6 +496,13 @@ router.route('/study/:CourseID/')
                 return res.redirect(req.get('referer'))
             } else {
                 // update feedback
+                const updateFeedback = await PurchaseModel.patchFeedback({...req.body})
+                if (!updateFeedback) {
+                    req.flash('warn', 'update feedback fial')
+                } else {
+                    req.flash('success', "update feedback success")
+                }
+                return res.redirect(req.get('referer'))
             }
         }
         // update course Complete
