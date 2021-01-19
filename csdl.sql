@@ -63,7 +63,7 @@ create table `Course` (
 
     primary key (`CourseID`)
 );
-alter table `Course` add fulltext(`CourseName`, `ShortDescription`, `FullDescription`);
+-- alter table `Course` add fulltext(`CourseName`, `ShortDescription`, `FullDescription`);
 
 drop table if exists `Lesson`;
 create table `Lesson`(
@@ -133,3 +133,22 @@ alter table Favorite add foreign key (StudentID) references User(UserID);
 
 alter table CourseRating add foreign key (CourseID) references Course(CourseID);
 alter table CourseRating add foreign key (StudentID) references User(UserID);
+
+
+
+alter table CourseRating drop foreign key CourseRating_ibfk_1;
+alter table CourseRating drop foreign key CourseRating_ibfk_2;
+
+alter table Favorite drop foreign key Favorite_ibfk_1;
+alter table Favorite drop foreign key Favorite_ibfk_2;
+
+alter table Learning drop foreign key Learning_ibfk_1;
+alter table Learning drop foreign key Learning_ibfk_2;
+alter table Learning drop foreign key Learning_ibfk_3;
+
+alter table Lesson drop foreign key Lesson_ibfk_1;
+
+alter table Course drop foreign key Course_ibfk_1;
+alter table Course drop foreign key Course_ibfk_2;
+
+alter table Category drop foreign key Category_ibfk_1;

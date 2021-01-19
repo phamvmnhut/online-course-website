@@ -207,14 +207,18 @@ router.get('/courses', async function(req, res) {
 
 router.get('/detail/:CourseID', async function(req, res) {
     let UserID = 0;
-    let CourseID = Math.floor(Math.random() * Math.floor(10));
+    let CourseID
+    if (req.params.CourseID == undefined){
+        CourseID = Math.floor(Math.random() * Math.floor(10));
+    }else {
+        CourseID = req.params.CourseID
+    }
     if (req.session.isAuth) { UserID = req.session.authUser.UserID }
     if (req.params.CourseID !== undefined) CourseID = req.params.CourseID
-
     const course = await CourseModel.getSingleByID(CourseID);
     if (!course) {
         req.flash("noti", "Dont exit this course with this ID");
-        return res.redirect('/');
+        return res.json("abc")
     }
 
     await CourseModel.patchIncView(CourseID)

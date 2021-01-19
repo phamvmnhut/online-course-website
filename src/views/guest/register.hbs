@@ -4,6 +4,27 @@ var loadFile = function(event) {
 	var image = document.getElementById('output');
 	image.src = URL.createObjectURL(event.target.files[0]);
 };
+
+// validate email
+function validateEmail(e) {
+     $.ajax({
+        type: 'GET',
+        url: '/api/is-available/',
+        data: { email: e },
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+    }).done(function (response) {
+        console.log(response)
+        if (! response.status) {
+            $('#email-validate-noti').html("Email is invalate")
+        } else {
+            $('#email-validate-noti').html("oke")
+        }
+    })
+}
+
+
+
 </script>
 {{/section}}
     
@@ -49,11 +70,11 @@ var loadFile = function(event) {
                                 </div>
                             </div>
                             <div class="checkout__input">
-                                <p>Email<span>*</span></p>
-                                <input type="email" name="email">
+                                <p>Email<span style="color: red;">*</span> <strong id="email-validate-noti"></strong></p>
+                                <input type="email" name="email" onchange="validateEmail(this.value)">
                             </div>
                             <div class="checkout__input">
-                                <p>Password<span>*</span></p>
+                                <p>Password<span style="color: red;">*</span></p>
                                 <input type="password" name="password">
                             </div>
                             <div class="checkout__input">
