@@ -11,7 +11,6 @@ const courseModel = require('../models/Course.model');
 const catModel = require('./../models/category.model');
 const db = require('../utils/db');
 
-
 const router = express.Router();
 
 router.get('/', function(req, res) {
@@ -19,12 +18,12 @@ router.get('/', function(req, res) {
 })
 router.get('/is-available', async function(req, res) {
     const email = req.query.email;
-    const user = await UserModel.singleByEmail(email);
-    if (user === null) {
-        return res.json(true);
-    }
-
-    return res.json(false);
+    debug({email})
+    if ( ! validateEmail(email)){ return res.json({status: false})}
+    debug("hehe")
+    if ((await UserModel.singleByEmail(email))){ return res.json({status: false})}
+    debug("haha")
+    return res.json({status: true});
 })
 
 router.use(isAuth);

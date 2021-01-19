@@ -19,7 +19,7 @@ const getSingleByID = db.catchErrorDB( async function (CourseID) {
                                       FROM ${TBL_COU} as C 
                                         left join ${TBL_USER} as T on C.TeacherID = T.UserID
                                         left join ${TBL_CAT} as CAT on C.CategoryID = CAT.CategoryID
-                                        join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
+                                        left join ${TBL_RATE} as CR on C.CourseID = CR.CourseID
                                           where C.CourseID = ${CourseID} AND C.Deleted = 0
                                             group by C.CourseID`);
   if (course.length == 0) return null;
@@ -99,7 +99,7 @@ const loadCourseView = db.catchErrorDB(async function(filter){
   const createViewQuery = `
   create view CourseView as
   select Course.CourseID, Course.CourseName, User.DisplayName as TeacherName, Category.CategoryName,
-  Course.DateModified, Course.Price, Course.Avatar, avg(CourseRating.Point) as Point
+  Course.DateModified, Course.Price, Course.Avatar, avg(CourseRating.Point) as Point, count(CourseRating.Point) as Count
   from (Course left join User on Course.TeacherID = User.UserID)
   left join Category on Course.CategoryID = Category.CategoryID
   left join CourseRating on CourseRating.CourseID = Course.CourseID
@@ -134,7 +134,6 @@ const getCoursesFromView = db.catchErrorDB(async function(limit, offset, sort='d
   limit ${limit || 0}
   offset ${offset || 0}`;
 
-  debug({query})
   return await db.load(query);
 }, debug)
 
@@ -267,7 +266,7 @@ module.exports = {
   patchIncView: db.catchErrorDB(async function (CourseID) {
     const course = await db.get({CourseID}, TBL_COU);
     if (!course || course.length == 0) return false;
-    await db.patch({Viewed: parseInt(course.Viewed) + 1}, {CourseID}, TBL_COU);
+    await db.patch({'Viewed': parseInt(course[0].Viewed) + 1}, {CourseID}, TBL_COU);
     return true
   }, debug),
 

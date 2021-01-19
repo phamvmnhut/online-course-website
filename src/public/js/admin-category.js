@@ -124,7 +124,7 @@ function getFormData(){
 function showError(err){
     Swal.fire({
         icon: 'error',
-        title: 'Thao tác thất bại',
+        title: 'Do this is error',
         text: err || 'Something went wrong!',
     });
 }

@@ -160,6 +160,9 @@
     })
 
     function selectParam(key, value, reset = false) {
+        if (key == 'cate') {
+            urlParams.set('page', 1);
+        }
         if (reset) {
             for (let key in params) {
                 urlParams.set(key, params[key]);
