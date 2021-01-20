@@ -6,6 +6,7 @@
     font-weight: bold;
 }
 </style>
+<link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
 {{/section}}
 
     <!-- Breadcrumb Section Begin -->
@@ -42,7 +43,7 @@
                     </div>
                     <video
                         id="my-player"
-                        class="video-js"
+                        class="video-js study__clip"
                         controls
                         height="500"
                         preload="auto"
@@ -102,11 +103,9 @@
                                                                     <td>{{LessonTitle}}</td>
                                                                     <td>{{LessonDescription}}</td>
                                                                     {{#ifeq Video 'demo.mp4'}}
-                                                                    ...
                                                                     {{else}}
                                                                     <td class="study__btn"><button onclick="clickToLearn(this)"><i class="fa fa-leanpub"></i> </button></td>
                                                                     {{/ifeq}}
-                                                                    
                                                                 </tr>
                                                                 {{/each}}
                                                             </tbody>
@@ -122,7 +121,11 @@
                                     <div class="contact-form spad">
                                         <div class="container">
                                             {{#each rates }}
-                                            <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
+                                            <strong>{{DisplayName}}: </strong>
+                                            <div class="rating">
+                                                <i class="fa fa-star">{{Point}}</i>/5 
+                                            </div>
+                                             <p>{{Feedback}}</p>
                                             {{/each}}
                                         </div>
                                     </div>
@@ -138,12 +141,16 @@
     <!-- Course Details Section End -->
 
 {{#section 'js'}}
+<script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
 <script>
 function clickToLearn(e){
     const Section = $(e).parent().parent().children()[0].innerText
+    var myPlayer = videojs('my-player')
     $(e).parent().parent().addClass('selected')
-    $('#my-player').children('source').attr("src",`/public/vid/${Section}`);
+    myPlayer.src(`/public/vid/${Section}`);
     $('#section-lesson-title').children('h2').html($(e).parent().parent().children()[1].innerText)
+    
+    myPlayer.load();
     $(window).scrollTop(0);
 }
 

@@ -184,7 +184,11 @@
                                                 {{/if}}
                                             </form>
                                             {{#each rates }}
-                                            <strong>{{DisplayName}}: </strong> <p>{{Feedback}}</p>
+                                            <strong>{{DisplayName}}: </strong> 
+                                            <div class="rating">
+                                                <i class="fa fa-star">{{Point}}</i>/5 
+                                            </div>
+                                            <p>{{Feedback}}</p>
                                             {{/each}}
                                         </div>
                                     </div>

@@ -1,9 +1,3 @@
--- Server: sql10.freemysqlhosting.net
--- Name: sql10385446
--- Username: sql10385446
--- Password: BtexVtiUKh
--- Port number: 3306
-
 drop database if exists onlcourse;
 create database if not exists onlcourse;
 use onlcourse;
@@ -63,7 +57,7 @@ create table `Course` (
 
     primary key (`CourseID`)
 );
--- alter table `Course` add fulltext(`CourseName`, `ShortDescription`, `FullDescription`);
+alter table `Course` add fulltext(`CourseName`, `ShortDescription`, `FullDescription`);
 
 drop table if exists `Lesson`;
 create table `Lesson`(
@@ -135,20 +129,21 @@ alter table CourseRating add foreign key (CourseID) references Course(CourseID);
 alter table CourseRating add foreign key (StudentID) references User(UserID);
 
 
+-- drop foreign key  
 
-alter table CourseRating drop foreign key CourseRating_ibfk_1;
-alter table CourseRating drop foreign key CourseRating_ibfk_2;
+-- alter table CourseRating drop foreign key CourseRating_ibfk_1;
+-- alter table CourseRating drop foreign key CourseRating_ibfk_2;
 
-alter table Favorite drop foreign key Favorite_ibfk_1;
-alter table Favorite drop foreign key Favorite_ibfk_2;
+-- alter table Favorite drop foreign key Favorite_ibfk_1;
+-- alter table Favorite drop foreign key Favorite_ibfk_2;
 
-alter table Learning drop foreign key Learning_ibfk_1;
-alter table Learning drop foreign key Learning_ibfk_2;
-alter table Learning drop foreign key Learning_ibfk_3;
+-- alter table Learning drop foreign key Learning_ibfk_1;
+-- alter table Learning drop foreign key Learning_ibfk_2;
+-- alter table Learning drop foreign key Learning_ibfk_3;
 
-alter table Lesson drop foreign key Lesson_ibfk_1;
+-- alter table Lesson drop foreign key Lesson_ibfk_1;
 
-alter table Course drop foreign key Course_ibfk_1;
-alter table Course drop foreign key Course_ibfk_2;
+-- alter table Course drop foreign key Course_ibfk_1;
+-- alter table Course drop foreign key Course_ibfk_2;
 
-alter table Category drop foreign key Category_ibfk_1;
+-- alter table Category drop foreign key Category_ibfk_1;
